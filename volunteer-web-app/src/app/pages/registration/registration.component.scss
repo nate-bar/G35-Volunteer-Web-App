@@ -1,0 +1,38 @@
+
+input[type="email"],
+input[type="password"] {
+    background-color: white; 
+    color: black; 
+}
+
+
+button {
+    width: 50%;
+    display: block;
+    margin: 1rem auto; 
+}
+
+
+div {
+    display: flex;
+    justify-content: center; 
+}
+
+
+form {
+    padding: 1rem;
+    max-width: 30rem;
+    margin: 2rem auto;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #333535, #2b996d);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+input[type="checkbox"] {
+    background-color: transparent; 
+}
+label{
+    min-width: 100px;
+    color: white;
+}
