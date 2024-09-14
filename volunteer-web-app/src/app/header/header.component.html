@@ -1,0 +1,37 @@
+<header>
+    <ul>
+        <!-- Always visible links -->
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/volunteer-opportunities">Volunteer Opportunities</a></li>
+        <li><a routerLink="/events">Events</a></li>
+        <li><a routerLink="/resources">Resources</a></li>
+        <li><a routerLink="/contact-us">Contact Us</a></li>
+        <li><a routerLink="/faqs">FAQs/Help</a></li>
+
+        <!-- Show 'My Profile' link if the user is logged in -->
+        <li *ngIf="authService.getIsLoggedIn()">
+            <a routerLink="/my-profile">My Profile</a>
+        </li>
+
+        <!-- Show the 'Dashboard' link only if logged in and the role is 'admin' -->
+        <li *ngIf="authService.getIsLoggedIn() && authService.getUserRole() === 'admin'">
+            <a routerLink="/dashboard">Dashboard</a>
+        </li>
+
+        <!-- Show 'Login' and 'Sign Up' links if not logged in -->
+        <li *ngIf="!authService.getIsLoggedIn()">
+            <a routerLink="/login">Login</a>
+        </li>
+        <li *ngIf="!authService.getIsLoggedIn()">
+            <a routerLink="/register">Sign Up</a>
+        </li>
+
+        <!-- Show 'Logout' link if logged in -->
+        <li *ngIf="authService.getIsLoggedIn()">
+            <a (click)="logout()">Logout</a>
+        </li>
+    </ul>
+</header>
+
+
+

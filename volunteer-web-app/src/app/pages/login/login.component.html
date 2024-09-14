@@ -1,1 +1,47 @@
-<p>login works!</p>
+
+<div>
+    <form (ngSubmit)="login()">
+        <h1>
+            <span><i class="fas fa-user"></i></span>
+        </h1>
+ 
+        <div class="mb-4 d-flex align-items-center">
+            <label class="form-label me-3" for="username" >username</label>
+            <mdb-form-control class="form-outline flex-grow-1">
+                <input mdbInput type="email" id="username" class="form-control" [(ngModel)]="username" name="username"/>
+                <label mdbLabel class="form-label" for="email">username</label>
+            </mdb-form-control>
+        </div>
+        
+        
+        <div class="mb-4 d-flex align-items-center">
+            <label class="form-label me-3" for="password" >Password</label>
+            <mdb-form-control class="form-outline flex-grow-1">
+                <input mdbInput type="password" id="password" class="form-control" name="password" [(ngModel)]="password" name="password"/>
+                <label mdbLabel class="form-label" for="password">Password</label>
+            </mdb-form-control>
+        </div>
+
+        
+        <div class="form-check d-flex justify-content-center mb-4">
+            <input 
+                mdbCheckbox 
+                class="form-check-input me-2" 
+                type="checkbox" 
+                id="Remember" 
+                [(ngModel)]="rememberMe" 
+                name="rememberMe"/>
+            <label class="form-check-label" for="Remember">
+                Remember me
+            </label>
+        </div>
+
+        
+        <button mdbRipple type="submit" class="btn btn-primary btn-block mb-4 ">Login</button>
+        <p>Don't have an account? <a routerLink="/register">Sign up here</a></p>
+    </form>
+</div>
+
+
+
+  
