@@ -1,0 +1,56 @@
+<p>event form loads!</p>
+
+//
+Event Name (100 characters, required)
+Event Description (Text area, required)
+Location (Text area, required)
+Required Skills (Multi-select dropdown, required)
+Urgency (Drop down, selection required)
+Event Date (Calendar, date picker) 
+//
+
+<form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+
+    <label for="event-name">Event Name: </label>
+    <input id="event-name" type="text" formControlName="eventName" maxlength="100" placeholder="Enter Event Name:" required>
+
+    <label for="event-descript">Event Description: </label>
+    <input id="event-descript" type="text" formControlName="eventDescript" placeholder="Enter Event Details:" required>
+    <div id="event-location">
+        <h2>Event Location</h2>
+
+        <label for="street-address">Street Address: </label>
+        <input id="street-address" type="text" formControlName="streetAddress" required>
+
+        <label for="city-address">City: </label>
+        <input id="city-address" type="text" formControlName="cityAddress" required>
+
+        <label for="country-address">Country: </label>
+        <input id="country-address" type="text" formControlName="countryAddress" required>
+
+        <label for="zip-address">Country: </label>
+        <input id="zip-address" type="number" formControlName="zipCodeAddress" required>
+    </div>
+
+
+    <label for="required-skills">Required Skills: </label>
+    <select id="required-skills" name="skills" multiple>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+
+    <label for="current-urgency">Urgency: </label>
+    <select id="current-urgency" name="currentUrgency">
+        <option value="one">1</option>
+        <option value="two">2</option>
+        <option value="three">3</option>
+        <option value="four">4</option>
+        <option value="5">5</option>
+    </select>
+
+    <label for="event-date">Event Date: </label>
+    <input id="event-date" type="date" formControlName="eventDate">
+
+    <button type="submit" [disabled]="!eventForm.valid">Submit</button>
