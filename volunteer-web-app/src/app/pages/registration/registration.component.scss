@@ -91,3 +91,11 @@ h1{
     display: flex;
     justify-content: center;
 }
+/* Custom styles for mat-error */
+mat-error {
+    color: red;              
+    background-color: black; 
+    padding: 5px;            
+    border-radius: 3px;     
+  }
+  

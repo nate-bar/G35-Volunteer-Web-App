@@ -10,7 +10,7 @@
 
         <!-- Show 'My Profile' link if the user is logged in -->
         <li *ngIf="authService.getIsLoggedIn()">
-            <a routerLink="/my-profile">My Profile</a>
+            <a routerLink="/profile">My Profile</a>
         </li>
 
         <!-- Show the 'Dashboard' link only if logged in and the role is 'admin' -->

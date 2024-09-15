@@ -1,0 +1,118 @@
+/* Add this to create space between the form and the footer */
+div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: .5px;
+    
+    border-radius: 10px;
+}
+.div{
+    padding-bottom: 5rem; 
+}
+mat-error {
+    background-color: black;
+}
+
+form {
+    padding: 1rem;
+    width: auto;
+    margin: 2rem auto;
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(126, 213, 111, 0.8), rgba(40, 180, 131, 0.8));
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+input[type="text"],input[type="textarea"],
+input,select ,option,textarea{
+    background-color: white; 
+    color: black; 
+}
+
+
+
+input[type="checkbox"] {
+    background-color: white; 
+}
+
+label {
+    min-width: 100px;
+    color: black;
+}
+
+button {
+    width: 20%;
+    display: block;
+    margin: 1rem auto;
+    padding: 1rem;
+    background-color: #007bff;
+    color: white;
+    border-color: black;
+    border-radius: 10rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+}
+
+button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease-in-out;
+    border-radius: 100%;
+}
+
+button:hover {
+    transform: scale(1.3);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: #0056b3;
+}
+
+button:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+}
+
+h1 {
+    text-transform: uppercase;
+    backface-visibility: hidden;
+    margin-bottom: 60px;
+    display: flex;
+    justify-content: center;
+}
+.custom-select-control {
+    select.form-control {
+      background-color: white; /* Set background color */
+      color: black; /* Set text color */
+      width: 200px; /* Set a fixed width for the select input */
+      height: 38px; /* Set a fixed height */
+      padding: 0.375rem 0.75rem; /* Consistent padding */
+      box-sizing: border-box; /* Include padding and border in width and height */
+    }
+
+  
+    select.form-control:focus {
+      outline: none; /* Remove the default outline */
+      box-shadow: none; /* Remove box shadow */
+      border: 1px solid #ced4da; /* Add border */
+    }
+  
+    .dropdown-menu {
+      background-color: white;
+    }
+  
+    option:hover {
+      background-color: #f0f0f0;
+    }
+  }
+  
+  
+
+  
