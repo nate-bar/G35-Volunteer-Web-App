@@ -4,6 +4,7 @@ import { RegistrationComponent } from './pages/registration/registration.compone
 import { AdminComponent } from './user/admin/admin.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { EventsComponent } from './pages/events/events.component';
+import { AdminUsersComponent } from './user/admin/admin-users/admin-users.component';
 
 export const routes: Routes = [
     {
@@ -21,9 +22,13 @@ export const routes: Routes = [
     },
     {
         path: 'admin',
-        component: AdminComponent
+        component: AdminComponent,
+        children: [
+            { path: 'users', component: AdminUsersComponent },
+            // { path: 'events', component: AdminEventsComponent }, TODO: implement this
+            { path: '', redirectTo: 'users', pathMatch: 'full' } 
+        ]
     },
-    
     {
         path: 'events',
         component: EventsComponent

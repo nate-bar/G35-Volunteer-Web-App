@@ -1,1 +1,19 @@
-<h1 style="text-align: center;">admin dasboard</h1>
+<div class="admin-container">
+  <div class="row">
+    <div class="col-2">
+      <nav id="sidebar" class="p-3 bg-light">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="users">Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="events">Events</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
