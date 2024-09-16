@@ -7,16 +7,16 @@
         </h1>
  
         <div class="mb-4 d-flex align-items-center">
-            <label class="form-label me-3" for="username" >username</label>
+            <label class="form-label me-3" for="username" >username:</label>
             <mdb-form-control class="form-outline flex-grow-1">
                 <input mdbInput type="email" id="username" class="form-control" [(ngModel)]="username" name="username"/>
-                <label mdbLabel class="form-label" for="email">username</label>
+                <label mdbLabel class="form-label" for="email">Username</label>
             </mdb-form-control>
         </div>
         
         
         <div class="mb-4 d-flex align-items-center">
-            <label class="form-label me-3" for="password" >Password</label>
+            <label class="form-label me-3" for="password" >Password:</label>
             <mdb-form-control class="form-outline flex-grow-1">
                 <input mdbInput type="password" id="password" class="form-control" name="password" [(ngModel)]="password" name="password"/>
                 <label mdbLabel class="form-label" for="password">Password</label>
@@ -38,8 +38,12 @@
         </div>
 
         
-        <button mdbRipple type="submit" class="btn btn-primary btn-block mb-4 ">Login</button>
-        <p class="white">Don't have an account? <a href="/register"><strong class="yellow">Sign up here</strong></a></p>
+        <div class="d-flex justify-content-between mb-4">
+            <button mdbRipple type="submit" class="btn btn-primary me-4">Login</button>
+            <button mdbRipple type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        </div>
+
+        <p class="white">Don't have an account? <a routerLink="/register"><strong class="yellow">Sign up here</strong></a></p>
     </form>
 </div>
 
