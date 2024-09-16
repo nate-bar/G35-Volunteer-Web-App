@@ -4,6 +4,7 @@ import { RegistrationComponent } from './pages/registration/registration.compone
 import { AdminComponent } from './user/admin/admin.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { EventsComponent } from './pages/events/events.component';
+import { NewEventComponent } from './pages/new-event/new-event.component';
 
 export const routes: Routes = [
     {
@@ -23,10 +24,9 @@ export const routes: Routes = [
         path: 'admin',
         component: AdminComponent
     },
-    
     {
         path: 'events',
-        component: EventsComponent
+        component: NewEventComponent
     },
     {
         path: '**',
