@@ -15,7 +15,7 @@
 
         <!-- Show the 'Dashboard' link only if logged in and the role is 'admin' -->
         <li *ngIf="authService.getIsLoggedIn() && authService.getUserRole() === 'admin'">
-            <a routerLink="/dashboard">Dashboard</a>
+            <a routerLink="/admin">Dashboard</a>
         </li>
 
         <!-- Show 'Login' and 'Sign Up' links if not logged in -->

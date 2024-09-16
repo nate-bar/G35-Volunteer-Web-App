@@ -198,7 +198,7 @@
               
                   <!-- Error for unavailable date -->
                   <mat-error *ngIf="profileForm.controls['availability'].hasError('unavailableDate') && profileForm.controls['availability'].touched">
-                    The selected date is not available. Please choose an available date.
+                    date unavailable
                   </mat-error>
                 </mdb-form-control>
               </div>
@@ -208,7 +208,7 @@
         <!-- Submit Button -->
         <div class="d-flex justify-content-center">
             <button mdbRipple type="submit" class="btn btn-primary btn-block mb-4">
-                Save Profile
+                Save Change(e)
             </button>
         </div>
         

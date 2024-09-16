@@ -1,0 +1,70 @@
+.admin-container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-image: linear-gradient(to left, #04AA6D,  #202123 );
+    padding: 15px;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    bottom: 1rem;
+    height: 85vh;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    
+  }
+  
+  .sidebar li {
+    margin: 10px 0;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .sidebar a.active-link {
+    font-weight: bold;
+  }
+  
+  .content-area {
+    flex: 1;
+    padding: 20px;
+  }
+/* Optional styling for submenu */
+.submenu {
+    list-style-type: none;
+    margin-left: 20px; /* Indent submenus */
+  }
+  
+  .submenu li {
+    margin: 5px 0;
+  }
+  
+  .menu-link {
+    cursor: pointer; /* Change cursor to indicate it's clickable */
+  }
+  .admin-header {
+    padding: 20px;
+    background-color: black;
+    border-bottom: 1px solid #dee2e6;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .dashboard-title {
+    font-size: 2.5rem;
+    color: white;
+  }
+  li.active {
+    background-color: black;
+  }
+  
+  .active-link {
+    color: white;
+  }
+  
