@@ -40,6 +40,11 @@ export class LoginComponent implements OnInit {
       alert('Invalid credentials!');
     }
   }
+  cancel() {
+    // Clear form fields
+    this.username = '';
+    this.password = '';
+    this.rememberMe = false;}
 
   handleRememberMe(): void {
     if (this.rememberMe) {
