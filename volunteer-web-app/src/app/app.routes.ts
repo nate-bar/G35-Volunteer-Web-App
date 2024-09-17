@@ -4,6 +4,7 @@ import { RegistrationComponent } from './pages/registration/registration.compone
 import { AdminComponent } from './user/admin/admin.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { EventsComponent } from './pages/events/events.component';
+import { ProfileComponent } from './user/profile/profile.component';
 import { NewEventComponent } from './pages/new-event/new-event.component';
 
 export const routes: Routes = [
@@ -31,9 +32,14 @@ export const routes: Routes = [
             // other childrens
           ],
     },
+    //{
+    //     path: 'newEvent',
+    //     component: NewEventComponent
+    // },
+    
     {
         path: 'events',
-        component: NewEventComponent
+        component: EventsComponent
     },
     {
         path: 'profile',
