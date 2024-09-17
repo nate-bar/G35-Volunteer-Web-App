@@ -7,6 +7,7 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { CommonModule } from '@angular/common'; 
 
 
+
 @Component({
   selector: 'app-edit-event',
   standalone: true,
@@ -56,6 +57,5 @@ export class EditEventComponent {
       alert('Please complete the form correctly.');
     }
   }
-
 
 }
