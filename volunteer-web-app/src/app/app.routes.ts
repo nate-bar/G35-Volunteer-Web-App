@@ -9,7 +9,7 @@ import { NewEventComponent } from './pages/new-event/new-event.component';
 export const routes: Routes = [
     {
         path: '', // Default route (home)
-        component: WelcomeComponent, // the default route
+        component: WelcomeComponent, 
         pathMatch: 'full'
     },
     {
@@ -22,11 +22,22 @@ export const routes: Routes = [
     },
     {
         path: 'admin',
-        component: AdminComponent
+        component: AdminComponent,
+        children: [
+            {
+              path: 'newEvent',
+              component: NewEventComponent,
+            },
+            // other childrens
+          ],
     },
     {
         path: 'events',
         component: NewEventComponent
+    },
+    {
+        path: 'profile',
+        component: ProfileComponent
     },
     {
         path: '**',
