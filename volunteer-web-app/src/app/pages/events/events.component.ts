@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,6 +12,10 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./events.component.scss'],
 })
 export class EventsComponent {
+  constructor(private router: Router) {
+    console.log('EventsComponent initialized');
+  }
+
   events = [
     {
       eventName: 'Community Cleanup',
@@ -38,7 +43,10 @@ export class EventsComponent {
     },
   ];
 
-
+  editEvent() {
+    console.log("EDIT CLICKED")
+    this.router.navigate(['/admin/editEvent']);
+  }
 
  
   deleteEvent(eventName: string): void {
