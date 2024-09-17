@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-events',
@@ -40,7 +40,7 @@ export class EventsComponent {
 
 
 
-  // Method to delete an event
+ 
   deleteEvent(eventName: string): void {
     this.events = this.events.filter(event => event.eventName !== eventName);
   }
