@@ -1,43 +1,61 @@
-
 <div>
-    <form>
-        <h1><span><i class="fas fa-user-plus"></i></span>
-
-        </h1>
-        <div class="mb-4 d-flex align-items-center">
-            <label class="form-label me-3" for="email" style="min-width: 100px;">Email address</label>
-            <mdb-form-control class="form-outline flex-grow-1">
-                <input mdbInput type="email" id="email" class="form-control" />
-                <label mdbLabel class="form-label" for="email">Email address</label>
-            </mdb-form-control>
-        </div>
-        
-        
-        <div class="mb-4 d-flex align-items-center">
-            <label class="form-label me-3" for="password" style="min-width: 100px;">Password</label>
-            <mdb-form-control class="form-outline flex-grow-1">
-                <input mdbInput type="password" id="password" class="form-control" name="password" />
-                <label mdbLabel class="form-label" for="password">Password</label>
-            </mdb-form-control>
-        </div>
-
-        
-        <div class="form-check d-flex justify-content-center mb-4">
-            <input
-                mdbCheckbox
-                class="form-check-input me-2"
-                type="checkbox"
-                id="Remember"
-                [checked]="true"
-            />
-            <label class="form-check-label" for="Remember">
-                Remember me
-            </label>
-        </div>
-
-        
-        <button mdbRipple type="button" class="btn btn-primary btn-block mb-4 ">Sign up</button>
-        <p>Do you have an account? <a href="#">Login here</a></p>
+    <form (ngSubmit)="onSubmit()">
+      <h1><span><i class="fas fa-user-plus fa-3x"></i></span></h1>
+  
+      <!-- Email Input -->
+      <div class="mb-4 d-flex align-items-center">
+        <label class="form-label me-3" for="email" style="min-width: 100px;">Email address</label>
+        <mdb-form-control class="form-outline flex-grow-1">
+          <input
+            mdbInput
+            type="email"
+            id="email"
+            class="form-control"
+            [formControl]="email"
+          />
+          <label mdbLabel class="form-label" for="email">Email address</label>
+          <mat-error *ngIf="isFieldInvalid(email)">
+            <span *ngIf="email.errors?.['required']">Email is required.</span>
+            <span *ngIf="email.errors?.['email']">Enter a valid email address.</span>
+            <span *ngIf="email.errors?.['maxlength']">Email must be under 100 characters.</span>
+          </mat-error>
+        </mdb-form-control>
+      </div>
+  
+      <!-- Password Input -->
+      <div class="mb-4 d-flex align-items-center">
+        <label class="form-label me-3" for="password" style="min-width: 100px;">Password</label>
+        <mdb-form-control class="form-outline flex-grow-1">
+          <input
+            mdbInput
+            type="password"
+            id="password"
+            class="form-control"
+            [formControl]="password"
+          />
+          <label mdbLabel class="form-label" for="password">Password</label>
+          <mat-error *ngIf="isFieldInvalid(password)">
+            <span *ngIf="password.errors?.['required']">Password is required.</span>
+            <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long.</span>
+          </mat-error>
+        </mdb-form-control>
+      </div>
+  
+      <!-- Remember Me Checkbox -->
+      <div class="form-check d-flex justify-content-center mb-4">
+        <input
+          mdbCheckbox
+          class="form-check-input me-2"
+          type="checkbox"
+          id="Remember"
+          [checked]="true"
+        />
+        <label class="form-check-label" for="Remember">Remember me</label>
+      </div>
+  
+      <!-- Sign Up Button -->
+      <button mdbRipple type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+      <p class="white">Do you have an account? <a href="/login"><strong class="yellow"> Login</strong></a></p>
     </form>
-</div>
-
+  </div>
+  
