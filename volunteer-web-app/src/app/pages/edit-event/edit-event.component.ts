@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './edit-event.component.scss'
 })
 export class EditEventComponent {
+  
 
 }

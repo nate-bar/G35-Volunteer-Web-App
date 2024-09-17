@@ -1,17 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-events',
   standalone: true,
-  imports: [CommonModule,NgbPaginationModule],  // Import CommonModule for *ngFor and pipes
+  imports: [CommonModule, FormsModule],
   templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss']
+  styleUrls: ['./events.component.scss'],
 })
 export class EventsComponent {
-  page = 1;
-  pageSize: number = 6;
   events = [
     {
       eventName: 'Community Cleanup',
@@ -19,7 +18,7 @@ export class EventsComponent {
       location: 'Central Park',
       requiredSkills: ['Teamwork', 'Environmental Awareness'],
       urgency: 'High',
-      eventDate: '2024-10-01'
+      eventDate: '2024-10-01',
     },
     {
       eventName: 'Charity Run',
@@ -27,7 +26,7 @@ export class EventsComponent {
       location: 'Downtown City',
       requiredSkills: ['Running', 'Fundraising'],
       urgency: 'Medium',
-      eventDate: '2024-11-05'
+      eventDate: '2024-11-05',
     },
     {
       eventName: 'Food Drive',
@@ -35,7 +34,14 @@ export class EventsComponent {
       location: 'Community Center',
       requiredSkills: ['Organizing', 'Public Speaking'],
       urgency: 'Low',
-      eventDate: '2024-12-12'
-    }
+      eventDate: '2024-12-12',
+    },
   ];
+
+
+
+  // Method to delete an event
+  deleteEvent(eventName: string): void {
+    this.events = this.events.filter(event => event.eventName !== eventName);
+  }
 }
