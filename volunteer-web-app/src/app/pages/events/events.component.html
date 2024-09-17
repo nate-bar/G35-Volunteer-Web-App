@@ -1,0 +1,27 @@
+<div class="container mt-4">
+    <h2 class="mb-4">List of Events</h2>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Required Skills</th>
+          <th>Urgency</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of events">
+          <td>{{ event.eventName }}</td>
+          <td>{{ event.eventDescription }}</td>
+          <td>{{ event.location }}</td>
+          <td>{{ event.requiredSkills.join(', ') }}</td>
+          <td>{{ event.urgency }}</td>
+          <td>{{ event.eventDate | date: 'MM/dd/yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ngb-pagination [collectionSize]="events.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [boundaryLinks]="true"  />
+  </div>
+  

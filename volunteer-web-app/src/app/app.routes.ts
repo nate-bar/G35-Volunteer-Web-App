@@ -29,6 +29,10 @@ export const routes: Routes = [
               path: 'newEvent',
               component: NewEventComponent,
             },
+            {
+                path: 'events',
+                component: EventsComponent
+            }
             // other childrens
           ],
     },

@@ -5,10 +5,37 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-events',
   standalone: true,
-  imports: [RouterModule,CommonModule],
+  imports: [CommonModule,NgbPaginationModule],  // Import CommonModule for *ngFor and pipes
   templateUrl: './events.component.html',
-  styleUrl: './events.component.scss'
+  styleUrls: ['./events.component.scss']
 })
 export class EventsComponent {
-
+  page = 1;
+  pageSize: number = 6;
+  events = [
+    {
+      eventName: 'Community Cleanup',
+      eventDescription: 'Join us for a community cleanup event in the local park.',
+      location: 'Central Park',
+      requiredSkills: ['Teamwork', 'Environmental Awareness'],
+      urgency: 'High',
+      eventDate: '2024-10-01'
+    },
+    {
+      eventName: 'Charity Run',
+      eventDescription: 'Participate in our annual charity run to support local schools.',
+      location: 'Downtown City',
+      requiredSkills: ['Running', 'Fundraising'],
+      urgency: 'Medium',
+      eventDate: '2024-11-05'
+    },
+    {
+      eventName: 'Food Drive',
+      eventDescription: 'Help collect and distribute food to those in need.',
+      location: 'Community Center',
+      requiredSkills: ['Organizing', 'Public Speaking'],
+      urgency: 'Low',
+      eventDate: '2024-12-12'
+    }
+  ];
 }
