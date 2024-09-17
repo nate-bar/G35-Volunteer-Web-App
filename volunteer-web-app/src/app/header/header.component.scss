@@ -1,0 +1,48 @@
+
+header{
+  padding-top: 0.5rem;
+  margin-left: 1rem;
+  margin-right:1rem;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-image: linear-gradient(to bottom,   #202123, #04AA6D);
+}
+
+li {
+  float: left;
+}
+li:last-child{
+  float:right;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+  text-decoration: none;
+  color:white;
+  cursor: pointer;
+ 
+}
+
+.active:hover{
+    color:white;
+    text-decoration: none;
+    background-color: #202123;
+  }
+
+a{
+color:white;
+}
+
