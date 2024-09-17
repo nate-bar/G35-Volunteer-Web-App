@@ -1,0 +1,216 @@
+<div class="div">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        
+        <h1 style="margin-bottom: 2px;">
+            <span><i class="fas fa-user-circle fa-3x"></i></span>
+          </h1>
+        <h1 style="margin-bottom: 7px;"><strong>Update Profile</strong></h1>
+<div class="row mb-2 d-flex align-items-center">
+    <div class="col">
+        <label class="form-label me-2" for="fullName" style="min-width: 100px;">Full Name:</label>
+        <mdb-form-control>
+            <input
+                mdbInput
+                type="text"
+                id="fullName"
+                class="form-control input-sm"
+                formControlName="fullName"
+                required
+            />
+            <label mdbLabel class="form-label" for="fullName">Full Name</label>
+            <mat-error *ngIf="profileForm.controls['fullName'].hasError('required') && profileForm.controls['fullName'].touched">
+                Full Name is required.
+            </mat-error>
+            <mat-error *ngIf="profileForm.controls['fullName'].hasError('maxlength') && profileForm.controls['fullName'].touched">
+                Full Name cannot exceed 50 characters.
+            </mat-error>
+        </mdb-form-control>
+    </div>
+</div>
+   <!-- Address 1 -->
+   <div class="row mb-2 d-flex align-items-center">
+    <div class="col">
+        <label class="form-label me-2" for="address1" style="min-width: 100px">Address 1:</label>
+        <mdb-form-control>
+            <input
+                mdbInput
+                type="text"
+                id="address1"
+                class="form-control input-sm"
+                formControlName="address1"
+                required
+            />
+            <label mdbLabel class="form-label" for="address1">Address 1</label>
+            <mat-error *ngIf="profileForm.controls['address1'].hasError('required') && profileForm.controls['address1'].touched">
+                Address 1 is required.
+            </mat-error>
+            <mat-error *ngIf="profileForm.controls['address1'].hasError('maxlength') && profileForm.controls['address1'].touched">
+                Address 1 cannot exceed 100 characters.
+            </mat-error>
+        </mdb-form-control>
+    </div>
+</div>
+
+        <!-- Address 2 -->
+        <div class="row mb-2 d-flex align-items-center">
+            <div class="col">
+                <label class="form-label me-2" for="address2" style="min-width: 100px">Address 2:</label>
+                <mdb-form-control>
+                    <input
+                        mdbInput
+                        type="text"
+                        id="address2"
+                        class="form-control input-sm"
+                        formControlName="address2"
+                    />
+                    <label mdbLabel class="form-label" for="address2">Address 2</label>
+                </mdb-form-control>
+            </div>
+        </div>
+
+     <!-- City -->
+     <div class="row mb-2 d-flex align-items-center">
+        <div class="col">
+            <label class="form-label me-2" for="city" style="min-width: 100px">City:</label>
+            <mdb-form-control>
+                <input
+                    mdbInput
+                    type="text"
+                    id="city"
+                    class="form-control input-sm"
+                    formControlName="city"
+                    maxlength="100"
+                    required
+                />
+                <label mdbLabel class="form-label" for="city">City</label>
+                <mat-error *ngIf="profileForm.controls['city'].hasError('required') && profileForm.controls['city'].touched">
+                    City is required.
+                </mat-error>
+                <mat-error *ngIf="profileForm.controls['city'].hasError('maxlength') && profileForm.controls['city'].touched">
+                    City cannot exceed 100 characters.
+                </mat-error>
+            </mdb-form-control>
+        </div>
+     </div>
+        <div class="row mb-2 d-flex align-items-center">
+        <div class="col">
+            <label class="form-label me-2" for="state" style="min-width: 100px">State:</label>
+            <mdb-form-control class="custom-select-control">
+                <select
+                    mdbInput
+                    class="form-control input-sm"
+                    id="state"
+                    formControlName="state"
+                    required
+                >
+                    <option *ngFor="let state of states" [value]="state">
+                        {{ state }}
+                    </option>
+                </select>
+                <label mdbLabel class="form-label" for="state">State</label>
+                <mat-error *ngIf="profileForm.controls['state'].invalid && profileForm.controls['state'].touched">
+                    State selection is required.
+                </mat-error>
+            </mdb-form-control>
+        </div>
+    </div>
+   
+
+    <!-- Zip Code -->
+    <div class="row mb-2 d-flex align-items-center">
+        <div class="col">
+            <label class="form-label me-2" for="zipCode" style="min-width: 100px">Zip Code:</label>
+            <mdb-form-control>
+                <input
+                    mdbInput
+                    type="text"
+                    id="zipCode"
+                    class="form-control input-sm"
+                    formControlName="zipCode"
+                    maxlength="9"
+                    required
+                />
+                <label mdbLabel class="form-label" for="zipCode">Zip Code</label>
+                <mat-error *ngIf="profileForm.controls['zipCode'].hasError('required') && profileForm.controls['zipCode'].touched">
+                    Zip Code is required.
+                </mat-error>
+                <mat-error *ngIf="profileForm.controls['zipCode'].hasError('maxlength') && profileForm.controls['zipCode'].touched">
+                    Zip Code cannot exceed 9 characters.
+                </mat-error>
+                <mat-error *ngIf="profileForm.controls['zipCode'].hasError('minlength') && profileForm.controls['zipCode'].touched">
+                    Zip Code must be at least 5 characters.
+                </mat-error>
+            </mdb-form-control>
+        </div>
+    </div>
+
+    <!-- Skills -->
+    <div class="row mb-2 d-flex align-items-center">
+        <div class="col">
+            <label class="form-label me-2" for="skills" style="min-width: 100px">Skills:</label>
+            <mat-form-field appearance="fill" class="form-field custom-mat-select">
+                <mat-label>Skills</mat-label>
+                <mat-select formControlName="skills" multiple>
+                    <mat-option *ngFor="let skill of skillOptions" [value]="skill.value">{{ skill.label }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="profileForm.controls['skills'].hasError('required') && profileForm.controls['skills'].touched">
+                    Please select at least one skill.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+        <!-- Preferences Text Area and Availability -->
+        <div class="row mb-2 d-flex align-items-center">
+            <div class="col">
+                <label class="form-label me-2" for="preferences" style="min-width: 100px;">Preferences:</label>
+                <mdb-form-control>
+                    <textarea
+                        mdbInput
+                        id="preferences"
+                        class="form-control input-sm"
+                        formControlName="preferences"
+                        style="background-color: #f0f0f0; " 
+                    ></textarea>
+                    <label mdbLabel class="form-label" for="preferences">Preferences</label>
+                </mdb-form-control>
+            </div>
+
+            <div class="col">
+                <label class="form-label me-2" for="availability">Availability:</label>
+                <mdb-form-control>
+                  <input
+                    mdbInput
+                    
+                    type="date"
+                    id="availability"
+                    class="form-control input-sm"
+                    formControlName="availability"
+                    style="background-color: #f0f0f0;"
+                    required
+                  />
+                  <label mdbLabel class="form-label" for="availability">Availability</label>
+              
+                  <!-- Error for required field -->
+                  <mat-error *ngIf="profileForm.controls['availability'].hasError('required') && profileForm.controls['availability'].touched">
+                    Please select an availability date.
+                  </mat-error>
+              
+                  <!-- Error for unavailable date -->
+                  <mat-error *ngIf="profileForm.controls['availability'].hasError('unavailableDate') && profileForm.controls['availability'].touched">
+                    date unavailable
+                  </mat-error>
+                </mdb-form-control>
+              </div>
+              
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-flex justify-content-center">
+            <button mdbRipple type="submit" class="btn btn-primary btn-block mb-4">
+                Save Change(e)
+            </button>
+        </div>
+        
+    </form>
+</div>

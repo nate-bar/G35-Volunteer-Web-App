@@ -13,5 +13,16 @@ import { FooterComponent } from "./footer/footer.component";
 })
 export class AppComponent {
   title = 'volunteer-web-app';
-  constructor(public router: Router) {}
+  isAdminPage = false;
+  
+
+  
+
+  constructor(public router: Router) {
+    // Listen for route changes
+    this.router.events.subscribe(() => {
+      // Check if the current URL contains 'admin'
+      this.isAdminPage = this.router.url.includes('/admin');
+    });
+  }
 }
