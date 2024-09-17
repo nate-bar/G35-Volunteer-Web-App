@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import { Component } from "@angular/core";
 @Component({
   selector: 'app-edit-event',
   standalone: true,
@@ -8,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './edit-event.component.scss'
 })
 export class EditEventComponent {
+  
 
 }
