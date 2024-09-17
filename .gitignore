@@ -1,0 +1,40 @@
+# Compiled output
+/volunteer-web-app/dist
+/volunteer-web-app/tmp
+/volunteer-web-app/out-tsc
+/volunteer-web-app/bazel-out
+
+# Node modules
+/volunteer-web-app/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+/volunteer-web-app/.idea/
+/volunteer-web-app/.project
+/volunteer-web-app/.classpath
+/volunteer-web-app/.c9/
+*.launch
+/volunteer-web-app/.settings/
+/volunteer-web-app/*.sublime-workspace
+
+# Visual Studio Code
+/volunteer-web-app/.vscode/*
+!/volunteer-web-app/.vscode/settings.json
+!/volunteer-web-app/.vscode/tasks.json
+!/volunteer-web-app/.vscode/launch.json
+!/volunteer-web-app/.vscode/extensions.json
+/volunteer-web-app/.history/*
+
+# Miscellaneous
+/volunteer-web-app/.angular/cache
+/volunteer-web-app/.sass-cache/
+/volunteer-web-app/connect.lock
+/volunteer-web-app/coverage
+/volunteer-web-app/libpeerconnection.log
+/volunteer-web-app/testem.log
+/volunteer-web-app/typings
+
+# System files
+/volunteer-web-app/.DS_Store
+/volunteer-web-app/Thumbs.db
