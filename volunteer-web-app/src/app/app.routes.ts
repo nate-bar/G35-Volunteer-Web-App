@@ -6,6 +6,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { EventsComponent } from './pages/events/events.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { NewEventComponent } from './pages/new-event/new-event.component';
+import { EditEventComponent } from './pages/edit-event/edit-event.component';
 
 export const routes: Routes = [
     {
@@ -29,6 +30,14 @@ export const routes: Routes = [
               path: 'newEvent',
               component: NewEventComponent,
             },
+            {
+                path: 'events',
+                component: EventsComponent,
+            },
+            {
+                path: 'editEvent',
+                component: EditEventComponent,
+            }
             // other childrens
           ],
     },
@@ -36,7 +45,6 @@ export const routes: Routes = [
     //     path: 'newEvent',
     //     component: NewEventComponent
     // },
-    
     {
         path: 'events',
         component: EventsComponent
