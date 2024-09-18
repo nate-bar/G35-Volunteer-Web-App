@@ -96,6 +96,17 @@
                 Event History
               </a>
             </li>
+            <li [class.active]="selectedLink === 'matchVolunteers'">
+              <a 
+                routerLink="matchVolunteers" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('matchVolunteers')"
+              >
+                <i class="fas fa-history"></i>
+                Match Volunteers
+              </a>
+            </li>
+            
           </ul>
         </li>
   
