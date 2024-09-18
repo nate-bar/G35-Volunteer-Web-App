@@ -1,22 +1,15 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
-
 
 @Component({
-  selector: 'app-events',
+  selector: 'app-users-events',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule],
-  templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss'],
+  imports: [CommonModule, FormsModule],
+  templateUrl: './users-events.component.html',
+  styleUrls: ['./users-events.component.scss'],
 })
-export class EventsComponent {
-  constructor(private router: Router) {
-    console.log('EventsComponent initialized');
-  }
-
+export class UsersEventsComponent {
   events = [
     {
       eventName: 'Community Cleanup',
@@ -25,6 +18,7 @@ export class EventsComponent {
       requiredSkills: ['Teamwork', 'Environmental Awareness'],
       urgency: 'High',
       eventDate: '2024-10-01',
+      imageUrl: 'comclean.jpg'
     },
     {
       eventName: 'Charity Run',
@@ -33,6 +27,7 @@ export class EventsComponent {
       requiredSkills: ['Running', 'Fundraising'],
       urgency: 'Medium',
       eventDate: '2024-11-05',
+      imageUrl: 'CharityWalk.jpg'
     },
     {
       eventName: 'Food Drive',
@@ -41,15 +36,13 @@ export class EventsComponent {
       requiredSkills: ['Organizing', 'Public Speaking'],
       urgency: 'Low',
       eventDate: '2024-12-12',
+      imageUrl: 'fooddrive.jpg'
     },
   ];
 
-  editEvent(): void {
-    this.router.navigate(['/admin/editEvent']);
+  participateInEvent(eventName: string): void {
+    alert(`You have registered to participate in: ${eventName}`);
   }
 
- 
-  deleteEvent(eventName: string): void {
-    this.events = this.events.filter(event => event.eventName !== eventName);
-  }
 }
+

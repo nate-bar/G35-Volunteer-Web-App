@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     } else if (this.username === 'user' && this.password === 'user123') {
       this.authService.login('user'); // Log in as a regular user
       this.handleRememberMe(); 
-      this.router.navigate(['/events']);
+      this.router.navigate(['/userEvent']);
     } else {
       alert('Invalid credentials!');
     }

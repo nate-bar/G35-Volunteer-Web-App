@@ -1,14 +1,14 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
-  coerceBooleanProperty
-} from "./chunk-KAUYXCO4.js";
-import {
   FormsModule,
   NG_VALUE_ACCESSOR
-} from "./chunk-V3KZ3MWK.js";
+} from "./chunk-EUFCY5LB.js";
+import {
+  coerceBooleanProperty
+} from "./chunk-74C6C6ZQ.js";
 import {
   CommonModule
-} from "./chunk-ZBEWRVWD.js";
+} from "./chunk-UNCKW6XD.js";
 import {
   Directive,
   EventEmitter,
@@ -25,7 +25,7 @@ import {
   ɵɵdefineNgModule,
   ɵɵhostProperty,
   ɵɵlistener
-} from "./chunk-5KYRE2LQ.js";
+} from "./chunk-Y3AYACM2.js";
 import "./chunk-NQ4HTGF6.js";
 
 // node_modules/mdb-angular-ui-kit/fesm2022/mdb-angular-ui-kit-checkbox.mjs
