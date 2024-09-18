@@ -22,9 +22,11 @@
         <td>{{ event.eventDate | date: 'MM/dd/yyyy' }}</td>
         <td>
           
-          <button class="btn btn-primary" (click)="editEvent()">
+          <a class="btn btn-primary" [routerLink]="['/admin/editEvent']">
             <i class="bi bi-pencil"></i> Edit
-          </button>
+          </a>
+          
+          
         </td>
         <td>
           <button class="btn btn-danger ml-2" (click)="deleteEvent(event.eventName)">

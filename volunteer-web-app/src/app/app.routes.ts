@@ -7,6 +7,7 @@ import { EventsComponent } from './pages/events/events.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { NewEventComponent } from './pages/new-event/new-event.component';
 import { EditEventComponent } from './pages/edit-event/edit-event.component';
+import { UsersEventsComponent } from './view/users-events/users-events.component';
 
 export const routes: Routes = [
     {
@@ -45,13 +46,17 @@ export const routes: Routes = [
     //     path: 'newEvent',
     //     component: NewEventComponent
     // },
-    {
-        path: 'events',
-        component: EventsComponent
-    },
+    // {
+    //     path: 'events',
+    //     component: EventsComponent
+    // },
     {
         path: 'profile',
         component: ProfileComponent
+    },
+    {
+        path: 'userEvent',
+        component: UsersEventsComponent
     },
     {
         path: '**',

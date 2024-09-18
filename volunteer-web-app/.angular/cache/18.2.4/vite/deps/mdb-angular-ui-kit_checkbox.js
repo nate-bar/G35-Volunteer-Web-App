@@ -1,13 +1,13 @@
 import {
   FormsModule,
   NG_VALUE_ACCESSOR
-} from "./chunk-V2YY4HVR.js";
+} from "./chunk-HX7ETMKQ.js";
 import {
   coerceBooleanProperty
-} from "./chunk-W72CXRQA.js";
+} from "./chunk-Y3MNLM3H.js";
 import {
   CommonModule
-} from "./chunk-YZERIRUF.js";
+} from "./chunk-HIWNWFUK.js";
 import {
   Directive,
   EventEmitter,
@@ -24,7 +24,7 @@ import {
   ɵɵdefineNgModule,
   ɵɵhostProperty,
   ɵɵlistener
-} from "./chunk-DKITVVS5.js";
+} from "./chunk-4VTEDE5V.js";
 
 // node_modules/mdb-angular-ui-kit/fesm2022/mdb-angular-ui-kit-checkbox.mjs
 var MDB_CHECKBOX_VALUE_ACCESSOR = {
