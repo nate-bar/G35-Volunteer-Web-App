@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../auth.service';
-import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, MdbCheckboxModule, ReactiveFormsModule, MdbFormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -35,7 +34,7 @@ export class LoginComponent implements OnInit {
     } else if (this.username === 'user' && this.password === 'user123') {
       this.authService.login('user'); // Log in as a regular user
       this.handleRememberMe(); 
-      this.router.navigate(['/events']);
+      this.router.navigate(['/userEvent']);
     } else {
       alert('Invalid credentials!');
     }

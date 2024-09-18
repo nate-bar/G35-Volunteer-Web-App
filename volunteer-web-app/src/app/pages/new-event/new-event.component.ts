@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+
 import { CommonModule } from '@angular/common'; 
 
 @Component({
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     ReactiveFormsModule, 
-    MdbFormsModule,
+   
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,

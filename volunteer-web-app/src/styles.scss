@@ -35,8 +35,7 @@ $volunteer-web-app-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($volunteer-web-app-theme);
 
-/* You can add global styles to this file, and also import other style files */
-@import "mdb-angular-ui-kit/assets/scss/mdb.scss";
+
 // Font Awesome
 @import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -63,3 +62,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
