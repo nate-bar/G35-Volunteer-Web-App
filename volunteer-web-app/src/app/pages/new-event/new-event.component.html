@@ -1,41 +1,34 @@
-<div >
+<div>
   <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
     
+    <!-- Row 1: Event Name and Description -->
     <div class="row mb-4">
       <div class="col-md-6">
         <label for="eventName" class="form-label">Event Name:</label>
-        <mdb-form-control>
-          <input
-            mdbInput
-            type="text"
-            id="eventName"
-            class="form-control"
-            formControlName="eventName"
-            maxlength="100"
-            required
-          />
-          <label mdbLabel class="form-label" for="eventName">Event Name</label>
-          <mat-error *ngIf="eventForm.controls['eventName'].invalid && eventForm.controls['eventName'].touched">
-            Event name is required and must be under 100 characters.
-          </mat-error>
-        </mdb-form-control>
+        <input
+          type="text"
+          id="eventName"
+          class="form-control"
+          formControlName="eventName"
+          maxlength="100"
+          required
+        />
+        <mat-error *ngIf="eventForm.controls['eventName'].invalid && eventForm.controls['eventName'].touched">
+          Event name is required and must be under 100 characters.
+        </mat-error>
       </div>
 
       <div class="col-md-6">
         <label for="eventDescription" class="form-label">Event Description:</label>
-        <mdb-form-control>
-          <textarea
-            mdbInput
-            id="eventDescription"
-            class="form-control"
-            formControlName="eventDescription"
-            style="background-color: #f0f0f0;"
-          ></textarea>
-          <label mdbLabel class="form-label" for="eventDescription">Event Description</label>
-          <mat-error *ngIf="eventForm.controls['eventDescription'].invalid && eventForm.controls['eventDescription'].touched">
-            Event description is required.
-          </mat-error>
-        </mdb-form-control>
+        <textarea
+          id="eventDescription"
+          class="form-control"
+          formControlName="eventDescription"
+          style="background-color: #f0f0f0;"
+        ></textarea>
+        <mat-error *ngIf="eventForm.controls['eventDescription'].invalid && eventForm.controls['eventDescription'].touched">
+          Event description is required.
+        </mat-error>
       </div>
     </div>
 
@@ -43,19 +36,15 @@
     <div class="row mb-4">
       <div class="col-md-6">
         <label for="location" class="form-label">Location:</label>
-        <mdb-form-control>
-          <textarea
-            mdbInput
-            id="location"
-            class="form-control"
-            formControlName="location"
-            style="background-color: #f0f0f0;"
-          ></textarea>
-          <label mdbLabel class="form-label" for="location">Location</label>
-          <mat-error *ngIf="eventForm.controls['location'].invalid && eventForm.controls['location'].touched">
-            Location is required.
-          </mat-error>
-        </mdb-form-control>
+        <textarea
+          id="location"
+          class="form-control"
+          formControlName="location"
+          style="background-color: #f0f0f0;"
+        ></textarea>
+        <mat-error *ngIf="eventForm.controls['location'].invalid && eventForm.controls['location'].touched">
+          Location is required.
+        </mat-error>
       </div>
 
       <div class="col-md-6">
@@ -72,7 +61,7 @@
       </div>
     </div>
 
-    
+    <!-- Row 3: Urgency and Event Date -->
     <div class="row mb-4">
       <div class="col-md-6">
         <label for="urgency" class="form-label">Urgency:</label>
@@ -89,26 +78,22 @@
 
       <div class="col-md-6">
         <label for="eventDate" class="form-label">Event Date:</label>
-        <mdb-form-control>
-          <input
-            mdbInput
-            type="date"
-            id="eventDate"
-            class="form-control"
-            formControlName="eventDate"
-            style="background-color: #f0f0f0;"
-          />
-          <label mdbLabel class="form-label" for="eventDate">Event Date</label>
-          <mat-error *ngIf="eventForm.controls['eventDate'].invalid && eventForm.controls['eventDate'].touched">
-            Please select a valid event date.
-          </mat-error>
-        </mdb-form-control>
+        <input
+          type="date"
+          id="eventDate"
+          class="form-control"
+          formControlName="eventDate"
+          style="background-color: #f0f0f0;"
+        />
+        <mat-error *ngIf="eventForm.controls['eventDate'].invalid && eventForm.controls['eventDate'].touched">
+          Please select a valid event date.
+        </mat-error>
       </div>
     </div>
 
-    
+    <!-- Submit Button -->
     <div class="d-flex justify-content-center">
-      <button mdbRipple type="submit" class="btn btn-primary btn-block mb-4">
+      <button type="submit" class="btn btn-primary btn-block mb-4">
         Create
       </button>
     </div>

@@ -16,3 +16,32 @@
     color: #555;
   }
   
+  
+.card {
+  transition: transform 0.3s, box-shadow 0.3s; 
+}
+
+.card:hover {
+  transform: scale(1.05); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+}
+
+
+.card-img-top {
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.1); 
+  opacity: 0.9;
+}
+
+
+.btn-primary {
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; 
+  transform: translateY(-2px); 
+}

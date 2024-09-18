@@ -1,5 +1,6 @@
 div{
     background-image: linear-gradient(to top, #04AA6D,  #202123 );
+    
 }
 
 h2{
@@ -9,6 +10,30 @@ h2{
 
 table{
     background-color: white;
+    
 }
 
-thead th {color: white};
+thead th {color: white;
+background-color: black;
+}
+
+
+.custom-pagination ::ng-deep .page-link {
+    border-radius: 50px; 
+    color: #007bff; 
+  }
+  
+  .custom-pagination ::ng-deep .page-item.active .page-link {
+    background-color: #007bff;
+    color: white; 
+    border-radius: 50px; 
+  }
+  
+  .custom-pagination ::ng-deep .page-link:hover {
+    background-color: #0056b3; 
+    color: white; 
+    border-radius: 50px; 
+  }
+  label{
+    color:white;
+  }
