@@ -1,5 +1,5 @@
 <div class="admin-header text-center">
-    <h1 class="dashboard-title">ADMIN DASHBOARD</h1>
+    <h1 class="dashboard-title" style="text-align: center;">ADMIN DASHBOARD</h1>
   </div>
   <div class="admin-container">
     <!-- Sidebar -->
@@ -78,9 +78,9 @@
             </li>
             <li [class.active]="selectedLink === 'allEvents'">
               <a 
-                routerLink="allEvents" 
+                routerLink="events" 
                 routerLinkActive="active-link" 
-                (click)="selectLink('allEvents')"
+                (click)="selectLink('events')"
               >
                 <i class="fas fa-list"></i>
                 All Events
@@ -96,6 +96,17 @@
                 Event History
               </a>
             </li>
+            <li [class.active]="selectedLink === 'matchVolunteers'">
+              <a 
+                routerLink="matchVolunteers" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('matchVolunteers')"
+              >
+                <i class="fas fa-history"></i>
+                Match Volunteers
+              </a>
+            </li>
+            
           </ul>
         </li>
   

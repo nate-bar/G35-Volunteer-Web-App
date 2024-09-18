@@ -1,9 +1,49 @@
-<p>volunteer-matching works!</p>
-
-
-<div class="admin-header text-center">
-    <h1 class="dashboard-title">VOLUNTEER MATCHING</h1>
-</div>
-<div class="volunteer-history-container">
-
-</div>
+<div class="container mt-4">
+    <h2 class="mb-4 text-center"><strong>Volunteer Matching Form</strong></h2>
+    <div *ngIf="alertMessage" class="alert alert-success text-center" role="alert">
+        {{ alertMessage }}
+      </div>
+    <form [formGroup]="matchingForm" (ngSubmit)="onMatchSubmit()">
+      
+      
+      <div class="row mb-3">
+        <label for="selectedUser" class="col-sm-3 col-form-label">Select Volunteer:</label>
+        <div class="col-sm-9">
+          <select
+            id="selectedUser"
+            class="form-select"
+            formControlName="selectedUser"
+            required
+          >
+            <option *ngFor="let user of users" [value]="user.fullName">
+              {{ user.fullName }}
+            </option>
+          </select>
+        </div>
+      </div>
+  
+      
+      <div class="row mb-3">
+        <label for="matchedEvent" class="col-sm-3 col-form-label">Matched Event:</label>
+        <div class="col-sm-9">
+          <select
+            id="matchedEvent"
+            class="form-select"
+            formControlName="matchedEvent"
+            required
+          >
+            <option *ngFor="let event of matchedEvents" [value]="event.eventName">
+              {{ event.eventName }}
+            </option>
+          </select>
+        </div>
+      </div>
+  
+      
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary mx-2">Match Volunteer</button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+  

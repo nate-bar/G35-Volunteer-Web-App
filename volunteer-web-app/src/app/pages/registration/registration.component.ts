@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
-import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
+
+
 import { HeaderComponent } from '../../header/header.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,10 +16,10 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
   standalone: true,
   imports: [
     CommonModule,
-    MdbFormsModule,
+   
     FormsModule,
     ReactiveFormsModule,
-    MdbCheckboxModule,
+    
     HeaderComponent,
     MatFormFieldModule,
     MatInputModule,

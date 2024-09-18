@@ -7,7 +7,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+
 import { CommonModule } from '@angular/common';
 
 
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule,MdbFormsModule,
+  imports: [CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,

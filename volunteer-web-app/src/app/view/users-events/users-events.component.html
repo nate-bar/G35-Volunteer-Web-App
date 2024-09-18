@@ -1,0 +1,20 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Upcoming Events</h2>
+    <div class="row">
+      <div class="col-md-4" *ngFor="let event of events">
+        <div class="card mb-4">
+          <img [src]="event.imageUrl" class="card-img-top" alt="{{ event.eventName }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.eventName }}</h5>
+            <p class="card-text">{{ event.eventDescription }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+            <p><strong>Required Skills:</strong> {{ event.requiredSkills.join(', ') }}</p>
+            <p><strong>Urgency:</strong> {{ event.urgency }}</p>
+            <p><strong>Date:</strong> {{ event.eventDate | date: 'MMMM d, y' }}</p>
+            <button class="btn btn-primary" (click)="participateInEvent(event.eventName)">Participate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
