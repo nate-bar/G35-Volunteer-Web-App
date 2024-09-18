@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+
 import { CommonModule } from '@angular/common'; 
 
 
@@ -15,8 +15,7 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule, 
     MatFormFieldModule, 
     MatSelectModule, 
-    MatInputModule, 
-    MdbFormsModule 
+    MatInputModule
   ],
   templateUrl: './edit-event.component.html',
   styleUrl: './edit-event.component.scss'
