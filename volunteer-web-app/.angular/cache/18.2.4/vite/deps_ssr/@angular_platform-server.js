@@ -7,8 +7,7 @@ import {
   NoopAnimationDriver,
   WebAnimationsDriver,
   WebAnimationsStyleNormalizer
-} from "./chunk-C5UJHRSC.js";
-import "./chunk-IZLZOJGP.js";
+} from "./chunk-WFEBMU3H.js";
 import {
   BrowserDomAdapter,
   BrowserModule,
@@ -17,7 +16,8 @@ import {
   EventManagerPlugin,
   HTTP_ROOT_INTERCEPTOR_FNS,
   HttpClientModule
-} from "./chunk-J6OHJZPN.js";
+} from "./chunk-PMHLUAUO.js";
+import "./chunk-X6QWNDAV.js";
 import {
   DOCUMENT,
   NullViewportScroller,
@@ -27,7 +27,7 @@ import {
   XhrFactory,
   getDOM,
   setRootDomAdapter
-} from "./chunk-UNCKW6XD.js";
+} from "./chunk-XLJVXJJL.js";
 import {
   ALLOW_MULTIPLE_PLATFORMS,
   ANIMATION_MODULE_TYPE,
@@ -64,7 +64,7 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-Y3AYACM2.js";
+} from "./chunk-PHHP7I26.js";
 import {
   __async,
   __toESM
@@ -17050,7 +17050,7 @@ function renderApplication(bootstrap, options) {
     }));
   });
 }
-var VERSION = new Version("18.2.4");
+var VERSION = new Version("18.2.5");
 export {
   BEFORE_APP_SERIALIZED,
   INITIAL_CONFIG,
@@ -17071,14 +17071,14 @@ export {
 
 @angular/platform-browser/fesm2022/animations.mjs:
   (**
-   * @license Angular v18.2.4
+   * @license Angular v18.2.5
    * (c) 2010-2024 Google LLC. https://angular.io/
    * License: MIT
    *)
 
 @angular/platform-server/fesm2022/platform-server.mjs:
   (**
-   * @license Angular v18.2.4
+   * @license Angular v18.2.5
    * (c) 2010-2024 Google LLC. https://angular.io/
    * License: MIT
    *)
