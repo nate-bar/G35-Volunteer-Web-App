@@ -1,26 +1,41 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule,FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { map, startWith } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-events',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule,NgbModule,ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    
+  ],
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
-})
-export class EventsComponent {
   
+})
 
-  constructor(private router: Router) {
-    console.log('EventsComponent initialized');
-  }
-
+export class EventsComponent implements OnInit {
+  eventForm: FormGroup;
   events = [
     {
       eventName: 'Community Cleanup',
@@ -28,7 +43,7 @@ export class EventsComponent {
       location: 'Central Park',
       requiredSkills: ['Teamwork', 'Environmental Awareness'],
       urgency: 'High',
-      eventDate: '2024-10-01',
+      eventDate: new Date('2024-10-01'),
     },
     {
       eventName: 'Charity Run',
@@ -36,196 +51,146 @@ export class EventsComponent {
       location: 'Downtown City',
       requiredSkills: ['Running', 'Fundraising'],
       urgency: 'Medium',
-      eventDate: '2024-11-05',
+      eventDate: new Date('2024-11-05'),
     },
-    {
-      eventName: 'Food Drive',
-      eventDescription: 'Help collect and distribute food to those in need.',
-      location: 'Community Center',
-      requiredSkills: ['Organizing', 'Public Speaking'],
-      urgency: 'Low',
-      eventDate: '2024-12-12',
-    },
-    {
-      eventName: 'Blood Donation Camp',
-      eventDescription: 'Donate blood to help save lives in our community.',
-      location: 'Health Center',
-      requiredSkills: ['Nursing', 'Organization'],
-      urgency: 'High',
-      eventDate: '2024-09-25',
-    },
-    {
-      eventName: 'Tree Planting Day',
-      eventDescription: 'Join us to plant trees and promote environmental sustainability.',
-      location: 'City Garden',
-      requiredSkills: ['Gardening', 'Teamwork'],
-      urgency: 'Medium',
-      eventDate: '2024-10-10',
-    },
-    {
-      eventName: 'Senior Citizen Assistance',
-      eventDescription: 'Assist senior citizens with their daily activities at the community center.',
-      location: 'Senior Center',
-      requiredSkills: ['Compassion', 'First Aid'],
-      urgency: 'Low',
-      eventDate: '2024-11-15',
-    },
-    {
-      eventName: 'Art Workshop for Kids',
-      eventDescription: 'Conduct an art workshop for children to unleash their creativity.',
-      location: 'Art Studio',
-      requiredSkills: ['Creativity', 'Patience'],
-      urgency: 'Medium',
-      eventDate: '2024-10-20',
-    },
-    {
-      eventName: 'Music Therapy Session',
-      eventDescription: 'Provide music therapy to individuals with special needs.',
-      location: 'Therapy Center',
-      requiredSkills: ['Music', 'Empathy'],
-      urgency: 'High',
-      eventDate: '2024-09-30',
-    },
-    {
-      eventName: 'Beach Cleanup',
-      eventDescription: 'Help clean up the local beach to protect marine life.',
-      location: 'Sandy Beach',
-      requiredSkills: ['Teamwork', 'Environmental Awareness'],
-      urgency: 'High',
-      eventDate: '2024-10-05',
-    },
-    {
-      eventName: 'Coding for Beginners',
-      eventDescription: 'Teach coding basics to school students.',
-      location: 'Tech Hub',
-      requiredSkills: ['Coding', 'Teaching'],
-      urgency: 'Medium',
-      eventDate: '2024-11-02',
-    },
-    {
-      eventName: 'Soup Kitchen Volunteer',
-      eventDescription: 'Serve meals to those in need at the local soup kitchen.',
-      location: 'Downtown Soup Kitchen',
-      requiredSkills: ['Cooking', 'Customer Service'],
-      urgency: 'High',
-      eventDate: '2024-10-18',
-    },
-    {
-      eventName: 'Book Donation Drive',
-      eventDescription: 'Collect and distribute books to underprivileged children.',
-      location: 'Community Library',
-      requiredSkills: ['Organizing', 'Public Speaking'],
-      urgency: 'Low',
-      eventDate: '2024-11-22',
-    },
-    {
-      eventName: 'Animal Shelter Support',
-      eventDescription: 'Assist with caring for animals at the shelter.',
-      location: 'Animal Shelter',
-      requiredSkills: ['Animal Care', 'Compassion'],
-      urgency: 'Medium',
-      eventDate: '2024-10-25',
-    },
-    {
-      eventName: 'Park Beautification',
-      eventDescription: 'Help beautify the park by planting flowers and picking up litter.',
-      location: 'Sunset Park',
-      requiredSkills: ['Gardening', 'Teamwork'],
-      urgency: 'Low',
-      eventDate: '2024-11-10',
-    },
-    {
-      eventName: 'Health and Wellness Fair',
-      eventDescription: 'Organize a fair to promote health and wellness in the community.',
-      location: 'Town Hall',
-      requiredSkills: ['Organization', 'Health Education'],
-      urgency: 'High',
-      eventDate: '2024-09-28',
-    },
-    {
-      eventName: 'Language Exchange Meetup',
-      eventDescription: 'Help facilitate a language exchange event to promote cultural learning.',
-      location: 'Community Hall',
-      requiredSkills: ['Language Skills', 'Communication'],
-      urgency: 'Medium',
-      eventDate: '2024-10-15',
-    },
-    {
-      eventName: 'Tech for Seniors',
-      eventDescription: 'Teach senior citizens how to use smartphones and computers.',
-      location: 'Community Center',
-      requiredSkills: ['Technology', 'Patience'],
-      urgency: 'Low',
-      eventDate: '2024-11-18',
-    },
-    {
-      eventName: 'Clothing Donation Drive',
-      eventDescription: 'Collect and distribute clothing to those in need.',
-      location: 'Community Center',
-      requiredSkills: ['Organizing', 'Public Speaking'],
-      urgency: 'High',
-      eventDate: '2024-10-22',
-    },
-    {
-      eventName: 'Winter Coat Drive',
-      eventDescription: 'Collect winter coats for the homeless and distribute them before winter.',
-      location: 'City Shelter',
-      requiredSkills: ['Fundraising', 'Community Outreach'],
-      urgency: 'High',
-      eventDate: '2024-11-01',
-    },
-    {
-      eventName: 'Youth Mentorship Program',
-      eventDescription: 'Mentor youth to guide them in their career paths and personal development.',
-      location: 'Youth Center',
-      requiredSkills: ['Mentorship', 'Communication'],
-      urgency: 'Medium',
-      eventDate: '2024-12-05',
-    }
+   
   ];
-  
 
-
-  filteredEvents = [...this.events]; // Initialize with all events
-  filter = new FormControl(''); 
+  skillOptions: string[] = [
+    'Teamwork',
+    'Environmental Awareness',
+    'Running',
+    'Fundraising',
+    'Organizing',
+    'Public Speaking',
+    'Nursing',
+    'Gardening',
+    'Compassion',
+    'Creativity',
+    'Patience',
+    'Music',
+    'Empathy',
+    'Coding',
+    'Teaching',
+    'Animal Care',
+    'Communication',
+    'Technology',
+  ];
+  filteredEvents = [...this.events];
+  filter = new FormControl('');
+  isEditMode = false;
+  editIndex: number | null = null;
   page = 1;
-  pageSize = 5;
+  pageSize = 2;
+
+  constructor(private fb: FormBuilder, private modalService: NgbModal) {
+    this.eventForm = this.fb.group({
+      eventName: ['', Validators.required],
+      eventDescription: ['', Validators.required],
+      location: ['', Validators.required],
+      requiredSkills: [[], Validators.required],
+      urgency: ['', Validators.required],
+      eventDate: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
-    
     this.filter.valueChanges.subscribe((searchTerm: string | null) => {
-      this.filterEvents(searchTerm || ''); 
+      this.filterEvents(searchTerm || '');
     });
   }
 
   filterEvents(searchTerm: string) {
     if (!searchTerm) {
-     
       this.filteredEvents = [...this.events];
     } else {
-      
-      this.filteredEvents = this.events.filter(event =>
+      this.filteredEvents = this.events.filter((event) =>
         event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.eventDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.requiredSkills.join(', ').toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.urgency.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.eventDate.includes(searchTerm)
+        event.eventDate.toString().includes(searchTerm)
       );
     }
   }
 
-  editEvent(): void {
-    this.router.navigate(['/admin/editEvent']);
+  onAddOrUpdateEvent(modal: any): void {
+   
+    if (this.eventForm.valid) {
+      // Extract form data
+      const newEvent = { ...this.eventForm.value, eventDate: new Date(this.eventForm.value.eventDate) };
+  
+      
+      if (this.isEditMode && this.editIndex !== null) {
+        // Update the existing event
+        this.events[this.editIndex] = newEvent;
+        this.isEditMode = false;
+        this.editIndex = null;
+      } else {
+        
+        this.events.push(newEvent);
+      }
+  
+
+      this.eventForm.reset();
+  
+      
+      this.filterEvents(this.filter.value || '');
+  
+      
+      modal.close();
+    } else {
+      console.error('Form is invalid');
+    }
+  }
+  
+  openModal(content: any, editMode: boolean, index?: number): void {
+    this.isEditMode = editMode;
+    if (editMode && index !== undefined) {
+      this.editIndex = index;
+      const event = this.events[index];
+      this.eventForm.setValue({
+        eventName: event.eventName,
+        eventDescription: event.eventDescription,
+        location: event.location,
+        requiredSkills: event.requiredSkills,
+        urgency: event.urgency,
+        eventDate: new Date(event.eventDate),
+      });
+    } else {
+      this.editIndex = null;
+      this.eventForm.reset();
+    }
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
- 
+  onCancel(): void {
+    this.eventForm.reset();
+    this.isEditMode = false;
+    this.editIndex = null;
+  }
+
   deleteEvent(eventName: string) {
-    
-    this.events = this.events.filter(event => event.eventName !== eventName);
-  
-    
+    this.events = this.events.filter((event) => event.eventName !== eventName);
     this.filterEvents(this.filter.value || '');
   }
+  onSkillChange(event: any, skill: string): void {
+  const selectedSkills = this.eventForm.get('requiredSkills')!.value as string[]; // Use '!' here
   
+  if (event.target.checked) {
+    if (!selectedSkills.includes(skill)) {
+      selectedSkills.push(skill);
+    }
+  } else {
+    const index = selectedSkills.indexOf(skill);
+    if (index > -1) {
+      selectedSkills.splice(index, 1);
+    }
+  }
+
+  this.eventForm.get('requiredSkills')!.setValue(selectedSkills); // Use '!' here
 }
+
+}
+

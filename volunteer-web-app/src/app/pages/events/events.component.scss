@@ -1,39 +1,59 @@
-div{
-    background-image: linear-gradient(to top, #04AA6D,  #202123 );
-    
+::ng-deep .cdk-overlay-container {
+  z-index: 1055 !important; 
 }
 
-h2{
-    text-align: center;
-    color: white;
+.modal-body {
+  overflow: visible !important;
+  position: relative; 
 }
 
-table{
-    background-color: white;
-    
+::ng-deep .mat-select-panel {
+  z-index: 1056 !important; 
 }
 
-thead th {color: white;
-background-color: black;
+h2 {
+  text-align: center;
+  color: white;
 }
 
+table {
+  background-color: white;
+}
+
+thead th {
+  color: white;
+  background-color: black;
+}
 
 .custom-pagination ::ng-deep .page-link {
-    border-radius: 50px; 
-    color: #007bff; 
-  }
-  
-  .custom-pagination ::ng-deep .page-item.active .page-link {
-    background-color: #007bff;
-    color: white; 
-    border-radius: 50px; 
-  }
-  
-  .custom-pagination ::ng-deep .page-link:hover {
-    background-color: #0056b3; 
-    color: white; 
-    border-radius: 50px; 
-  }
-  label{
-    color:white;
-  }
+  border-radius: 50px; 
+  color: #007bff; 
+}
+
+.custom-pagination ::ng-deep .page-item.active .page-link {
+  background-color: #007bff;
+  color: white; 
+  border-radius: 50px; 
+}
+
+.custom-pagination ::ng-deep .page-link:hover {
+  background-color: #0056b3; 
+  color: white; 
+  border-radius: 50px; 
+}
+
+label {
+  color: white;
+}
+
+::ng-deep .custom-overlay-panel {
+  z-index: 1050 !important; 
+}
+
+div{
+  background-image: linear-gradient(to top, #04AA6D,  #202123 );
+
+}
+.button-spacing {
+  margin-left: 10px; 
+}

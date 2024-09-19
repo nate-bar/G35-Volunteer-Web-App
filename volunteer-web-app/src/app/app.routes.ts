@@ -9,6 +9,8 @@ import { NewEventComponent } from './pages/new-event/new-event.component';
 import { EditEventComponent } from './pages/edit-event/edit-event.component';
 import { UsersEventsComponent } from './view/users-events/users-events.component';
 import { VolunteerMatchingComponent } from './pages/volunteer-matching/volunteer-matching.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { VolunteerHistoryComponent } from './pages/volunteer-history/volunteer-history.component';
 
 export const routes: Routes = [
     {
@@ -29,6 +31,14 @@ export const routes: Routes = [
         component: AdminComponent,
         children: [
             {
+                path: 'volunteerHistory', 
+                component: VolunteerHistoryComponent 
+            },
+            {
+                path: 'manageUser', 
+                component: UserManagementComponent 
+            },
+            {
               path: 'newEvent',
               component: NewEventComponent,
             },
@@ -42,7 +52,7 @@ export const routes: Routes = [
             },
             {
                 path: 'matchVolunteers',
-                component: VolunteerMatchingComponent,
+                component: VolunteerMatchingComponent, 
             }
             // other childrens
           ],
