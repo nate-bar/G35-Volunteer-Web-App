@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService } from '../../notification.service';
 
 @Component({
   selector: 'app-events',
@@ -83,7 +84,7 @@ export class EventsComponent implements OnInit {
   page = 1;
   pageSize = 2;
 
-  constructor(private fb: FormBuilder, private modalService: NgbModal) {
+  constructor(private fb: FormBuilder, private modalService: NgbModal,private notificationService: NotificationService,) {
     this.eventForm = this.fb.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -103,6 +104,7 @@ export class EventsComponent implements OnInit {
   filterEvents(searchTerm: string) {
     if (!searchTerm) {
       this.filteredEvents = [...this.events];
+      
     } else {
       this.filteredEvents = this.events.filter((event) =>
         event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -127,10 +129,29 @@ export class EventsComponent implements OnInit {
         this.events[this.editIndex] = newEvent;
         this.isEditMode = false;
         this.editIndex = null;
+      
+        // Pass Notification type, including date
+        this.notificationService.addNotification({
+          id: Date.now(),
+          title: 'Event Updated',
+          message: `The event "${newEvent.eventName}" has been updated.`,
+          read: false,
+          date: new Date(),  // Include the date field here
+        });
       } else {
-        
+        // Add new event
         this.events.push(newEvent);
+        
+        // Pass Notification type, including date
+        this.notificationService.addNotification({
+          id: Date.now(),
+          title: 'New Event Created',
+          message: `A new event "${newEvent.eventName}" has been created.`,
+          read: false,
+          date: new Date(),  // Include the date field here
+        });
       }
+      
   
 
       this.eventForm.reset();
@@ -174,6 +195,14 @@ export class EventsComponent implements OnInit {
   deleteEvent(eventName: string) {
     this.events = this.events.filter((event) => event.eventName !== eventName);
     this.filterEvents(this.filter.value || '');
+    this.notificationService.addNotification({
+      id: Date.now(),
+      title: 'Event Deleted',
+      message: `The event "${eventName}" has been deleted.`,
+      read: false,
+      date: new Date(),
+    });
+
   }
   onSkillChange(event: any, skill: string): void {
   const selectedSkills = this.eventForm.get('requiredSkills')!.value as string[]; // Use '!' here
