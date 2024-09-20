@@ -43,7 +43,7 @@
         <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
       </div>
     </form>
-  
+
     <form>
       <div class="mb-3 row">
         <label for="table-filtering-search" class="col-sm-auto col-form-label">User search:</label>
@@ -71,8 +71,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let user of filteredusers | slice: (page - 1) * pageSize : page * pageSize; let i = index">
-            <!-- <td>{{ (page - 1) * pageSize + i + 1 }}</td> -->
-             <td>{{i+1}}</td>
+            <td>{{ (page - 1) * pageSize + i + 1 }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.skills.join(', ') }}</td>
             <td>
@@ -98,3 +97,4 @@
       <br>
     </div>
   </div>
+  
