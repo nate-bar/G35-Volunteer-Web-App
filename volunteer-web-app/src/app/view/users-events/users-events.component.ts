@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NotificationComponent } from "../../notification/notification.component";
 
 @Component({
   selector: 'app-users-events',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NotificationComponent],
   templateUrl: './users-events.component.html',
   styleUrls: ['./users-events.component.scss'],
 })
