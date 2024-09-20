@@ -7,6 +7,10 @@ import { EventsComponent } from './pages/events/events.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { NewEventComponent } from './pages/new-event/new-event.component';
 import { EditEventComponent } from './pages/edit-event/edit-event.component';
+import { UsersEventsComponent } from './view/users-events/users-events.component';
+import { VolunteerMatchingComponent } from './pages/volunteer-matching/volunteer-matching.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { VolunteerHistoryComponent } from './pages/volunteer-history/volunteer-history.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +31,14 @@ export const routes: Routes = [
         component: AdminComponent,
         children: [
             {
+                path: 'volunteerHistory', 
+                component: VolunteerHistoryComponent 
+            },
+            {
+                path: 'manageUser', 
+                component: UserManagementComponent 
+            },
+            {
               path: 'newEvent',
               component: NewEventComponent,
             },
@@ -37,6 +49,10 @@ export const routes: Routes = [
             {
                 path: 'editEvent',
                 component: EditEventComponent,
+            },
+            {
+                path: 'matchVolunteers',
+                component: VolunteerMatchingComponent, 
             }
             // other childrens
           ],
@@ -45,13 +61,17 @@ export const routes: Routes = [
     //     path: 'newEvent',
     //     component: NewEventComponent
     // },
-    {
-        path: 'events',
-        component: EventsComponent
-    },
+    // {
+    //     path: 'events',
+    //     component: EventsComponent  VolunteerMatchingComponent
+    // },
     {
         path: 'profile',
         component: ProfileComponent
+    },
+    {
+        path: 'userEvent',
+        component: UsersEventsComponent
     },
     {
         path: '**',

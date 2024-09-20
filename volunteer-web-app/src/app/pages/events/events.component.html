@@ -1,38 +1,167 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Upcoming Events</h2>
-  <table class="table table-striped table-hover align-middle mb-0 ">
-    <thead class="bg-dark">
-      <tr>
-        <th>Event Name</th>
-        <th>Description</th>
-        <th>Location</th>
-        <th>Required Skills</th>
-        <th>Urgency</th>
-        <th>Date</th>
-        <th colspan="2" style="text-align: center;">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let event of events; let i = index">
-        <td>{{ event.eventName }}</td>
-        <td>{{ event.eventDescription }}</td>
-        <td>{{ event.location }}</td>
-        <td>{{ event.requiredSkills.join(', ') }}</td>
-        <td>{{ event.urgency }}</td>
-        <td>{{ event.eventDate | date: 'MM/dd/yyyy' }}</td>
-        <td>
+  <h2 class="mb-4 text-center"><strong>Event Management</strong></h2>
+
+  <!-- Button to open the modal for adding a new event -->
+  <div class="d-flex justify-content-end mb-3" style="all: initial; ">
+    <button class="btn btn-success" (click)="openModal(eventModal, false)">Add Event</button>
+  </div>
+
+  <!-- Event Search Form -->
+  <form>
+    <div class="mb-3 row" style="all: initial; ">
+      <label for="table-filtering-search" class="col-sm-2 col-form-label">Event search:</label>
+      <div class="col-sm-5" style="all: initial; ">
+        <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" placeholder="Search events..." />
+      </div>
+    </div>
+  </form>
+
+  <!-- Display No Event Found Message -->
+  <div *ngIf="filteredEvents.length === 0" class="alert alert-danger text-center" role="alert" style="all: initial; ">
+    No event found.
+  </div>
+
+  <!-- Event List Table -->
+  <div *ngIf="filteredEvents.length > 0" style="all: initial; ">
+    <h3 class="mb-3 text-center"><strong>All Events</strong></h3>
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Event Name</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Required Skills</th>
+          <th>Urgency</th>
+          <th>Date</th>
+          <th colspan="2" style="text-align: center;">Actions</th>
+        </tr >
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of filteredEvents | slice: (page - 1) * pageSize : page * pageSize; let i = index">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ event.eventName }}</td>
+          <td>{{ event.eventDescription }}</td>
+          <td>{{ event.location }}</td>
+          <td>{{ event.requiredSkills.join(', ') }}</td>
+          <td>{{ event.urgency }}</td>
+          <td>{{ event.eventDate | date: 'MM/dd/yyyy' }}</td>
+          <td>
+            <button class="btn btn-warning me-2" (click)="openModal(eventModal, true, i)">Edit</button>
+            
+          </td>
+          <td><button class="btn btn-danger ms-2" (click)="deleteEvent(event.eventName)">Delete</button></td>
           
-          <button class="btn btn-primary" (click)="editEvent()">
-            <i class="bi bi-pencil"></i> Edit
-          </button>
-        </td>
-        <td>
-          <button class="btn btn-danger ml-2" (click)="deleteEvent(event.eventName)">
-            <i class="bi bi-trash"></i> Delete
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-center" style="all: initial; ">
+      <ngb-pagination 
+        class="custom-pagination" 
+        [collectionSize]="filteredEvents.length" 
+        [(page)]="page" 
+        [pageSize]="pageSize" 
+        [maxSize]="5" 
+        [boundaryLinks]="true">
+      </ngb-pagination>
+    </div>
+  </div>
+
+  <!-- Modal for Add/Edit Event -->
+  <ng-template #eventModal let-modal>
+    <div class="modal-header" >
+      <h4 class="modal-title">{{ isEditMode ? 'Edit Event' : 'Add Event' }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="eventForm" (ngSubmit)="onAddOrUpdateEvent(modal)">
+        <!-- Event Name Input -->
+        <div class="row mb-1"> 
+          <label for="eventName" class="col-sm-2 col-form-label">Event Name:</label>
+          <div class="col-sm-10">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Event Name</mat-label>
+              <input matInput id="eventName" formControlName="eventName" placeholder="Enter event name" required />
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <!-- Event Description Input -->
+        <div class="row mb-1">
+          <label for="eventDescription" class="col-sm-2 col-form-label">Description:</label>
+          <div class="col-sm-10">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Description</mat-label>
+              <textarea matInput id="eventDescription" formControlName="eventDescription" placeholder="Enter description" required></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <!-- Location Input -->
+        <div class="row mb-1">
+          <label for="location" class="col-sm-2 col-form-label">Location:</label>
+          <div class="col-sm-10">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Location</mat-label>
+              <input matInput id="location" formControlName="location" placeholder="Enter location" required />
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <!-- Skills Multi-Select Dropdown -->
+        <div class="row mb-1"> 
+          <label for="requiredSkills" class="col-sm-2 col-form-label">Required Skills:</label>
+          <div class="col-sm-10">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Select Skills</mat-label>
+              <mat-select formControlName="requiredSkills" multiple>
+                <mat-option *ngFor="let skill of skillOptions" [value]="skill">
+                  {{ skill }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <!-- Urgency Input -->
+        <div class="row mb-1"> 
+          <label for="urgency" class="col-sm-2 col-form-label">Urgency:</label>
+          <div class="col-sm-10">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Urgency</mat-label>
+              <mat-select formControlName="urgency">
+                <mat-option value="High">High</mat-option>
+                <mat-option value="Medium">Medium</mat-option>
+                <mat-option value="Low">Low</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <!-- Date Input -->
+        <div class="row mb-1"> 
+          <label for="eventDate" class="col-sm-2 col-form-label">Date:</label>
+          <div class="col-sm-10">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Event Date</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="eventDate" placeholder="Choose a date" required />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+    
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary me-2" (click)="modal.dismiss()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">{{ isEditMode ? 'Update Event' : 'Add Event' }}</button>
+        </div>
+      </form>
+    </div>
+    
+  </ng-template>
 </div>
   
