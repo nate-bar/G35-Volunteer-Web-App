@@ -82,32 +82,38 @@ export class UserManagementComponent implements OnInit {
         email: this.addUserForm.value.email,
         skills: this.addUserForm.value.skills
       };
-
+  
       if (this.isEditMode && this.editIndex !== null) {
-        this.users[this.editIndex] = user; 
+        this.users[this.editIndex] = user; //fixed Update the correct user
         this.isEditMode = false;
         this.editIndex = null;
       } else {
         this.users.push(user);
       }
-
+  
       this.addUserForm.reset();
       this.filterUsers(this.filter.value || ''); 
     }
   }
+  
 
-  // Handle edit action
   onEdit(index: number): void {
+    
+    const actualIndex = (this.page - 1) * this.pageSize + index;
+    
     this.isEditMode = true;
-    this.editIndex = index;// this part to be fixed
-    const user = this.users[index];
+    this.editIndex = actualIndex; 
+    const user = this.users[actualIndex];
+  
+    
     this.addUserForm.setValue({
       email: user.email,
       skills: user.skills
     });
   }
+  
 
-  // Handle delete action
+  
   onDelete(index: number): void {
     this.users.splice(index, 1);
     this.filterUsers(this.filter.value || ''); // Update the filtered users after deletion

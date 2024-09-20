@@ -39,7 +39,7 @@ export class EditEventComponent {
   onSubmit(): void {
     if (this.eventForm.valid) {
       console.log('Event Details:', this.eventForm.value);
-      // Handle event update (e.g., send to server or update state)
+
     } else {
       alert('Please complete the form correctly.');
     }
