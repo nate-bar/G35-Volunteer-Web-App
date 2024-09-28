@@ -17,13 +17,8 @@
     "@angular/compiler": "^18.2.0",
     "@angular/core": "^18.2.4",
     "@angular/forms": "^18.2.0",
-<<<<<<< HEAD
     "@angular/material": "17.3.10",
     "@angular/platform-browser": "^18.2.5",
-=======
-    "@angular/material": "^17.0.0",
-    "@angular/platform-browser": "^18.2.0",
->>>>>>> ce78616df11dc829697bed1366b9cca7852c829b
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/platform-server": "^18.2.0",
     "@angular/router": "^18.2.0",
