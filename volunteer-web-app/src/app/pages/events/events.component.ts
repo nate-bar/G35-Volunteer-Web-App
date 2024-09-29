@@ -11,6 +11,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService } from '../../notification.service';
+//import { provideHttpClient, HttpClient } from '@angular/common/http';
+import { EventService } from './event.service';
+import { Event } from './event.interface';
 
 @Component({
   selector: 'app-events',
@@ -27,63 +31,32 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatFormFieldModule,
     MatButtonModule,
     MatCheckboxModule,
-    
   ],
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
-  
 })
 
 export class EventsComponent implements OnInit {
   eventForm: FormGroup;
-  events = [
-    {
-      eventName: 'Community Cleanup',
-      eventDescription: 'Join us for a community cleanup event in the local park.',
-      location: 'Central Park',
-      requiredSkills: ['Teamwork', 'Environmental Awareness'],
-      urgency: 'High',
-      eventDate: new Date('2024-10-01'),
-    },
-    {
-      eventName: 'Charity Run',
-      eventDescription: 'Participate in our annual charity run to support local schools.',
-      location: 'Downtown City',
-      requiredSkills: ['Running', 'Fundraising'],
-      urgency: 'Medium',
-      eventDate: new Date('2024-11-05'),
-    },
-   
-  ];
-
+  events: Event[] = [];
   skillOptions: string[] = [
-    'Teamwork',
-    'Environmental Awareness',
-    'Running',
-    'Fundraising',
-    'Organizing',
-    'Public Speaking',
-    'Nursing',
-    'Gardening',
-    'Compassion',
-    'Creativity',
-    'Patience',
-    'Music',
-    'Empathy',
-    'Coding',
-    'Teaching',
-    'Animal Care',
-    'Communication',
-    'Technology',
+    'Teamwork', 'Environmental Awareness', 'Running', 'Fundraising', 'Organizing', 'Public Speaking',
+    'Nursing', 'Gardening', 'Compassion', 'Creativity', 'Patience', 'Music', 'Empathy', 'Coding',
+    'Teaching', 'Animal Care', 'Communication', 'Technology',
   ];
-  filteredEvents = [...this.events];
+  filteredEvents: Event[] = [];
   filter = new FormControl('');
   isEditMode = false;
   editIndex: number | null = null;
   page = 1;
-  pageSize = 2;
+  pageSize = 5;
 
-  constructor(private fb: FormBuilder, private modalService: NgbModal) {
+  constructor(
+    private fb: FormBuilder,
+    private modalService: NgbModal,
+    private notificationService: NotificationService,
+    private eventService: EventService,
+  ) {
     this.eventForm = this.fb.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -95,6 +68,18 @@ export class EventsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Fetch events from the Flask API
+    this.eventService.getEvents().subscribe(
+      (data: Event[]) => {
+        this.events = data;
+        this.filteredEvents = [...this.events]; // Set filteredEvents initially
+      },
+      error => {
+        console.error('Error fetching events', error);
+      }
+    );
+
+    // Subscribe to filter input changes
     this.filter.valueChanges.subscribe((searchTerm: string | null) => {
       this.filterEvents(searchTerm || '');
     });
@@ -116,35 +101,44 @@ export class EventsComponent implements OnInit {
   }
 
   onAddOrUpdateEvent(modal: any): void {
-   
     if (this.eventForm.valid) {
-      // Extract form data
-      const newEvent = { ...this.eventForm.value, eventDate: new Date(this.eventForm.value.eventDate) };
-  
-      
+      const newEvent = { ...this.eventForm.value, eventDate: new Date(this.eventForm.value.eventDate).toISOString() };
       if (this.isEditMode && this.editIndex !== null) {
         // Update the existing event
         this.events[this.editIndex] = newEvent;
         this.isEditMode = false;
         this.editIndex = null;
+
+        // Notify about the updated event
+        this.notificationService.addNotification({
+          id: Date.now(),
+          title: 'Event Updated',
+          message: `The event "${newEvent.eventName}" has been updated.`,
+          read: false,
+          date: new Date(),
+        });
       } else {
-        
+        // Add new event
         this.events.push(newEvent);
+
+        // Notify about the new event
+        this.notificationService.addNotification({
+          id: Date.now(),
+          title: 'New Event Created',
+          message: `A new event "${newEvent.eventName}" has been created.`,
+          read: false,
+          date: new Date(),
+        });
       }
-  
 
       this.eventForm.reset();
-  
-      
       this.filterEvents(this.filter.value || '');
-  
-      
       modal.close();
     } else {
       console.error('Form is invalid');
     }
   }
-  
+
   openModal(content: any, editMode: boolean, index?: number): void {
     this.isEditMode = editMode;
     if (editMode && index !== undefined) {
@@ -171,26 +165,53 @@ export class EventsComponent implements OnInit {
     this.editIndex = null;
   }
 
-  deleteEvent(eventName: string) {
-    this.events = this.events.filter((event) => event.eventName !== eventName);
-    this.filterEvents(this.filter.value || '');
-  }
-  onSkillChange(event: any, skill: string): void {
-  const selectedSkills = this.eventForm.get('requiredSkills')!.value as string[]; // Use '!' here
+  deleteEvent(eventId: number) {
+    // Find the event name before deletion
+    const eventToDelete = this.events.find(event => event.id === eventId);
   
-  if (event.target.checked) {
-    if (!selectedSkills.includes(skill)) {
-      selectedSkills.push(skill);
+    if (!eventToDelete) {
+      console.error('Event not found');
+      return;
     }
-  } else {
-    const index = selectedSkills.indexOf(skill);
-    if (index > -1) {
-      selectedSkills.splice(index, 1);
-    }
+  
+    const eventName = eventToDelete.eventName;
+  
+    this.eventService.deleteEvent(eventId).subscribe(
+      () => {
+        // Remove the event from the local list after successful deletion
+        this.events = this.events.filter((event) => event.id !== eventId);
+        this.filterEvents(this.filter.value || '');
+  
+        // Notify about the deletion
+        this.notificationService.addNotification({
+          id: Date.now(),
+          title: 'Event Deleted',
+          message: `The event "${eventName}" has been deleted.`,
+          read: false,
+          date: new Date(),
+        });
+      },
+      error => {
+        console.error('Error deleting event:', error);
+      }
+    );
   }
+  
 
-  this.eventForm.get('requiredSkills')!.setValue(selectedSkills); // Use '!' here
+  onSkillChange(event: any, skill: string): void {
+    const selectedSkills = this.eventForm.get('requiredSkills')!.value as string[];
+
+    if (event.target.checked) {
+      if (!selectedSkills.includes(skill)) {
+        selectedSkills.push(skill);
+      }
+    } else {
+      const index = selectedSkills.indexOf(skill);
+      if (index > -1) {
+        selectedSkills.splice(index, 1);
+      }
+    }
+
+    this.eventForm.get('requiredSkills')!.setValue(selectedSkills);
+  }
 }
-
-}
-
