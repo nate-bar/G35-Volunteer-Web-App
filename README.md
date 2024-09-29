@@ -45,7 +45,7 @@ To get a local copy of the project up and running, follow these steps.
 
 ```bash
 git clone https://github.com/nate-bar/G35-Volunteer-Web-App.git
-cd volunteer-management-app
+cd G35-volunteer-web-app
 
 2. Frontend Setup (Angular)
     Navigate to the volunteer-web-app directory:  cd volunteer-web-app
