@@ -1,14 +1,17 @@
 <div class="container mt-4">
-    <h2 class="mb-4 text-center"><strong>Volunteer Matching Form</strong></h2>
-    <div *ngIf="alertMessage" class="alert alert-success text-center" role="alert">
-        {{ alertMessage }}
+    
+    <h2 class="mb-4 text-center" style="color: white;"><strong><u>Volunteer Matching Form</u></strong></h2>
+   <br>
+    <div *ngIf="alertMessage" class="alert alert-success text-center" role="alert" style="all: initial; display: flex; justify-content: center;background-color: white;">
+        <span style="color: green;">{{ alertMessage }}</span>
       </div>
+      <br>
     <form [formGroup]="matchingForm" (ngSubmit)="onMatchSubmit()">
       
       
-      <div class="row mb-3">
-        <label for="selectedUser" class="col-sm-3 col-form-label">Select Volunteer:</label>
-        <div class="col-sm-9">
+      <div class="row mb-3" style="all: initial; display: flex; justify-content: center;">
+        <label for="selectedUser" class="col-sm-1 col-form-label">Select Volunteer:</label>
+        <div class="col-sm-5" style="all: initial; justify-content: center;">
           <select
             id="selectedUser"
             class="form-select"
@@ -23,9 +26,9 @@
       </div>
   
       
-      <div class="row mb-3">
-        <label for="matchedEvent" class="col-sm-3 col-form-label">Matched Event:</label>
-        <div class="col-sm-9">
+      <div class="row mb-4" style="all: initial; display: flex; justify-content: center;">
+        <label for="matchedEvent" class="col-sm-1 col-form-label" >Matched Event:</label>
+        <div class="col-sm-5" style="all: initial;justify-content: center;width: 300px;">
           <select
             id="matchedEvent"
             class="form-select"
@@ -40,10 +43,12 @@
       </div>
   
       
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center" style="all: initial; display: flex; justify-content: center;">
         <button type="submit" class="btn btn-primary mx-2">Match Volunteer</button>
         <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
       </div>
     </form>
+
+    <br>
   </div>
   

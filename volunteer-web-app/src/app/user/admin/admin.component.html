@@ -1,127 +1,128 @@
 <div class="admin-header text-center">
-  <h1 class="dashboard-title" style="text-align: center;">ADMIN DASHBOARD</h1>
-</div>
-<div class="admin-container">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <ul>
-      <li [class.active]="selectedLink === 'home'">
-        <a 
-          routerLink="/admin"
-          routerLinkActive="active-link"
-          class="menu-link"
-          (click)="selectLink('home')"
-        >
-          <i class="fas fa-home"></i> <!-- Home icon -->
-          Home
-        </a>
-      </li>
-
-      <!-- Users Menu with Submenu Toggle -->
-      <li (click)="toggleUsersMenu()" [class.active]="selectedLink === 'users'">
-        <a class="menu-link" (click)="selectLink('users')">
-          <i class="fas fa-users"></i> <!-- Users icon -->
-          Users
-        </a>
-        <!-- Submenu -->
-        <ul class="submenu" *ngIf="isUsersMenuOpen">
-          <!-- <li [class.active]="selectedLink === 'allUsers'">
-            <a 
-              routerLink="allUsers" 
-              routerLinkActive="active-link" 
-              (click)="selectLink('allUsers')"
-            >
-              <i class="fas fa-user"></i>
-              All Users
-            </a>
-          </li> -->
-          <li [class.active]="selectedLink === 'manageUser'">
-            <a 
-              routerLink="manageUser" 
-              routerLinkActive="active-link" 
-              (click)="selectLink('manageUser')"
-            >
-              <i class="fas fa-user-plus"></i>
-              User Management
-            </a>
-          </li>
-          <li [class.active]="selectedLink === 'volunteerHistory'">
-            <a 
-              routerLink="volunteerHistory" 
-              routerLinkActive="active-link" 
-              (click)="selectLink('volunteerHistory')"
-            >
-              <i class="fas fa-history"></i>
-              Volunteering History
-            </a>
-          </li>
-        </ul>
-      </li>
-
-      <!-- Events Menu with Submenu Toggle -->
-      <li (click)="toggleEventsMenu()" [class.active]="selectedLink === 'events'">
-        <a class="menu-link" (click)="selectLink('events')">
-          <i class="fas fa-calendar-plus"></i> <!-- Events icon -->
-          Events
-        </a>
-        <!-- Submenu -->
-        <ul class="submenu" *ngIf="isEventsMenuOpen">
-          <li [class.active]="selectedLink === 'newEvent'">
-            <a 
-              routerLink="newEvent" 
-              routerLinkActive="active-link" 
-              (click)="selectLink('newEvent')"
-            >
-              <i class="fas fa-calendar-plus"></i>
-              Create Event
-            </a>
-          </li>
-          <li [class.active]="selectedLink === 'allEvents'">
-            <a 
-              routerLink="events" 
-              routerLinkActive="active-link" 
-              (click)="selectLink('events')"
-            >
-              <i class="fas fa-list"></i>
-              All Events
-            </a>
-          </li>
-          <li [class.active]="selectedLink === 'eventHistory'">
-            <a 
-              routerLink="eventHistory" 
-              routerLinkActive="active-link" 
-              (click)="selectLink('eventHistory')"
-            >
-              <i class="fas fa-history"></i>
-              Event History
-            </a>
-          </li>
-          <li [class.active]="selectedLink === 'matchVolunteers'">
-            <a 
-              routerLink="matchVolunteers" 
-              routerLinkActive="active-link" 
-              (click)="selectLink('matchVolunteers')"
-            >
-              <i class="fas fa-history"></i>
-              Match Volunteers
-            </a>
-          </li>
-          
-        </ul>
-      </li>
-
-      <!-- Logout Menu Item -->
-      <li [class.active]="selectedLink === 'logout'">
-        <a (click)="logout()" class="menu-link" (click)="selectLink('logout')">
-          <i class="fas fa-sign-out-alt"></i> <!-- Logout icon -->
-          Logout
-        </a>
-      </li>
-    </ul>
+    <h1 class="dashboard-title" style="text-align: center;">ADMIN DASHBOARD</h1>
   </div>
-
-  <!-- Content Area -->
-  <div class="content-area">
-    <router-outlet></router-outlet>
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <ul>
+        <li [class.active]="selectedLink === 'home'">
+          <a 
+            routerLink="/admin"
+            routerLinkActive="active-link"
+            class="menu-link"
+            (click)="selectLink('home')"
+          >
+            <i class="fas fa-home"></i> <!-- Home icon -->
+            DASHBOARD
+          </a>
+        </li>
+  
+        <!-- Users Menu with Submenu Toggle -->
+        <li (click)="toggleUsersMenu()" [class.active]="selectedLink === 'users'">
+          <a class="menu-link" (click)="selectLink('users')">
+            <i class="fas fa-users"></i> <!-- Users icon -->
+            Users
+          </a>
+          <!-- Submenu -->
+          <ul class="submenu" *ngIf="isUsersMenuOpen">
+            <!-- <li [class.active]="selectedLink === 'allUsers'">
+              <a 
+                routerLink="allUsers" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('allUsers')"
+              >
+                <i class="fas fa-user"></i>
+                All Users
+              </a>
+            </li> -->
+            <li [class.active]="selectedLink === 'manageUser'">
+              <a 
+                routerLink="manageUser" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('manageUser')"
+              >
+                <i class="fas fa-user-plus"></i>
+                User Management
+              </a>
+            </li>
+            <li [class.active]="selectedLink === 'volunteerHistory'">
+              <a 
+                routerLink="volunteerHistory" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('volunteerHistory')"
+              >
+                <i class="fas fa-history"></i>
+                Volunteering History
+              </a>
+            </li>
+          </ul>
+        </li>
+  
+        <!-- Events Menu with Submenu Toggle -->
+        <li (click)="toggleEventsMenu()" [class.active]="selectedLink === 'events'">
+          <a class="menu-link" (click)="selectLink('events')">
+            <i class="fas fa-calendar-plus"></i> <!-- Events icon -->
+            Events
+          </a>
+          <!-- Submenu -->
+          <ul class="submenu" *ngIf="isEventsMenuOpen">
+            <li [class.active]="selectedLink === 'newEvent'">
+              <a 
+                routerLink="newEvent" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('newEvent')"
+              >
+                <i class="fas fa-calendar-plus"></i>
+                Create Event
+              </a>
+            </li>
+            <li [class.active]="selectedLink === 'allEvents'">
+              <a 
+                routerLink="events" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('events')"
+              >
+                <i class="fas fa-list"></i>
+                All Events
+              </a>
+            </li>
+            <li [class.active]="selectedLink === 'eventHistory'">
+              <a 
+                routerLink="eventHistory" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('eventHistory')"
+              >
+                <i class="fas fa-history"></i>
+                Event History
+              </a>
+            </li>
+            <li [class.active]="selectedLink === 'matchVolunteers'">
+              <a 
+                routerLink="matchVolunteers" 
+                routerLinkActive="active-link" 
+                (click)="selectLink('matchVolunteers')"
+              >
+                <i class="fas fa-history"></i>
+                Match Volunteers
+              </a>
+            </li>
+            
+          </ul>
+        </li>
+  
+        <!-- Logout Menu Item -->
+        <li [class.active]="selectedLink === 'logout'">
+          <a (click)="logout()" class="menu-link" (click)="selectLink('logout')">
+            <i class="fas fa-sign-out-alt"></i> <!-- Logout icon -->
+            Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Content Area -->
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
   </div>
-</div>
+  

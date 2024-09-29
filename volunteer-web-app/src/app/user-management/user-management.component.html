@@ -1,100 +1,100 @@
 <div class="container mt-4">
-  <h2 class="mb-4 text-center"><strong>User Management</strong></h2>
-
-  <!-- Add/Edit Users -->
-  <form [formGroup]="addUserForm" (ngSubmit)="onAddUser()">
-    
-    <div class="row mb-3">
-      <label for="email" class="col-sm-1 col-form-label">Email:</label>
-      <div class="col-sm-9">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Email</mat-label>
-          <input matInput id="email" formControlName="email" placeholder="Enter email" required />
-        </mat-form-field>
-        <div *ngIf="addUserForm.controls['email'].invalid && addUserForm.controls['email'].touched" class="text-danger">
-          Please enter a valid email address.
-        </div>
-      </div>
-    </div>
-
+    <h2 class="mb-4 text-center"><strong>User Management</strong></h2>
   
-    <div class="row mb-3">
-      <label for="skills" class="col-sm-1 col-form-label">Skills:</label>
-      <div class="col-sm-9">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Select Skills</mat-label>
-          <mat-select formControlName="skills" multiple>
-            <mat-option *ngFor="let skill of skillOptions" [value]="skill">
-              {{ skill }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div *ngIf="addUserForm.controls['skills'].invalid && addUserForm.controls['skills'].touched" class="text-danger">
-          At least one skill is required.
+    <!-- Add/Edit Users -->
+    <form [formGroup]="addUserForm" (ngSubmit)="onAddUser()">
+      
+      <div class="row mb-3">
+        <label for="email" class="col-sm-1 col-form-label">Email:</label>
+        <div class="col-sm-9">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput id="email" formControlName="email" placeholder="Enter email" required />
+          </mat-form-field>
+          <div *ngIf="addUserForm.controls['email'].invalid && addUserForm.controls['email'].touched" class="text-danger">
+            Please enter a valid email address.
+          </div>
         </div>
       </div>
-    </div>
-
+  
     
-    <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary me-2" [disabled]="addUserForm.invalid">
-        {{ isEditMode ? 'Update User' : 'Add User' }}
-      </button>
-      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-    </div>
-  </form>
-
-  <form>
-    <div class="mb-3 row">
-      <label for="table-filtering-search" class="col-sm-auto col-form-label">User search:</label>
-      <div class="col-sm-auto">
-        <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" />
+      <div class="row mb-3">
+        <label for="skills" class="col-sm-1 col-form-label">Skills:</label>
+        <div class="col-sm-9">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Select Skills</mat-label>
+            <mat-select formControlName="skills" multiple>
+              <mat-option *ngFor="let skill of skillOptions" [value]="skill">
+                {{ skill }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="addUserForm.controls['skills'].invalid && addUserForm.controls['skills'].touched" class="text-danger">
+            At least one skill is required.
+          </div>
+        </div>
       </div>
+  
+      
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary me-2" [disabled]="addUserForm.invalid">
+          {{ isEditMode ? 'Update User' : 'Add User' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+
+    <form>
+      <div class="mb-3 row">
+        <label for="table-filtering-search" class="col-sm-auto col-form-label">User search:</label>
+        <div class="col-sm-auto">
+          <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" />
+        </div>
+      </div>
+    </form>
+  
+    <div *ngIf="filteredusers.length === 0" class="alert alert-danger" role="alert" style="width: 300px;">
+      No user found.
     </div>
-  </form>
-
-  <div *ngIf="filteredusers.length === 0" class="alert alert-danger" role="alert" style="width: 300px;">
-    No user found.
-  </div>
-
- 
-  <div class="mt-1">
-    <h3 class="mb-3 text-center"><strong>All Users</strong></h3>
-    <table class="table table-striped table-hover">
-      <thead class="thead-dark">
-        <tr>
-          <th>#</th>
-          <th>Email</th>
-          <th>Skills</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of filteredusers | slice: (page - 1) * pageSize : page * pageSize; let i = index">
-          <!-- <td>{{ (page - 1) * pageSize + i + 1 }}</td> -->
-           <td>{{i+1}}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.skills.join(', ') }}</td>
-          <td>
-            <button class="btn btn-warning me-2" (click)="onEdit(i)">Edit</button>
-            <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <br>
-    <div class="d-flex justify-content-center">
-      <ngb-pagination 
-        class="custom-pagination" 
-        [collectionSize]="filteredusers.length" 
-        [(page)]="page" 
-        [pageSize]="pageSize" 
-        [maxSize]="5" 
-        [boundaryLinks]="true">
-      </ngb-pagination>
+  
+   
+    <div class="mt-1">
+      <h3 class="mb-3 text-center"><strong>All Users</strong></h3>
+      <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th>#</th>
+            <th>Email</th>
+            <th>Skills</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredusers | slice: (page - 1) * pageSize : page * pageSize; let i = index">
+            <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.skills.join(', ') }}</td>
+            <td>
+              <button class="btn btn-warning me-2" (click)="onEdit(i)">Edit</button>
+              <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <br>
+      <div class="d-flex justify-content-center">
+        <ngb-pagination 
+          class="custom-pagination" 
+          [collectionSize]="filteredusers.length" 
+          [(page)]="page" 
+          [pageSize]="pageSize" 
+          [maxSize]="5" 
+          [boundaryLinks]="true">
+        </ngb-pagination>
+      </div>
+      <br>
+      <br>
     </div>
-    <br>
-    <br>
   </div>
-</div>
+  
