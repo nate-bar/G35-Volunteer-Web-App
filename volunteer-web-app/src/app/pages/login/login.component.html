@@ -1,57 +1,61 @@
 <div>
-    <form (ngSubmit)="login()">
-      <h1>
-        <span><i class="fa-solid fa-user fa-3x"></i></span>
-      </h1>
-  
-      <!-- Username Field -->
-      <div class="mb-4 d-flex align-items-center">
-        <label class="form-label me-3" for="username">Username:</label>
-        <input
-          type="email"
-          id="username"
-          class="form-control flex-grow-1"
-          [(ngModel)]="username"
-          name="username"
-          required
-        />
-      </div>
-  
-      <!-- Password Field -->
-      <div class="mb-4 d-flex align-items-center">
-        <label class="form-label me-3" for="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          class="form-control flex-grow-1"
-          [(ngModel)]="password"
-          name="password"
-          required
-        />
-      </div>
-  
-      <!-- Remember Me Checkbox -->
-      <div class="form-check d-flex justify-content-center mb-4">
-        <input
-          class="form-check-input me-2"
-          type="checkbox"
-          id="Remember"
-          [(ngModel)]="rememberMe"
-          name="rememberMe"
-        />
-        <label class="form-check-label" for="Remember">
-          Remember me
-        </label>
-      </div>
-  
-      <!-- Buttons -->
-      <div class="d-flex justify-content-between mb-4">
-        <button type="submit" class="btn btn-primary me-4">Login</button>
-        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
-      </div>
-  
-      <!-- Signup Link -->
-      <p class="white">Don't have an account? <a href="/register"><strong class="yellow">Sign up here</strong></a></p>
-    </form>
-  </div>
-  
+  <form (ngSubmit)="login()">
+    <h1>
+      <span><i class="fa-solid fa-user fa-3x"></i></span>
+    </h1>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Username Field -->
+    <div class="mb-4 d-flex align-items-center">
+      <label class="form-label me-3" for="username">Username:</label>
+      <input
+        type="email"
+        id="username"
+        class="form-control flex-grow-1"
+        [(ngModel)]="username"
+        name="username"
+        required
+      />
+    </div>
+
+    <!-- Password Field -->
+    <div class="mb-4 d-flex align-items-center">
+      <label class="form-label me-3" for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        class="form-control flex-grow-1"
+        [(ngModel)]="password"
+        name="password"
+        required
+      />
+    </div>
+
+    <!-- Remember Me Checkbox -->
+    <div class="form-check d-flex justify-content-center mb-4">
+      <input
+        class="form-check-input me-2"
+        type="checkbox"
+        id="Remember"
+        [(ngModel)]="rememberMe"
+        name="rememberMe"
+      />
+      <label class="form-check-label" for="Remember">
+        Remember me
+      </label>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-between mb-4">
+      <button type="submit" class="btn btn-primary me-4">Login</button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </div>
+
+    <!-- Signup Link -->
+    <p class="white">Don't have an account? <a href="/register"><strong class="yellow">Sign up here</strong></a></p>
+  </form>
+</div>
