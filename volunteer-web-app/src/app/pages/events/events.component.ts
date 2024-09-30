@@ -50,6 +50,7 @@ export class EventsComponent implements OnInit {
   editIndex: number | null = null;
   page = 1;
   pageSize = 5;
+  apiMessage: string = ''; 
 
   constructor(
     private fb: FormBuilder,
@@ -72,7 +73,8 @@ export class EventsComponent implements OnInit {
     this.eventService.getEvents().subscribe(
       (data: Event[]) => {
         this.events = data;
-        this.filteredEvents = [...this.events]; // Set filteredEvents initially
+        this.filteredEvents = [...this.events];
+        
       },
       error => {
         console.error('Error fetching events', error);
@@ -103,41 +105,74 @@ export class EventsComponent implements OnInit {
   onAddOrUpdateEvent(modal: any): void {
     if (this.eventForm.valid) {
       const newEvent = { ...this.eventForm.value, eventDate: new Date(this.eventForm.value.eventDate).toISOString() };
+      
       if (this.isEditMode && this.editIndex !== null) {
+        // Store the old event data before updating
+        const oldEvent = { ...this.events[this.editIndex] };
+  
         // Update the existing event
-        this.events[this.editIndex] = newEvent;
-        this.isEditMode = false;
-        this.editIndex = null;
-
-        // Notify about the updated event
-        this.notificationService.addNotification({
-          id: Date.now(),
-          title: 'Event Updated',
-          message: `The event "${newEvent.eventName}" has been updated.`,
-          read: false,
-          date: new Date(),
-        });
+        const eventId = this.events[this.editIndex].id;
+        this.eventService.updateEvent(eventId, newEvent).subscribe(
+          (response) => {
+            // Correctly access `event` from the response
+            const updatedEvent = response.event;
+            this.events[this.editIndex!] = updatedEvent;
+            this.isEditMode = false;
+            this.editIndex = null;
+  
+            this.apiMessage = response.message;
+  
+            // Notify about the updated event with old details
+            this.notificationService.addNotification({
+              id: Date.now(),
+              title: 'Event Updated',
+              message: `The event "${oldEvent.eventName}" has been updated.`,
+              read: false,
+              date: new Date(),
+            });
+  
+            this.eventForm.reset();
+            this.filterEvents(this.filter.value || '');
+            modal.close();
+          },
+          error => {
+            this.apiMessage = error.error?.message || 'Error updating event';
+            console.error('Error updating event:', error);
+          }
+        );
       } else {
         // Add new event
-        this.events.push(newEvent);
-
-        // Notify about the new event
-        this.notificationService.addNotification({
-          id: Date.now(),
-          title: 'New Event Created',
-          message: `A new event "${newEvent.eventName}" has been created.`,
-          read: false,
-          date: new Date(),
-        });
-      }
-
-      this.eventForm.reset();
-      this.filterEvents(this.filter.value || '');
-      modal.close();
+        this.eventService.addEvent(newEvent).subscribe(
+          (addedEvent) => {
+            //console.log('Added Event Response:', addedEvent);
+            this.events.push(addedEvent.event);  // Access the `event` key from response
+            this.apiMessage = 'New event created successfully';
+        
+            // Notify about the new event
+            this.notificationService.addNotification({
+              id: Date.now(),
+              title: 'New Event Created',
+              message: `A new event "${addedEvent.event.eventName}" has been created.`,
+              read: false,
+              date: new Date(),
+            });
+        
+            this.eventForm.reset();
+            this.filterEvents(this.filter.value || '');
+            modal.close();
+          },
+          error => {
+            this.apiMessage = error.error?.message || 'Error adding new event';
+            console.error('Error adding new event:', error);
+          }
+        );
+      }        
     } else {
+      this.apiMessage = 'Form is invalid. Please check the fields and try again.';
       console.error('Form is invalid');
     }
   }
+
 
   openModal(content: any, editMode: boolean, index?: number): void {
     this.isEditMode = editMode;
@@ -166,10 +201,10 @@ export class EventsComponent implements OnInit {
   }
 
   deleteEvent(eventId: number) {
-    // Find the event name before deletion
     const eventToDelete = this.events.find(event => event.id === eventId);
   
     if (!eventToDelete) {
+      this.apiMessage = 'Event not found';
       console.error('Event not found');
       return;
     }
@@ -177,11 +212,12 @@ export class EventsComponent implements OnInit {
     const eventName = eventToDelete.eventName;
   
     this.eventService.deleteEvent(eventId).subscribe(
-      () => {
-        // Remove the event from the local list after successful deletion
+      (response) => {
         this.events = this.events.filter((event) => event.id !== eventId);
         this.filterEvents(this.filter.value || '');
-  
+
+        this.apiMessage = response.message;  // Set message from API response
+
         // Notify about the deletion
         this.notificationService.addNotification({
           id: Date.now(),
@@ -192,10 +228,12 @@ export class EventsComponent implements OnInit {
         });
       },
       error => {
+        this.apiMessage = error.error?.message || 'Error deleting event';
         console.error('Error deleting event:', error);
       }
     );
   }
+
   
 
   onSkillChange(event: any, skill: string): void {

@@ -1,0 +1,22 @@
+[
+    {
+        "email": "admin@gmail.com",
+        "password": "$2b$12$v1w0RENkOlGIr4eqm2Vv.uGgtAgGwlGisLMZ54q/Bq/lrJRH.zCGK",
+        "role": "admin"
+    },
+    {
+        "email": "user@gmail.com",
+        "password": "$2b$12$yGlvcJDGEJhkaDowySS8r.GpErD8JvPqXqcp0w1HchQAGbMdGcAaq",
+        "role": "user"
+    },
+    {
+        "email": "allaman.konate@techwave.net",
+        "password": "$2b$12$miX2NNq43plVs0trz6s3VenK3DNzu0nFE4p5nhXWw5Elj/lawFsAi",
+        "role": "admin"
+    },
+    {
+        "email": "konateallamanhamed@gmail.com",
+        "password": "$2b$12$tSNdY.fqA/fZZd7lBLkd0ugZkqHPhJmnlfBsyfrB1HfKkW7CjHus2",
+        "role": "admin"
+    }
+]
