@@ -1,0 +1,12 @@
+<div class="container mt-4">
+  <div *ngIf="confirmationMessage" class="alert alert-success text-center" role="alert">
+    {{ confirmationMessage }}
+  </div>
+  <div *ngIf="redirectionMessage" class="alert alert-info text-center" role="alert">
+    {{ redirectionMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger text-center" role="alert">
+    {{ errorMessage }}
+  </div>
+</div>
+

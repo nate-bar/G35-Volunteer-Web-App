@@ -11,6 +11,7 @@ import { UsersEventsComponent } from './view/users-events/users-events.component
 import { VolunteerMatchingComponent } from './pages/volunteer-matching/volunteer-matching.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { VolunteerHistoryComponent } from './pages/volunteer-history/volunteer-history.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 export const routes: Routes = [
     {
@@ -57,6 +58,7 @@ export const routes: Routes = [
             // other childrens
           ],
     },
+    { path: 'confirm-email/:token', component: ConfirmEmailComponent },
     //{
     //     path: 'newEvent',
     //     component: NewEventComponent
