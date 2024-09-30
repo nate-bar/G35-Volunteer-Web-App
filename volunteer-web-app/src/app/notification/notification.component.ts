@@ -22,7 +22,7 @@ interface Notification {
 export class NotificationComponent implements OnInit {
   notifications: Notification[] = [];
   unreadCount: number = 0;
-  showDropdown: boolean = false; // New variable to track dropdown visibility
+  showDropdown: boolean = false; 
 
   constructor(private notificationService: NotificationService) {}
 
