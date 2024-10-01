@@ -1,0 +1,54 @@
+name: Backend Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        cd server
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+        pip install coverage pytest pytest-cov
+
+    - name: Run tests with coverage
+      run: |
+        cd server
+        source venv/bin/activate
+        coverage run -m pytest
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: backend-coverage-report
+        path: server/htmlcov
+
+    - name: Generate coverage report
+      run: |
+        cd server
+        source venv/bin/activate
+        coverage html

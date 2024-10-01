@@ -13,10 +13,6 @@
         "email": "allaman.konate@techwave.net",
         "password": "$2b$12$miX2NNq43plVs0trz6s3VenK3DNzu0nFE4p5nhXWw5Elj/lawFsAi",
         "role": "admin"
-    },
-    {
-        "email": "konateallamanhamed@gmail.com",
-        "password": "$2b$12$tSNdY.fqA/fZZd7lBLkd0ugZkqHPhJmnlfBsyfrB1HfKkW7CjHus2",
-        "role": "admin"
     }
+    
 ]
