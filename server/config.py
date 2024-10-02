@@ -9,3 +9,5 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     MAIL_DEFAULT_SENDER = 'donot@gmail.com'  # Default sender email address
+
+    
