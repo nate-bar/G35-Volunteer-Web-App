@@ -4,7 +4,25 @@
         <span><i class="fas fa-user-circle fa-3x"></i></span>
       </h1>
       <h1 style="margin-bottom: 7px;"><strong>Update Profile</strong></h1>
-  
+      <br>
+      <!-- Success and Error Messages -->
+    <div *ngIf="successMessage" class="alert alert-info mt-3">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    <div *ngIf="warmingMessage" class="alert alert-warning mt-3">{{ warmingMessage }}</div>
+    
+    <br>
+       <!-- Email -->
+    <div class="row mb-2 d-flex align-items-center">
+      <div class="col">
+        <label class="form-label me-2" for="email" style="min-width: 100px;">Email:</label>
+        <input
+          type="text"
+          id="email"
+          class="form-control input-sm"
+          formControlName="email"
+        />
+      </div>
+    </div>
       <!-- Full Name -->
       <div class="row mb-2 d-flex align-items-center">
         <div class="col">
