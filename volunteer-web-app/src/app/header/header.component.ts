@@ -1,21 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../auth.service'; 
+import { AuthService } from '../auth.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'] 
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   userEmail: string = '';
   isLoggedIn: boolean = false;
-  constructor(public authService: AuthService,private router: Router) {} // Inject AuthService
+  isRegisterPage: boolean = false;
+
+  constructor(public authService: AuthService, private router: Router,private cdRef: ChangeDetectorRef) {}
+
   ngOnInit(): void {
-    if (this.authService.getIsLoggedIn()) {
+    // Check if user is logged in
+    this.isLoggedIn = this.authService.getIsLoggedIn();
+
+    if (this.isLoggedIn) {
       // Subscribe to userProfile$ to get the user email
       this.authService.userProfile$.subscribe((profile) => {
         if (profile) {
@@ -34,6 +41,10 @@ export class HeaderComponent implements OnInit {
         }
       });
     }
+
+    // Determine if the current page is the registration page
+    this.isRegisterPage = this.router.url.includes('/register');
+    this.cdRef.detectChanges();
   }
 
   logout() {
@@ -47,6 +58,4 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/profile'], { queryParams: { email: this.userEmail } });
     }
   }
-  
 }
-

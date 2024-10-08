@@ -18,14 +18,14 @@
     },
     {
         "email": "konateallamanhamed@gmail.com",
-        "password": "$2b$12$CSL2dP7o0.zbpqVP0pNUY.565OzAU89g65bWSJRb7377/.PDu5jLa",
+        "password": "$2b$12$SlJbLcktvN6QuRsoFVa4ju35iOyNt9OOXpJ7GlsHuStpgnTSSTecy",
         "role": "admin",
-        "profile_completed": true,
         "full_name": "allaman",
         "address1": "2500 woodland park Dr Apt M211",
         "address2": "hjtrerttytry ytuyi",
         "city": "Houston",
         "state": "CA",
-        "zip_code": "77077"
+        "zip_code": "77077",
+        "profile_completed": false
     }
 ]

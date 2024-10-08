@@ -1,15 +1,15 @@
-<div class="container mt-4">
+<div class="container mt-1">
   <div *ngIf="apiMessage" class="alert alert-info d-flex justify-content-center" role="alert"  style="background-image: initial;">
     {{ apiMessage }}
   </div>
-  <h2 class="mb-4 text-center"><strong>Event Management</strong></h2>
+  <h2 class="mb-1 text-center"><strong><u>Event Management</u></strong></h2>
 
 
   
 
   <!-- Button to open the modal for adding a new event -->
-  <div class="d-flex justify-content-end mb-3" style="all: initial; ">
-    <button class="btn btn-success" (click)="openModal(eventModal, false)">Add Event</button>
+  <div class="d-flex justify-content-end mb-1" style="all: initial; ">
+    <button class="btn buttonAdd" (click)="openModal(eventModal, false)">Add Event<span ><i class="bi bi-plus icon"></i></span></button>
   </div>
 
   <!-- Event Search Form -->
@@ -30,8 +30,8 @@
   <!-- Event List Table -->
   <div *ngIf="filteredEvents.length > 0" style="all: initial; ">
     <br>
-    <h3 class="mb-3 text-center labelWhite"><strong>All Events</strong></h3>
-    <table class="table table-striped table-hover">
+    <!-- <h3 class="mb-3 text-center labelWhite"><strong>All Events</strong></h3> -->
+    <table class="table table-striped table-hover"> 
       <thead class="thead-dark">
         <tr>
           <th>#</th>
@@ -42,26 +42,38 @@
           <th>Urgency</th>
           <th>Date</th>
           <th colspan="2" style="text-align: center;">Actions</th>
-        </tr >
+        </tr>
       </thead>
       <tbody>
         <tr *ngFor="let event of filteredEvents | slice: (page - 1) * pageSize : page * pageSize; let i = index">
           <td>{{ (page - 1) * pageSize + i + 1 }}</td>
           <td>{{ event.eventName }}</td>
-          <td>{{ event.eventDescription }}</td>
+          <td>
+            <!-- Show truncated description and "Read more" if showFullDescription is false -->
+            <span *ngIf="!event.showFullDescription">
+              {{ event.eventDescription | slice: 0: 30 }}...
+              <button class="btn btn-link p-0" (click)="toggleFullDescription(event)">Read more</button>
+            </span>
+            
+            <!-- Show full description and "Read less" if showFullDescription is true -->
+            <span *ngIf="event.showFullDescription">
+              {{ event.eventDescription }}
+              <button class="btn btn-link p-0" (click)="toggleFullDescription(event)">Read less</button>
+            </span>
+          </td>
+          
           <td>{{ event.location }}</td>
           <td>{{ event.requiredSkills.join(', ') }}</td>
           <td>{{ event.urgency }}</td>
           <td>{{ event.eventDate | date: 'MM/dd/yyyy' }}</td>
           <td>
-            <button class="btn btn-warning me-2" (click)="openModal(eventModal, true, i)">Edit</button>
-            
+            <button class="btn btn-warning me-1 icon-button" (click)="openModal(eventModal, true, event)"><span><mat-icon >edit</mat-icon></span></button>
           </td>
-          <td><button class="btn btn-danger ms-2" (click)="deleteEvent(event.id)">Delete</button></td>
-          
+          <td><button class="btn btn-danger ms-1 icon-button" (click)="deleteEvent(event.id)"><span><mat-icon>delete_forever</mat-icon></span></button></td>
         </tr>
       </tbody>
     </table>
+    
     
     
     <!-- Pagination Controls -->
@@ -165,8 +177,8 @@
         </div>
     
         <div class="modal-footer" style="background-image: initial;">
-          <button type="button" class="btn btn-secondary me-2" (click)="modal.dismiss()">Cancel</button>
-          <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">{{ isEditMode ? 'Update Event' : 'Add Event' }}</button>
+          <button type="button" class="btn btn-danger buttonAddC me-2" (click)="modal.dismiss()">Cancel</button>
+          <button type="submit" class="btn buttonAddE" [disabled]="eventForm.invalid">{{ isEditMode ? 'Update Event' : 'Save Event' }}</button>
         </div>
       </form>
     </div>

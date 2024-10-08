@@ -156,4 +156,8 @@ export class AuthService {
     }
     return false;
   }
+  public updateUserProfile(profile: any): void {
+    this.userProfileSubject.next(profile);
+  }
+  
 }

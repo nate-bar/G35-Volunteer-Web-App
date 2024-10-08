@@ -8,7 +8,7 @@
             "Running",
             "Fundraising"
         ],
-        "urgency": "Medium",
+        "urgency": "High",
         "eventDate": "2024-11-05T00:00:00.000Z"
     },
     {
@@ -21,7 +21,7 @@
             "First Aid"
         ],
         "urgency": "High",
-        "eventDate": "2024-10-15T00:00:00.000Z"
+        "eventDate": "2024-10-26T05:00:00.000Z"
     },
     {
         "id": 4,
@@ -29,11 +29,12 @@
         "eventDescription": "Join us for a tree plantation drive to support the environment.",
         "location": "Greenfield Park",
         "requiredSkills": [
-            "Gardening",
-            "Environmental Awareness"
+            "Teamwork",
+            "Environmental Awareness",
+            "Gardening"
         ],
-        "urgency": "Medium",
-        "eventDate": "2024-10-20"
+        "urgency": "High",
+        "eventDate": "2024-10-25T05:00:00.000Z"
     },
     {
         "id": 12,
@@ -44,8 +45,8 @@
             "Organizing",
             "Communication"
         ],
-        "urgency": "High",
-        "eventDate": "2024-12-10"
+        "urgency": "Low",
+        "eventDate": "2024-12-13T06:00:00.000Z"
     },
     {
         "id": 13,
@@ -57,7 +58,7 @@
             "Communication"
         ],
         "urgency": "Medium",
-        "eventDate": "2024-12-15"
+        "eventDate": "2024-12-20T06:00:00.000Z"
     },
     {
         "id": 14,
@@ -157,15 +158,15 @@
         "id": 14
     },
     {
-        "eventDate": "2024-10-01",
-        "eventDescription": "Join us to clean up the park.",
-        "eventName": "Community research",
-        "location": "Central Park",
+        "eventDate": "2024-12-15T00:00:00.000Z",
+        "eventDescription": "Collect toys to be distributed to children during the holidays.",
+        "eventName": "Toy Collection for Kids",
+        "location": "City Mall",
         "requiredSkills": [
             "Teamwork",
-            "Environmental Awareness"
+            "Communication"
         ],
-        "urgency": "High",
+        "urgency": "Low",
         "id": 15
     },
     {
@@ -241,9 +242,9 @@
         "id": 20
     },
     {
-        "eventDate": "2024-10-01",
+        "eventDate": "2024-10-01T00:00:00.000Z",
         "eventDescription": "Join us to clean up the park.",
-        "eventName": "Community reseach",
+        "eventName": "Community Cleanup",
         "location": "Central Park",
         "requiredSkills": [
             "Teamwork",
@@ -263,5 +264,52 @@
         ],
         "urgency": "High",
         "id": 22
+    },
+    {
+        "eventName": "fjdsffdg",
+        "eventDescription": "fgjfdgfng",
+        "location": "cdfdfggh",
+        "requiredSkills": [
+            "Teamwork",
+            "Environmental Awareness"
+        ],
+        "urgency": "Medium",
+        "eventDate": "2024-10-31T05:00:00.000Z",
+        "id": 23
+    },
+    {
+        "eventName": "rewuu",
+        "eventDescription": "jdsffdghfg",
+        "location": "xzffdgfg",
+        "requiredSkills": [
+            "Running"
+        ],
+        "urgency": "Medium",
+        "eventDate": "2024-10-31T05:00:00.000Z",
+        "id": 24
+    },
+    {
+        "eventName": "ruttredxd",
+        "eventDescription": "sdsdfdhfjgfsaD",
+        "location": "FDFGJGKHGFD",
+        "requiredSkills": [
+            "Environmental Awareness",
+            "Running"
+        ],
+        "urgency": "Medium",
+        "eventDate": "2024-10-26T05:00:00.000Z",
+        "id": 25
+    },
+    {
+        "eventName": "ruttredxd",
+        "eventDescription": "sdsdfdhfjgfsaD",
+        "location": "FDFGJGKHGFD",
+        "requiredSkills": [
+            "Environmental Awareness",
+            "Running"
+        ],
+        "urgency": "Medium",
+        "eventDate": "2024-10-25T05:00:00.000Z",
+        "id": 26
     }
 ]

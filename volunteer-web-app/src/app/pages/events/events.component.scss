@@ -13,7 +13,8 @@
 
 h2 {
   text-align: center;
-  color: white;
+  color: black;
+  font-weight: bolder;
 }
 
 table {
@@ -54,9 +55,83 @@ label {
 }
 
 div{
-  background-image: linear-gradient(to top, #04AA6D,  #202123 );
+  background: linear-gradient(90deg, rgba(68, 68, 117, 0.8),rgba(40, 180, 131, 0.8));
 
 }
 .button-spacing {
   margin-left: 10px; 
+}
+.buttonAdd{
+  display:inline-block;
+  padding: 0.65rem 1.35rem;
+  font-size: 1rem;
+  text-align: center;
+  cursor:pointer;
+  border:none;
+  background: linear-gradient(180deg, rgba(1, 1, 15, 0.8),rgba(40, 180, 131, 0.8),rgba(1, 1, 15, 0.8));
+  color: white;
+}
+.buttonAdd:hover{
+  background-color: gray;
+}
+.buttonAdd:hover .icon{
+  transform: translate(4px);
+
+}
+.icon{
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.buttonAddE{
+  display:inline-block;
+  padding: 0.65rem 1.35rem;
+  font-size: 1rem;
+  text-align: center;
+  cursor:pointer;
+  border:none;
+  background: linear-gradient(90deg, rgba(68, 68, 117, 0.8),rgba(40, 180, 131, 0.8));
+  color: white;
+}
+.buttonAddE:hover{
+  background-color: gray;
+}
+.buttonAddE:hover .icon{
+  transform: translate(4px);
+
+}
+.icon{
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.buttonAddC{
+  display:inline-block;
+  padding: 0.65rem 1.35rem;
+  font-size: 1rem;
+  text-align: center;
+  cursor:pointer;
+  border:none;
+  box-shadow:black;
+ 
+  color: white;
+}
+.buttonAddC:hover{
+  background-color: gray;
+}
+
+/* Apply to the button to affect both button and icon when hovering */
+.icon-button:hover mat-icon {
+  transform: scale(1.2); 
+  color: gray; 
+  transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+/* Apply hover directly to the icon */
+.hover-effect:hover {
+  transform: scale(1.2);
+  color: gray; 
+  transition: transform 0.3s ease, color 0.3s ease; 
 }
