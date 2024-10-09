@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   rememberMe: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+  
 
   constructor(
     private authService: AuthService,

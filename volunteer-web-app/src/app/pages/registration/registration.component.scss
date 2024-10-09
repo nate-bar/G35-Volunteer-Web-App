@@ -1,108 +1,186 @@
+/* Main content container to hold both image and form side by side */
 
-input[type="email"],
-input[type="password"] {
-    background-color: white; 
-    color: black; 
-}
-
-
-div {
+.content-container {
     display: flex;
-    justify-content: center;
-    width: 100%; 
-    
-    margin: 2rem auto; 
-    
+    height: 100vh; /* Full viewport height */
     border-radius: 10px; 
+    margin: 8rem; /* Margin around the container */
+    margin-top: 3rem; /* Adjust top margin */
+    padding: 0; /* Remove default padding */
+    overflow: hidden; /* Prevent overflow issues */
+    box-shadow: 0px 10px 0px rgba(0, 0, 0, 0.3); /* Increased shadow for more visibility */
 }
 
 
-
-form {
-    padding: 1rem;
-    max-width: 30rem;
-    margin: 2rem auto;
+  
+  /* Image Container */
+  .image-container {
+    flex: 1; /* Take half the width */
+    height: 100%; /* Full viewport height */
+  }
+  
+  .image-container img {
+    width: 100%;
+    height: 85%;
+    object-fit: cover; /* Ensure the image fills the container without stretching */
+    display: block; /* Prevent any extra space from inline images */
+  }
+  
+  /* Form Container */
+  .form-container {
+    flex: 0.7; /* Take half the width */
+    display: flex;
+    align-items: center; /* Center the form vertically */
+    justify-content: center; /* Center the form horizontally */
+    height: 85%; /* Full viewport height */
+    padding: 5rem; /* Add some padding for spacing */
+    background: rgba(255, 255, 255, 0.9); /* White background with slight transparency for form */
+  }
+  
+  /* Form Styling */
+  form {
+    width: 100%;
+    max-width: 400px; /* Limit the maximum width */
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; /* Gap between form elements */
+  }
+  
+  h1 {
+    font-size: 2rem;
+    text-align: left;
+  }
+  
+  /* Input Group Styling */
+  .mb-1.d-flex.flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #000; /* Change to black for better visibility */
+  }
+  
+  input,
+  select {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    background: linear-gradient(90deg, rgba(68, 68, 117, 0.8),rgba(40, 180, 131, 0.8));
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-
-input[type="checkbox"] {
-    background-color: transparent; 
-}
-label{
-    min-width: 100px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Checkbox */
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #000; /* Change to black for better visibility */
+  }
+  
+  .form-check input {
+    margin: 0;
+  }
+  
+  /* Button Container */
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .cancel-button {
+    padding: 0.75rem 2rem;
+    background-color: red;
+    border: none;
     color: white;
-}
-.white{
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .cancel-button:hover {
+    background-color: darkred;
+  }
+  
+  button[type="submit"] {
+    padding: 0.75rem 2rem;
+    background-color: green;
+    border: none;
     color: white;
-}
-.yellow{
-    color:yellow
-}
-
-p{
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: darkgreen;
+  }
+  
+  .icon {
+    display: inline-block;
+    margin-left: 0.5rem;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  button:hover .icon {
+    transform: translate(4px);
+  }
+  .progress-text{
+    color:green;
+    font-weight: bold;
+  }
+  
+  /* Custom styles for mat-error */
+  mat-error {
+    color: red;
+    background-color: black;
+    padding: 2px;
+    border-radius: 3px;
+    margin-top: 0.5rem; /* Space between the field and error message */
+    min-height: 1.5rem; /* Reserve space for the error message to avoid resizing */
+    display: block;
+  }
+  
+  .white {
+    color: #000; /* Black color for better visibility on white background */
+  }
+  
+  .yellow {
+    color: yellow;
+  }
+  
+  p {
     display: block;
     margin: 1rem auto;
     text-align: center;
-}
-
-button {
-    width: 50%;
-    display: block;
-    margin: 1rem auto;
-    padding: 1rem;
-    background-color: #007bff;
-    color: white;
-    border-color: black;
-    border-radius: 10rem;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden; 
-    transition: all 0.5s ease-in-out; 
-}
-
-
-button::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 300%;
-    height: 300%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.5s ease-in-out;
-    border-radius: 100%;
-}
-
-
-button:hover {
-    transform: scale(1.3); 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
-  
-    background-color: rgba(44, 44, 91, 0.8);
-}
-
-
-button:hover::before {
-    transform: translate(-50%, -50%) scale(1); 
-    opacity: 0; 
-}
-
-h1{
-    text-transform: uppercase;
-    backface-visibility: hidden;
-    margin-bottom: 60px;
-    display: flex;
-    justify-content: center;
-}
-/* Custom styles for mat-error */
-mat-error {
-    color: red;              
-    background-color: black; 
-    padding: 5px;            
-    border-radius: 3px;     
   }
   
+  .signin-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .signin-link:hover {
+    color: #ff69b4;
+  }
+  .spinner-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    height: 100%; /* Make sure the container takes the full height of the form-container */
+}
+
+.loading-text {
+    margin-bottom: 1rem; /* Add space between the text and the spinner */
+    font-size: 1.2rem; /* Adjust font size */
+    color: #333; /* Set text color */
+    font-weight: bold; /* Make text bold */
+}
+

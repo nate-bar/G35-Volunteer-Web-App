@@ -5,3 +5,9 @@ thead th {
     color: white;
     background-color: black;
   }
+
+  .icon-button:hover mat-icon {
+    transform: scale(1.2); 
+    color: gray; 
+    transition: transform 0.3s ease, color 0.3s ease; 
+  }

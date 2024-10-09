@@ -14,14 +14,31 @@ mat-error {
     background-color: black;
 }
 
+.fixed-width {
+    width: 300px; /* Set a fixed width for the mat-form-field to avoid resizing */
+  }
+  
+  .selected-dates-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    max-width: 300px; /* Keep the width consistent to prevent resizing */
+    padding: 5px;
+    background: #f0f0f0;
+    border-radius: 4px;
+  }
 form {
     padding: 1rem;
-    width: auto;
+    width: 800px; /* Set a fixed width */
     margin: 2rem auto;
     border-radius: 4px;
-    background: linear-gradient(90deg, rgba(68, 68, 117, 0.8),rgba(40, 180, 131, 0.8));
+    background: linear-gradient(90deg, rgba(68, 68, 117, 0.8), rgba(40, 180, 131, 0.8));
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+   
 }
+
 
 
 input[type="text"],input[type="textarea"],

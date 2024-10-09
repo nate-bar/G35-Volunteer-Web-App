@@ -15,6 +15,7 @@ import { NotificationService } from '../../notification.service';
 //import { provideHttpClient, HttpClient } from '@angular/common/http';
 import { EventService } from './event.service';
 import { Event } from './event.interface';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-events',
@@ -31,6 +32,7 @@ import { Event } from './event.interface';
     MatFormFieldModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatIconModule
   ],
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
@@ -50,7 +52,8 @@ export class EventsComponent implements OnInit {
   editIndex: number | null = null;
   page = 1;
   pageSize = 5;
-  apiMessage: string = ''; 
+  apiMessage: string = '';
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -69,23 +72,29 @@ export class EventsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     // Fetch events from the Flask API
     this.eventService.getEvents().subscribe(
       (data: Event[]) => {
-        this.events = data;
+        // Initialize showFullDescription for each event
+        this.events = data.map(event => ({
+          ...event,
+          showFullDescription: false  // Set the default value to false
+        }));
+  
         this.filteredEvents = [...this.events];
-        
       },
       error => {
         console.error('Error fetching events', error);
       }
     );
-
+  
     // Subscribe to filter input changes
     this.filter.valueChanges.subscribe((searchTerm: string | null) => {
       this.filterEvents(searchTerm || '');
     });
   }
+  
 
   filterEvents(searchTerm: string) {
     if (!searchTerm) {
@@ -107,33 +116,34 @@ export class EventsComponent implements OnInit {
       const newEvent = { ...this.eventForm.value, eventDate: new Date(this.eventForm.value.eventDate).toISOString() };
       
       if (this.isEditMode && this.editIndex !== null) {
-        // Store the old event data before updating
-        const oldEvent = { ...this.events[this.editIndex] };
-  
         // Update the existing event
-        const eventId = this.events[this.editIndex].id;
-        this.eventService.updateEvent(eventId, newEvent).subscribe(
+        this.eventService.updateEvent(this.editIndex, newEvent).subscribe(
           (response) => {
-            // Correctly access `event` from the response
             const updatedEvent = response.event;
-            this.events[this.editIndex!] = updatedEvent;
+            
+            // Find the index of the event in the events array by ID and update it
+            const eventIndex = this.events.findIndex(event => event.id === this.editIndex);
+            if (eventIndex !== -1) {
+              this.events[eventIndex] = updatedEvent;
+            }
+  
             this.isEditMode = false;
             this.editIndex = null;
-  
             this.apiMessage = response.message;
   
-            // Notify about the updated event with old details
+            // Notify about the updated event
             this.notificationService.addNotification({
               id: Date.now(),
               title: 'Event Updated',
-              message: `The event "${oldEvent.eventName}" has been updated.`,
+              message: `The event "${updatedEvent.eventName}" has been updated.`,
               read: false,
               date: new Date(),
             });
   
             this.eventForm.reset();
             this.filterEvents(this.filter.value || '');
-            modal.close();
+            modal.close(); // Close the 
+            window.location.reload();
           },
           error => {
             this.apiMessage = error.error?.message || 'Error updating event';
@@ -160,6 +170,7 @@ export class EventsComponent implements OnInit {
             this.eventForm.reset();
             this.filterEvents(this.filter.value || '');
             modal.close();
+            window.location.reload();
           },
           error => {
             this.apiMessage = error.error?.message || 'Error adding new event';
@@ -174,11 +185,11 @@ export class EventsComponent implements OnInit {
   }
 
 
-  openModal(content: any, editMode: boolean, index?: number): void {
+  openModal(content: any, editMode: boolean, event?: Event): void {
     this.isEditMode = editMode;
-    if (editMode && index !== undefined) {
-      this.editIndex = index;
-      const event = this.events[index];
+  
+    if (editMode && event) {
+      // Populate the form with the selected event's data
       this.eventForm.setValue({
         eventName: event.eventName,
         eventDescription: event.eventDescription,
@@ -187,12 +198,18 @@ export class EventsComponent implements OnInit {
         urgency: event.urgency,
         eventDate: new Date(event.eventDate),
       });
+  
+      this.editIndex = event.id; // Save the event ID for editing
     } else {
       this.editIndex = null;
       this.eventForm.reset();
     }
+    
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
+  
+  
+  
 
   onCancel(): void {
     this.eventForm.reset();
@@ -252,4 +269,9 @@ export class EventsComponent implements OnInit {
 
     this.eventForm.get('requiredSkills')!.setValue(selectedSkills);
   }
+
+  toggleFullDescription(event: any) {
+    event.showFullDescription = !event.showFullDescription;
+  }
+  
 }

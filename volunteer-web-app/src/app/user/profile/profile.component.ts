@@ -11,6 +11,10 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service'; 
 import { AuthService } from '../../auth.service';
+import { MatIconModule } from '@angular/material/icon';
+import {MatChipsModule} from '@angular/material/chips';
+
+
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +30,8 @@ import { AuthService } from '../../auth.service';
     MatFormFieldModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatIconModule,
+    MatChipsModule 
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
@@ -59,7 +65,7 @@ export class ProfileComponent implements OnInit {
   ) {
     this.profileForm = this.fb.group({
       email: [{ value: '', disabled: true }], // Email field as disabled
-      availability: ['', [Validators.required, this.availableDateValidator.bind(this)]],
+      availability: [[], Validators.required],
       fullName: ['', [Validators.required, Validators.maxLength(50)]],
       address1: ['', [Validators.required, Validators.maxLength(100)]],
       address2: ['', [Validators.maxLength(100)]],
@@ -92,6 +98,7 @@ export class ProfileComponent implements OnInit {
               availability: response.availability,
             });
             this.profileForm.controls['email'].disable(); // Disable the email field after setting its value
+            this.authService.updateUserProfile(response);
           }
         },
         (error) => {
@@ -140,6 +147,18 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  addDate(date: any): void {
+    if (date && !this.profileForm.controls['availability'].value.includes(date)) {
+      const updatedDates = [...this.profileForm.controls['availability'].value, date];
+      this.profileForm.controls['availability'].setValue(updatedDates);
+    }
+  }
+  
+  removeDate(date: string): void {
+    const updatedDates = this.profileForm.controls['availability'].value.filter((d: string) => d !== date);
+    this.profileForm.controls['availability'].setValue(updatedDates);
+  }
+  
   availableDateValidator(control: AbstractControl): ValidationErrors | null {
     const selectedDate = control.value;
     const isValid = this.availableDates.includes(selectedDate);
