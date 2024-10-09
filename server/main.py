@@ -366,3 +366,40 @@ def delete_event(event_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# match volunteers
+@app.route('/api/admin/matchVolunteers', methods=['POST'])
+def match_volunteer_with_event():
+    data = request.json
+    email = data.get('email')
+    event_id = data.get('event_id')
+
+    if not email or not event_id:
+        return jsonify({'error': 'Please select a user and an event'}), 400
+
+    try:
+        user = next((user for user in users_db if user.get('email') == email), None)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        event = next((event for event in events_db if event.get('id') == event_id), None)
+        if not event:
+            return jsonify({'error': 'Event not found'}), 404
+
+        if 'events' not in user:
+            user['events'] = []
+        if event_id not in user['events']:
+            user['events'].append(event_id)
+
+        if 'users' not in event:
+            event['users'] = []
+        if email not in event['users']:
+            event['users'].append(email)
+
+        save_users(users_db)
+        save_events(events_db)
+
+        return jsonify({'message': f'successfully matched event {event["eventName"]} with user {user["full_name"]}'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
