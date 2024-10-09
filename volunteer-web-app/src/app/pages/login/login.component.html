@@ -8,6 +8,10 @@
     <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
       {{ errorMessage }}
     </div>
+    <!-- success Message -->
+    <div *ngIf="successMessage" class="alert alert-warning" role="alert">
+      {{ successMessage }}
+    </div>
 
     <!-- Username Field -->
     <div class="mb-4 d-flex align-items-center">
@@ -51,8 +55,9 @@
 
     <!-- Buttons -->
     <div class="d-flex justify-content-between mb-4">
-      <button type="submit" class="btn btn-primary me-4">Login</button>
-      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn btn-secondary buttonCancel" (click)="cancel()"><span ><i class="bi bi-x-octagon iconC"></i></span>Cancel</button>
+      <button type="submit" class="btn btn-secondary me-4 buttonLogin">Login<span ><i class="bi bi-box-arrow-in-right icon"></i></span></button>
+      
     </div>
 
     <!-- Signup Link -->

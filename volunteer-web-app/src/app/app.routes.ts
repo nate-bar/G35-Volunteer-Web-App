@@ -12,6 +12,7 @@ import { VolunteerMatchingComponent } from './pages/volunteer-matching/volunteer
 import { UserManagementComponent } from './user-management/user-management.component';
 import { VolunteerHistoryComponent } from './pages/volunteer-history/volunteer-history.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -30,6 +31,7 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: AdminComponent,
+        canActivate: [authGuard],
         children: [
             {
                 path: 'volunteerHistory', 

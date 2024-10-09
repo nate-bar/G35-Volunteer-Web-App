@@ -1,70 +1,161 @@
+
 .admin-container {
     display: flex;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background: linear-gradient(90deg,  rgba(40, 180, 131, 0.8),rgba(68, 68, 117, 0.8));
+  border-bottom: 1px solid #dee2e6;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  position: relative;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  color: white;
+  flex: 1; 
+  text-align: left; 
+}
+.user-menu {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: black ;
+  border-radius: 5px;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.profile-pic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.user-name {
+  margin-left: 10px;
+  color: white;
+}
+
+.dropdown-icon {
+  margin-left: 5px; /* Space between the username and the icon */
+  color: white;
+  font-size: 24px; 
+  flex-shrink: 0; /* Prevent shrinking */
+  padding-top: 5px;
+}
+
+  
+
+  // .admin-header {
+  //   padding: 20px;
+  //   background: linear-gradient(90deg, rgba(68, 68, 117, 0.8),rgba(40, 180, 131, 0.8));
+  //   border-bottom: 1px solid #dee2e6;
+  //   margin-left: 1rem;
+  //   margin-right: 1rem;
+  // }
+  
+  // .dashboard-title {
+  //   font-size: 2.5rem;
+  //   color: white;
+  // }
+ 
+
+  .sidenav-container {
+    height: 100vh;
+    margin-bottom: 2rem;
+    background: transparent;
   }
   
-  .sidebar {
-    width: 200px;
-    background-image: linear-gradient(to left, #04AA6D,  #202123 );
-    padding: 15px;
-    margin-left: 1rem;
-    margin-bottom: 1rem;
-    bottom: 1rem;
-    height: 85vh;
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    
-  }
-  
-  .sidebar li {
-    margin: 10px 0;
-  }
-  
-  .sidebar a {
-    text-decoration: none;
+  .sidenav {
+    width: 250px;
+    background: linear-gradient(90deg, rgba(68, 68, 117, 0.8),rgba(40, 180, 131, 0.8));
     color: white;
   }
   
-  .sidebar a.active-link {
+  .sidenav-title {
+    padding: 1rem;
     font-weight: bold;
+    text-align: center;
+  }
+  
+  .sidenav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidenav-menu li {
+    padding: 1rem;
+    border-bottom: 1px solid #34495e;
+    overflow: hidden; /* Hide the overflow to apply smooth sliding */
+  
+    &.active {
+      background-color: #34495e;
+      color: #1abc9c;
+    }
+  
+    a {
+      display: flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+      
+      &:hover {
+        color: #1abc9c;
+        cursor: pointer;
+        transform: translateX(10px); /* Move text to the right on hover */
+      }
+      
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  
+    /* Sliding submenu effect */
+    ul.submenu {
+      list-style: none;
+      padding-left: 20px;
+      margin: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, transform 0.3s ease; /* Smooth slide */
+    }
+  
+    ul.submenu.open {
+      max-height: 200px; /* Set to enough height to accommodate the submenu */
+      transform: translateX(0);
+    }
+  }
+  
+  /* Optional: Add translate effect on the main menu items */
+  .sidenav-menu li a {
+    transition: transform 0.3s ease;
+  }
+  
+  .menu-icon {
+    margin-right: 12px; 
   }
   
   .content-area {
-    flex: 1;
-    padding: 20px;
+    padding: 2rem;
   }
-/* Optional styling for submenu */
-.submenu {
-    list-style-type: none;
-    margin-left: 20px; /* Indent submenus */
-  }
+
+ 
   
-  .submenu li {
-    margin: 5px 0;
-  }
-  
-  .menu-link {
-    cursor: pointer; /* Change cursor to indicate it's clickable */
-  }
-  .admin-header {
-    padding: 20px;
-    background-color: black;
-    border-bottom: 1px solid #dee2e6;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-  
-  .dashboard-title {
-    font-size: 2.5rem;
-    color: white;
-  }
-  li.active {
-    background-color: black;
-  }
-  
-  .active-link {
-    color: white;
-  }
   

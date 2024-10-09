@@ -6,7 +6,8 @@ export interface Event {
   location: string;
   requiredSkills: string[];
   urgency: string;
-  eventDate: string; 
+  eventDate: string;
+  showFullDescription?: boolean;
 }
 
   
