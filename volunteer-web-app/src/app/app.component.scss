@@ -1,0 +1,13 @@
+.spinner-container {
+    position: fixed; /* Fixed positioning to keep it centered */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a subtle background to obscure content */
+    z-index: 9999; /* Ensure the spinner is on top */
+  }
+  

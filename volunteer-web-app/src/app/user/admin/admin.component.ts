@@ -23,6 +23,7 @@ export class AdminComponent implements OnInit {
   selectedLink: string = '';
   userName: string = '';
   sidenavOpened: boolean = true;
+  loading: boolean = false;
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
@@ -37,9 +38,11 @@ export class AdminComponent implements OnInit {
         } else {
           console.log('Profile is missing or does not contain a full_name:', profile);
         }
+        this.loading = false;
       });
     } else {
       console.log('User is not logged in');
+      this.loading = false;
     }
   }
 
@@ -52,9 +55,10 @@ export class AdminComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.authService.logout();  
+    this.router.navigate(['/login']); 
   }
+  
 
   selectLink(link: string, closeSidenav: boolean = true): void {
     this.selectedLink = link;

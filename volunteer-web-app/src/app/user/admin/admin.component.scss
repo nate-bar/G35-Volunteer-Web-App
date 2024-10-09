@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  background: linear-gradient(90deg, rgba(68, 68, 117, 0.8), rgba(40, 180, 131, 0.8));
+  background: linear-gradient(90deg,  rgba(40, 180, 131, 0.8),rgba(68, 68, 117, 0.8));
   border-bottom: 1px solid #dee2e6;
   margin-left: 1rem;
   margin-right: 1rem;
@@ -96,28 +96,60 @@
   .sidenav-menu {
     list-style: none;
     padding: 0;
+    margin: 0;
+  }
   
-    li {
-      padding: 1rem;
-      border-bottom: 1px solid #34495e;
+  .sidenav-menu li {
+    padding: 1rem;
+    border-bottom: 1px solid #34495e;
+    overflow: hidden; /* Hide the overflow to apply smooth sliding */
   
-      &.active {
-        background-color: #34495e;
+    &.active {
+      background-color: #34495e;
+      color: #1abc9c;
+    }
+  
+    a {
+      display: flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+      
+      &:hover {
+        color: #1abc9c;
+        cursor: pointer;
+        transform: translateX(10px); /* Move text to the right on hover */
       }
-  
-      a {
-        color: white;
-        text-decoration: none;
-  
-        &:hover {
-          color: #1abc9c;
-          cursor: pointer;
-          transform: scale(1.05);  
-          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);  
-          transition: all 0.3s ease;
-        }
+      
+      mat-icon {
+        margin-right: 8px;
       }
     }
+  
+    /* Sliding submenu effect */
+    ul.submenu {
+      list-style: none;
+      padding-left: 20px;
+      margin: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, transform 0.3s ease; /* Smooth slide */
+    }
+  
+    ul.submenu.open {
+      max-height: 200px; /* Set to enough height to accommodate the submenu */
+      transform: translateX(0);
+    }
+  }
+  
+  /* Optional: Add translate effect on the main menu items */
+  .sidenav-menu li a {
+    transition: transform 0.3s ease;
+  }
+  
+  .menu-icon {
+    margin-right: 12px; 
   }
   
   .content-area {

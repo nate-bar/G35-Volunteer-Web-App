@@ -4,24 +4,26 @@
     <ul class="sidenav-menu">
       <li [class.active]="selectedLink === 'home'">
         <a routerLink="/admin" routerLinkActive="active-link" class="menu-link" (click)="selectLink('home', false)">
-          <span><i class="bi bi-speedometer2"></i></span> DASHBOARD
+          <!-- <mat-icon>{{ selectedLink === 'home' ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon> -->
+          <span><i class="bi bi-speedometer2 menu-icon"></i></span> DASHBOARD
         </a>
       </li>
 
       <!-- Users Menu with Submenu -->
       <li [class.active]="selectedLink === 'users'">
-        <a class="menu-link " (click)="toggleUsersMenu();selectLink('users', false)">
-          <i class="fas fa-users"></i> Users
+        <a class="menu-link" (click)="toggleUsersMenu();selectLink('users', false)">
+          <mat-icon>{{ isUsersMenuOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon>
+          <i class="fas fa-users menu-icon"></i> Users
         </a>
-        <ul class="submenu" *ngIf="isUsersMenuOpen">
+        <ul class="submenu" [class.open]="isUsersMenuOpen">
           <li [class.active]="selectedLink === 'manageUser'">
             <a routerLink="manageUser" routerLinkActive="active-link" (click)="selectLink('manageUser', false)">
-              <i class="fas fa-user-plus"></i> User Management
+              <i class="fas fa-user-plus menu-icon"></i> User Management
             </a>
           </li>
           <li [class.active]="selectedLink === 'volunteerHistory'">
             <a routerLink="volunteerHistory" routerLinkActive="active-link" (click)="selectLink('volunteerHistory', false)">
-              <i class="fas fa-history"></i> Volunteering History
+              <i class="fas fa-history menu-icon"></i> Volunteering History
             </a>
           </li>
         </ul>
@@ -30,38 +32,22 @@
       <!-- Events Menu with Submenu -->
       <li [class.active]="selectedLink === 'events'">
         <a class="menu-link" (click)="toggleEventsMenu();selectLink('events', false)">
-          <i class="fas fa-calendar-plus"></i> Events
+          <mat-icon>{{ isEventsMenuOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon>
+          <i class="fas fa-calendar-plus menu-icon"></i> Events
         </a>
-        <ul class="submenu" *ngIf="isEventsMenuOpen">
+        <ul class="submenu" [class.open]="isEventsMenuOpen">
           <li [class.active]="selectedLink === 'newEvent'">
             <a routerLink="newEvent" routerLinkActive="active-link" (click)="selectLink('newEvent', false)">
-              <i class="fas fa-calendar-plus"></i> Create Event
+              <i class="fas fa-calendar-plus menu-icon"></i> Create Event
             </a>
           </li>
           <li [class.active]="selectedLink === 'allEvents'">
-            <a routerLink="events" routerLinkActive="active-link" (click)="selectLink('events', false)">
-              <i class="fas fa-list"></i> All Events
-            </a>
-          </li>
-          <!-- <li [class.active]="selectedLink === 'eventHistory'">
-            <a routerLink="eventHistory" routerLinkActive="active-link" (click)="selectLink('eventHistory', false)">
-              <i class="fas fa-history"></i> Event History
-            </a>
-          </li> -->
-          <li [class.active]="selectedLink === 'matchVolunteers'">
-            <a routerLink="matchVolunteers" routerLinkActive="active-link" (click)="selectLink('matchVolunteers', false)">
-              <i class="fas fa-history"></i> Match Volunteers
+            <a routerLink="events" routerLinkActive="active-link" (click)="selectLink('allEvents', false)">
+              <i class="fas fa-list menu-icon"></i> All Events
             </a>
           </li>
         </ul>
       </li>
-
-      <!-- Logout Menu Item -->
-      <!-- <li [class.active]="selectedLink === 'logout'">
-        <a (click)="logout()" class="menu-link" (click)="selectLink('logout', true)">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
-      </li> -->
     </ul>
   </mat-sidenav>
 
@@ -72,7 +58,8 @@
         <div class="user-menu">
           <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
             <img src="group35.jpg" alt="User" class="profile-pic" />
-            <span class="user-name">Admin {{ userName }}</span><span><mat-icon class="dropdown-icon">arrow_drop_down</mat-icon></span>
+            <span class="user-name">Admin {{ userName }}</span>
+            <span><mat-icon class="dropdown-icon ">arrow_drop_down</mat-icon></span>
           </button>
           <mat-menu #userMenu="matMenu">
             <button mat-menu-item (click)="viewProfile()">Profile</button>
@@ -81,7 +68,6 @@
         </div>
       </h2>
     </div>
-    
     
     <div class="content-area">
       <router-outlet></router-outlet>

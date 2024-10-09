@@ -52,7 +52,8 @@ export class EventsComponent implements OnInit {
   editIndex: number | null = null;
   page = 1;
   pageSize = 5;
-  apiMessage: string = ''; 
+  apiMessage: string = '';
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -71,6 +72,7 @@ export class EventsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     // Fetch events from the Flask API
     this.eventService.getEvents().subscribe(
       (data: Event[]) => {
