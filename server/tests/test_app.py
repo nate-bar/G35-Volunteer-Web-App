@@ -143,3 +143,38 @@ def test_get_events(client):
     assert isinstance(response.json, list)
     assert len(response.json) > 0
     assert any(event['eventName'] == 'Community Cleanup' for event in response.json)
+
+
+def test_match_volunteer_with_event(client):
+    client.post('/api/register', json={
+        'email': 'volunteer1@example.com',
+        'password': 'securepassword123',
+        'role': 'user'
+    })
+
+    client.post('/api/events', json={
+        'eventName': 'Charity Run',
+        'eventDescription': 'Join us for a charity run to raise funds for education.',
+        'location': 'City Park',
+        'requiredSkills': ['Endurance', 'Community Spirit'],
+        'urgency': 'Medium',
+        'eventDate': '2024-11-01'
+    })
+
+    response = client.post('/api/admin/matchVolunteers', json={
+        'email': 'volunteer1@example.com',
+        'event_id': 1
+    })
+
+    assert response.status_code == 200
+    assert response.json['message'] == 'Event 1 successfully matched with user volunteer1@example.com'
+
+    user_response = client.get('/api/profile', query_string={'email': 'volunteer1@example.com'})
+    assert user_response.status_code == 200
+    assert 1 in user_response.json['events']
+
+    event_response = client.get('/api/events')
+    assert event_response.status_code == 200
+    matched_event = next((event for event in event_response.json if event['id'] == 1), None)
+    assert matched_event is not None
+    assert 'volunteer1@example.com' in matched_event['users']
