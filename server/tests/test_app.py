@@ -1,5 +1,5 @@
 import pytest
-from main import app
+from main import app, bcrypt, users_db, events_db
 
 from flask import url_for
 
@@ -8,6 +8,11 @@ def client():
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
+
+@pytest.fixture(autouse=True)
+def clear_data():
+    users_db.clear()
+    events_db.clear()
 
 def test_home(client):
     response = client.get('/')
@@ -44,6 +49,17 @@ def test_login_success(client):
         'password': '123456789',
         'role': 'user'
     })
+
+    hashed_password = bcrypt.generate_password_hash('123456789').decode('utf-8')
+
+    # just added code to simulate the confirmation to store the hashed pass
+    users_db.append({
+        'email': 'konateallamanhamed@gmail.com',
+        'password': hashed_password, 
+        'role': 'user',
+        'profile_completed': True
+    })
+
     # Assuming the email is confirmed, we proceed to login
     response = client.post('/api/login', json={
         'email': 'konateallamanhamed@gmail.com',
@@ -91,7 +107,7 @@ def test_update_event(client):
     })
     assert response.status_code == 200
     assert 'Event updated successfully' in response.json['message']
-    assert response.json['event']['eventName'] == 'Updated Community Cleanup'
+    assert response.json['event']['eventName'] == 'Updated Community research'
 
 def test_update_event_not_found(client):
     response = client.put('/api/events/999', json={
@@ -142,14 +158,15 @@ def test_get_events(client):
     assert response.status_code == 200
     assert isinstance(response.json, list)
     assert len(response.json) > 0
-    assert any(event['eventName'] == 'Community Cleanup' for event in response.json)
+    assert any(event['eventName'] == 'Community research' for event in response.json)
 
 
 def test_match_volunteer_with_event(client):
     client.post('/api/register', json={
         'email': 'volunteer1@example.com',
-        'password': 'securepassword123',
-        'role': 'user'
+        'password': '123',
+        'role': 'user',
+        'full_name': 'tester man'
     })
 
     client.post('/api/events', json={
@@ -161,13 +178,21 @@ def test_match_volunteer_with_event(client):
         'eventDate': '2024-11-01'
     })
 
+    users_db.append({
+        'email': 'volunteer1@example.com',
+        'password': '12345678',
+        'role': 'user',
+        'full_name': 'tester man',
+        'events': []
+    })
+
     response = client.post('/api/admin/matchVolunteers', json={
         'email': 'volunteer1@example.com',
         'event_id': 1
     })
 
     assert response.status_code == 200
-    assert response.json['message'] == 'Event 1 successfully matched with user volunteer1@example.com'
+    assert response.json['message'] == 'successfully matched event Charity Run with user tester man'
 
     user_response = client.get('/api/profile', query_string={'email': 'volunteer1@example.com'})
     assert user_response.status_code == 200

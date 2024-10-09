@@ -363,10 +363,7 @@ def delete_event(event_id):
         return jsonify({'error': 'Event not found'}), 404
     except Exception as e:
         return jsonify({'error': 'Failed to delete event', 'details': str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+    
 # match volunteers
 @app.route('/api/admin/matchVolunteers', methods=['POST'])
 def match_volunteer_with_event():
@@ -403,3 +400,7 @@ def match_volunteer_with_event():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
