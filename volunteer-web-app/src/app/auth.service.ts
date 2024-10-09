@@ -49,11 +49,11 @@ export class AuthService {
   }
 
   logout(): void {
-    this.isLoggedInSubject.next(false);
+    this.isLoggedInSubject.next(false);  // Immediately update the observable
     this.userRole = null;
     this.userEmail = '';
     this.profileCompleted = false;
-
+  
     if (isPlatformBrowser(this.platformId)) {
       try {
         localStorage.removeItem('isLoggedIn');
@@ -65,7 +65,9 @@ export class AuthService {
       }
     }
     this.userProfileSubject.next(null);
+    
   }
+  
 
   getIsLoggedIn(): boolean {
     return this.isLoggedInSubject.value;
@@ -156,4 +158,8 @@ export class AuthService {
     }
     return false;
   }
+  public updateUserProfile(profile: any): void {
+    this.userProfileSubject.next(profile);
+  }
+  
 }

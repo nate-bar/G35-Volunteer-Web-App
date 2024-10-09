@@ -1,71 +1,90 @@
-<div>
-  <form (ngSubmit)="onSubmit()">
-    <h1><span><i class="fas fa-user-plus fa-3x"></i></span></h1>
-    <!-- Success and Error Messages -->
-    <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
-    <!-- Email Input -->
-    <div class="mb-4 d-flex align-items-center">
-      <label class="form-label me-3" for="email" style="min-width: 100px;">Email address:</label>
-      <input
-        type="email"
-        id="email"
-        class="form-control flex-grow-1"
-        [formControl]="email"
-        maxlength="100"
-      />
-      <mat-error *ngIf="isFieldInvalid(email)">
-        <span *ngIf="email.errors?.['required']">Email is required.</span>
-        <span *ngIf="email.errors?.['email']">Enter a valid email address.</span>
-        <span *ngIf="email.errors?.['maxlength']">Email must be under 100 characters.</span>
-      </mat-error>
-    </div>
 
-    <!-- Password Input -->
-    <div class="mb-4 d-flex align-items-center">
-      <label class="form-label me-3" for="password" style="min-width: 100px;">Password:</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control flex-grow-1"
-        [formControl]="password"
-        minlength="8"
-      />
-      <mat-error *ngIf="isFieldInvalid(password)">
-        <span *ngIf="password.errors?.['required']">Password is required.</span>
-        <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long.</span>
-      </mat-error>
-    </div>
-    <!-- Role Selection -->
-    <div class="mb-4 d-flex align-items-center">
-      <label class="form-label me-3" for="role" style="min-width: 100px;">Role:</label>
-      <select
-        id="role"
-        class="form-select flex-grow-1"
-        [formControl]="role"
-        maxlength="8"
-      >
-        <option value="">Select role</option>
-        <option value="admin">Admin</option>
-        <option value="user">User</option>
-      </select>
-      <mat-error *ngIf="isFieldInvalid(role)">
-        <span *ngIf="role.errors?.['required']">Role is required.</span>
-      </mat-error>
-    </div>
-    <!-- Remember Me Checkbox -->
-    <div class="form-check d-flex justify-content-center mb-4">
-      <input
-        class="form-check-input me-2"
-        type="checkbox"
-        id="Remember"
-        [checked]="true"
-      />
-      <label class="form-check-label" for="Remember">Remember me</label>
-    </div>
+<div class="content-container">
+  <div class="image-container">
+    <img src="group35.jpg" alt="Decorative Image">
 
-    <!-- Sign Up Button -->
-    <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
-    <p class="white">Do you have an account? <a href="/login"><strong class="yellow"> Login</strong></a></p>
-  </form>
+  </div>
+  <div class="form-container">
+    <form (ngSubmit)="onSubmit()">
+      <!-- Show spinner when loading -->
+      <div *ngIf="loading" class="spinner-container">
+        <div class="loading-text">Please wait...</div>
+        <mat-spinner></mat-spinner>
+        <div class="progress-text">{{ progress }}%</div>
+      </div>
+
+      <div *ngIf="!loading"> 
+      <!-- Success and Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success ">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger ">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Email Input -->
+      <div class="d-flex flex-column">
+        <label class="form-label me-3" for="email">Email address:</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          [formControl]="email"
+          maxlength="100"
+        />
+        <mat-error *ngIf="isFieldInvalid(email) && email.touched">
+          <span *ngIf="email.errors?.['required']">Email is required.</span>
+          <span *ngIf="email.errors?.['email']">Enter a valid email address.</span>
+          <span *ngIf="email.errors?.['maxlength']">Email must be under 100 characters.</span>
+        </mat-error>
+      </div>
+
+      <!-- Password Input -->
+      <div class="d-flex flex-column">
+        <label class="form-label me-3" for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          [formControl]="password"
+          minlength="8"
+        />
+        <mat-error *ngIf="isFieldInvalid(password) && password.touched">
+          <span *ngIf="password.errors?.['required']">Password is required.</span>
+          <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long.</span>
+        </mat-error>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="d-flex flex-column">
+        <label class="form-label me-3" for="role">Role:</label>
+        <select id="role" class="form-select" [formControl]="role">
+          <option value="">Select role</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+        <mat-error *ngIf="isFieldInvalid(role) && role.touched">
+          <span *ngIf="role.errors?.['required']">Role is required.</span>
+        </mat-error>
+      </div>
+
+      <!-- Remember Me Checkbox -->
+      <div class="form-check d-flex justify-content-center mb-1">
+        <input class="form-check-input me-2" type="checkbox" id="Remember" [checked]="true" />
+        <label class="form-check-label" for="Remember">Remember me</label>
+      </div>
+
+      <!-- Sign Up Button -->
+      <div class="button-container">
+        <button type="button" class="cancel-button" (click)="onCancel()"><span><i class="bi bi-x-lg icon-cancel"></i></span>Cancel</button>
+        <button type="submit">Submit <span class="icon">➔</span></button>
+      </div>
+
+      <p class="white" style="margin-bottom: 20px;">
+        Do you have an account?
+        <a href="/login" class="signin-link"><strong >  Login</strong></a>
+      </p>
+      </div>
+    </form>
+  </div>
 </div>

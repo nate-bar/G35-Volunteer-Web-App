@@ -75,8 +75,8 @@
             <td>{{ user.email }}</td>
             <td>{{ user.skills.join(', ') }}</td>
             <td>
-              <button class="btn btn-warning me-2" (click)="onEdit(i)">Edit</button>
-              <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>
+              <button class="btn btn-warning me-2 icon-button" (click)="onEdit(i)"><span><mat-icon >edit</mat-icon></span></button>
+              <button class="btn btn-danger icon-button" (click)="onDelete(i)"><mat-icon>delete_forever</mat-icon></button>
             </td>
           </tr>
         </tbody>
