@@ -380,7 +380,6 @@ def match_volunteer_with_event():
 
     if not email or not event_id:
         return jsonify({'error': 'Please select a user and an event'}), 400
-        
 
     try:
         user = next((user for user in users_db if user.get('email') == email), None)
@@ -392,7 +391,6 @@ def match_volunteer_with_event():
             return jsonify({'error': 'Event not found'}), 404
 
         user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
-
 
         # TODO: make sure to throw error if the event and the user is already matched
 
