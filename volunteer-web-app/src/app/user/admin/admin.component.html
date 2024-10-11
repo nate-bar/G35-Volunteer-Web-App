@@ -21,6 +21,11 @@
               <i class="fas fa-user-plus menu-icon"></i> User Management
             </a>
           </li>
+          <li [class.active]="selectedLink === 'matchVolunteers'">
+            <a routerLink="matchVolunteers" routerLinkActive="active-link" (click)="selectLink('matchVolunteers', false)">
+              <i class="fas fa-user-plus menu-icon"></i> Volunteer Matchings
+            </a>
+          </li>
           <li [class.active]="selectedLink === 'volunteerHistory'">
             <a routerLink="volunteerHistory" routerLinkActive="active-link" (click)="selectLink('volunteerHistory', false)">
               <i class="fas fa-history menu-icon"></i> Volunteering History
@@ -70,6 +75,9 @@
     </div>
     
     <div class="content-area">
+      <div *ngIf="selectedLink === 'home'">
+        <img src="group35.jpg" alt="Dashboard Image" class="dashboard-image"/>
+      </div>
       <router-outlet></router-outlet>
     </div>
     <br>

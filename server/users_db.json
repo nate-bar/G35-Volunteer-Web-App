@@ -26,6 +26,6 @@
         "city": "Houston",
         "state": "CA",
         "zip_code": "77077",
-        "profile_completed": false
+        "profile_completed": true
     }
 ]
