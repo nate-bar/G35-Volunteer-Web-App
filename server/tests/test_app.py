@@ -1,5 +1,5 @@
 import pytest
-from main import app, bcrypt, users_db, events_db
+from main import app, bcrypt, users_db, events_db, user_event_matching_db
 
 from flask import url_for
 
@@ -13,6 +13,7 @@ def client():
 def clear_data():
     users_db.clear()
     events_db.clear()
+    user_event_matching_db.clear()
 
 def test_home(client):
     response = client.get('/')
@@ -162,28 +163,22 @@ def test_get_events(client):
 
 
 def test_match_volunteer_with_event(client):
-    client.post('/api/register', json={
+    users_db.append({
         'email': 'volunteer1@example.com',
-        'password': '123',
+        'password': bcrypt.generate_password_hash('12345678').decode('utf-8'),
         'role': 'user',
-        'full_name': 'tester man'
+        'full_name': 'Tester Man',
+        'profile_completed': True
     })
 
-    client.post('/api/events', json={
+    events_db.append({
+        'id': 1,
         'eventName': 'Charity Run',
         'eventDescription': 'Join us for a charity run to raise funds for education.',
         'location': 'City Park',
         'requiredSkills': ['Endurance', 'Community Spirit'],
         'urgency': 'Medium',
-        'eventDate': '2024-11-01'
-    })
-
-    users_db.append({
-        'email': 'volunteer1@example.com',
-        'password': '12345678',
-        'role': 'user',
-        'full_name': 'tester man',
-        'events': []
+        'eventDate': '2024-11-01',
     })
 
     response = client.post('/api/admin/matchVolunteers', json={
@@ -192,14 +187,11 @@ def test_match_volunteer_with_event(client):
     })
 
     assert response.status_code == 200
-    assert response.json['message'] == 'successfully matched event Charity Run with user tester man'
+    assert response.json['message'] == 'successfully matched event Charity Run with user Tester Man'
 
-    user_response = client.get('/api/profile', query_string={'email': 'volunteer1@example.com'})
-    assert user_response.status_code == 200
-    assert 1 in user_response.json['events']
+    assert len(user_event_matching_db) == 1
+    assert user_event_matching_db[0]['user_email'] == 'volunteer1@example.com'
+    assert len(user_event_matching_db[0]['events']) == 1
+    assert user_event_matching_db[0]['events'][0]['eventName'] == 'Charity Run'
 
-    event_response = client.get('/api/events')
-    assert event_response.status_code == 200
-    matched_event = next((event for event in event_response.json if event['id'] == 1), None)
-    assert matched_event is not None
-    assert 'volunteer1@example.com' in matched_event['users']
+    

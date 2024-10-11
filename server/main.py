@@ -7,8 +7,10 @@ import secrets
 import datetime
 from users_db import users_db, save_users
 from events_data import events_db, save_events
+from user_event_matching_db import user_event_matching_db, save_user_event_matchings
 from config import Config  # Import your configuration
 from threading import Thread
+ 
 
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
@@ -325,6 +327,11 @@ def complete_profile():
 def get_events():
     return jsonify(events_db)
 
+# Get all user event matchings
+@app.route('/api/admin/eventUserMatchings', methods=['GET'])
+def get_user_event_matchings():
+    return jsonify(user_event_matching_db)
+
 # Add a new event
 @app.route('/api/events', methods=['POST'])
 def add_event():
@@ -373,6 +380,7 @@ def match_volunteer_with_event():
 
     if not email or not event_id:
         return jsonify({'error': 'Please select a user and an event'}), 400
+        
 
     try:
         user = next((user for user in users_db if user.get('email') == email), None)
@@ -383,18 +391,21 @@ def match_volunteer_with_event():
         if not event:
             return jsonify({'error': 'Event not found'}), 404
 
-        if 'events' not in user:
-            user['events'] = []
-        if event_id not in user['events']:
-            user['events'].append(event_id)
+        user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
 
-        if 'users' not in event:
-            event['users'] = []
-        if email not in event['users']:
-            event['users'].append(email)
 
-        save_users(users_db)
-        save_events(events_db)
+        # TODO: make sure to throw error if the event and the user is already matched
+
+        if user_match:
+            user_match['events'].append(event)
+        else:
+            new_entry = {
+                'user_email': email,
+                'events': [event]
+            }
+            user_event_matching_db.append(new_entry)
+
+        save_user_event_matchings(user_event_matching_db)
 
         return jsonify({'message': f'successfully matched event {event["eventName"]} with user {user["full_name"]}'}), 200
 
