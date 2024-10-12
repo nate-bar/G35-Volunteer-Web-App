@@ -15,19 +15,49 @@ mat-error {
 }
 
 .fixed-width {
-    width: 300px; /* Set a fixed width for the mat-form-field to avoid resizing */
+    width: 400px; /* Set a fixed width for the mat-form-field to avoid resizing */
   }
+/* Adjusting the container for availability */
+.availability-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px; /* Add space between the datepicker and chips */
+  flex-wrap: wrap;
+}
+
+/* Styling for the date picker */
+mat-form-field.full-width {
+  width: 300px; /* Adjust the width of the date picker */
+  margin-right: 10px; /* Adds space between date picker and chips */
+}
+
+/* Styling for selected date chips */
+.selected-dates-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  background-color: #5a5a5a; /* Adjust color to fit the theme */
+  color: white;
+  font-size: 14px;
+  border-radius: 16px;
+  margin-bottom: 8px; /* Space between chips */
+}
+
+.mat-chip {
+  padding-right: 8px; /* Ensure padding to the right so the icon has space */
+}
+
+.mat-chip mat-icon {
+  margin-left: 8px;
+  color: white;
+  cursor: pointer; /* Make the remove icon interactive */
+}
+
+.mat-chip mat-icon:hover {
+  color: #ffdddd; /* Add a hover effect for better UX */
+}
   
-  .selected-dates-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-    max-width: 300px; /* Keep the width consistent to prevent resizing */
-    padding: 5px;
-    background: #f0f0f0;
-    border-radius: 4px;
-  }
 form {
     padding: 1rem;
     width: 800px; /* Set a fixed width */

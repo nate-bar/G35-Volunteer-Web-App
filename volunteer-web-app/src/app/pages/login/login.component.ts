@@ -41,10 +41,12 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.username, this.password).subscribe(
       (response: any) => {
         console.log('Login successful:', response);
+        
   
         // Log in the user using AuthService regardless of profile status
         this.authService.login(response.role, response.email);
-  
+        localStorage.setItem('userName', this.username); 
+        localStorage.setItem('fullName', response.full_name);
         // Handle "Remember Me" option
         if (isPlatformBrowser(this.platformId)) {
           this.handleRememberMe();

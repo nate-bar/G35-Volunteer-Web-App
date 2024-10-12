@@ -23,7 +23,7 @@ mail = Mail(app)
 pending_users = {}
 
 # Token expiration time in minutes
-TOKEN_EXPIRATION_TIME = 60  # 60 minutes (you can change this as needed)
+TOKEN_EXPIRATION_TIME = 60  # 60 minutes 
 
 
 def send_async_email(app, msg):
@@ -278,14 +278,19 @@ def login():
         return jsonify({
             'message': 'Login successful, but please complete your profile.',
             'role': user['role'],
+            'email': user['email'],            # Return the email
+            'full_name': user.get('full_name'), # Return the full_name
             'profile_completed': False
         }), 200
 
     return jsonify({
         'message': 'Login successful',
         'role': user['role'],
+        'email': user['email'],                # Return the email
+        'full_name': user.get('full_name'),     # Return the full_name
         'profile_completed': True
     }), 200
+
 
 
 # Complete Profile Endpoint
@@ -300,6 +305,9 @@ def complete_profile():
     city = data.get('city')
     state = data.get('state')
     zip_code = data.get('zipCode')
+    availability = data.get('availability')
+    preferences=data.get('preferences')
+    skills=data.get('skills')
 
     # Find user by email
     user = next((user for user in users_db if user['email'] == email), None)
@@ -314,11 +322,15 @@ def complete_profile():
     user['city'] = city
     user['state'] = state
     user['zip_code'] = zip_code
+    user['preferences']=preferences
+    user['availability'] = availability
+    user['skills'] =skills
     user['profile_completed'] = True
+    
 
     save_users(users_db)
 
-    return jsonify({'message': 'Profile completed successfully.'}), 200
+    return jsonify({'message': 'Profile completed successfully.'}), 201
 
 # Get all events
 @app.route('/api/events', methods=['GET'])

@@ -63,12 +63,12 @@
         <div class="user-menu">
           <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
             <img src="group35.jpg" alt="User" class="profile-pic" />
-            <span class="user-name">Admin {{ userName }}</span>
+            <span class="user-name"> {{ userName }}</span>
             <span><mat-icon class="dropdown-icon ">arrow_drop_down</mat-icon></span>
           </button>
           <mat-menu #userMenu="matMenu">
-            <button mat-menu-item (click)="viewProfile()">Profile</button>
-            <button mat-menu-item (click)="logout()"><span><i class="fas fa-sign-out-alt"></i></span> Logout</button>
+            <button mat-menu-item (click)="viewProfile()"><mat-icon>brightness_high</mat-icon> Profile</button>
+            <button mat-menu-item (click)="logout()"><mat-icon>settings_power</mat-icon> Logout</button>
           </mat-menu>
         </div>
       </h2>

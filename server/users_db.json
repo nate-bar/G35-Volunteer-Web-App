@@ -20,12 +20,25 @@
         "email": "konateallamanhamed@gmail.com",
         "password": "$2b$12$SlJbLcktvN6QuRsoFVa4ju35iOyNt9OOXpJ7GlsHuStpgnTSSTecy",
         "role": "admin",
-        "full_name": "allaman",
-        "address1": "2500 woodland park Dr Apt M211",
-        "address2": "hjtrerttytry ytuyi",
+        "full_name": "Allaman",
+        "address1": "ieiurutytru",
+        "address2": ",ksjdjdujiit",
+        "zip_code": "34567",
+        "availability": [
+            "10/30/2024",
+            "10/31/2024",
+            "10/26/2024",
+            "11/15/2024",
+            "10/23/2024",
+            "11/23/2024"
+        ],
         "city": "Houston",
-        "state": "CA",
-        "zip_code": "77077",
+        "state": "TX",
+        "preferences": "oirytyeuwiwowl",
+        "skills": [
+            "Leadership",
+            "Teamwork"
+        ],
         "profile_completed": true
     }
 ]
