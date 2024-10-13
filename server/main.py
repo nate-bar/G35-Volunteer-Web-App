@@ -7,6 +7,7 @@ import secrets
 import datetime
 from users_db import users_db, save_users
 from events_data import events_db, save_events
+from user_event_matching_db import user_event_matching_db, save_user_event_matchings
 from config import Config  # Import your configuration
 from threading import Thread
 
@@ -337,6 +338,16 @@ def complete_profile():
 def get_events():
     return jsonify(events_db)
 
+# Get all useras
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    return jsonify(users_db)
+
+# Get all user event matchings
+@app.route('/api/admin/eventUserMatchings', methods=['GET'])
+def get_user_event_matchings():
+    return jsonify(user_event_matching_db)
+
 # Add a new event
 @app.route('/api/events', methods=['POST'])
 def add_event():
@@ -375,6 +386,46 @@ def delete_event(event_id):
         return jsonify({'error': 'Event not found'}), 404
     except Exception as e:
         return jsonify({'error': 'Failed to delete event', 'details': str(e)}), 500
+    
+# match volunteers
+@app.route('/api/admin/matchVolunteers', methods=['POST'])
+def match_volunteer_with_event():
+    data = request.json
+    email = data.get('email')
+    event_id = data.get('event_id')
+
+    if not email or not event_id:
+        return jsonify({'error': 'Please select a user and an event'}), 400
+
+    try:
+        user = next((user for user in users_db if user.get('email') == email), None)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        event = next((event for event in events_db if event.get('id') == event_id), None)
+        if not event:
+            return jsonify({'error': 'Event not found'}), 404
+
+        user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
+
+
+        # TODO: make sure to throw error if the event and the user is already matched
+
+        if user_match:
+            user_match['events'].append(event)
+        else:
+            new_entry = {
+                'user_email': email,
+                'events': [event]
+            }
+            user_event_matching_db.append(new_entry)
+
+        save_user_event_matchings(user_event_matching_db)
+
+        return jsonify({'message': f'successfully matched event {event["eventName"]} with user {user["full_name"]}'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
