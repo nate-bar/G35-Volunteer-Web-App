@@ -13,11 +13,19 @@
   </div>
 
   <!-- Event Search Form -->
-  <form>
+  <!-- <form>
     <div class="mb-3 row" style="all: initial; ">
       <label for="table-filtering-search" class="col-sm-2 col-form-label labelWhite">Event search:</label>
       <div class="col-sm-5" style="all: initial; ">
         <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" placeholder="Search events..." />
+      </div>
+    </div>
+  </form> -->
+  <form>
+    <div class="mb-2 row" style="background: initial; ">
+      <label for="table-filtering-search" class="col-sm-auto col-form-label labelWhite">Event search:</label>
+      <div class="col-sm-auto" style="all: initial; ">
+        <input id="table-filtering-search" class="form-control"  placeholder="Search events..." type="text" [formControl]="filter" />
       </div>
     </div>
   </form>
@@ -121,6 +129,7 @@
             </mat-form-field>
           </div>
         </div>
+        
     
         <!-- Location Input -->
         <div class="row mb-1" style="background-image: initial;">

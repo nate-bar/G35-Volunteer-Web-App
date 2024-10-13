@@ -115,15 +115,17 @@ export class ProfileComponent implements OnInit {
     if (this.profileForm.valid) {
       const profileData = {
         ...this.profileForm.getRawValue(),
-        email: this.profileForm.controls['email'].value // Ensure email is included
+        email: this.profileForm.controls['email'].value, // Ensure email is included
+        availability: this.profileForm.controls['availability'].value // Already in mm-dd-yyyy format
       };
+  
       this.profileService.completeUserProfile(profileData).subscribe(
         (response) => {
           console.log('Profile completed successfully:', response);
           this.successMessage = 'Profile completed successfully!';
           this.errorMessage = '';
           this.warmingMessage = '';
-
+  
           const userRole = this.authService.getUserRole();
           setTimeout(() => {
             if (userRole === 'admin') {
@@ -146,18 +148,39 @@ export class ProfileComponent implements OnInit {
       this.warmingMessage = '';
     }
   }
+  
 
-  addDate(date: any): void {
-    if (date && !this.profileForm.controls['availability'].value.includes(date)) {
-      const updatedDates = [...this.profileForm.controls['availability'].value, date];
+  // Method to format date to mm-dd-yyyy
+formatDateToMMDDYYYY(date: Date): string {
+  const formattedDate = new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  return formattedDate; // mm-dd-yyyy
+}
+
+addDate(date: Date): void {
+  if (date) {
+    const formattedDate = this.formatDateToMMDDYYYY(date); // Format the date to mm-dd-yyyy
+
+    // Get the current value of availability (ensure it's an array)
+    const currentDates = this.profileForm.controls['availability'].value || [];
+
+    // Add the new date if it doesn't exist in the array
+    if (!currentDates.includes(formattedDate)) {
+      const updatedDates = [...currentDates, formattedDate];
       this.profileForm.controls['availability'].setValue(updatedDates);
     }
   }
+}
+
+removeDate(date: string): void {
+  // Remove the selected date from the list
+  const updatedDates = this.profileForm.controls['availability'].value.filter((d: string) => d !== date);
+  this.profileForm.controls['availability'].setValue(updatedDates);
+}
   
-  removeDate(date: string): void {
-    const updatedDates = this.profileForm.controls['availability'].value.filter((d: string) => d !== date);
-    this.profileForm.controls['availability'].setValue(updatedDates);
-  }
   
   availableDateValidator(control: AbstractControl): ValidationErrors | null {
     const selectedDate = control.value;
