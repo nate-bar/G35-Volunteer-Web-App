@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { volunteerMatchingService } from './volunteer-matching.service';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 
 interface Event {
+  id: number; 
   eventName: string;
   requiredSkills: string[];
 }
 
-
 interface User {
-  fullName: string;
+  email: string; 
+  full_name: string;
   skills: string[];
 }
 
@@ -25,74 +26,72 @@ interface User {
   styleUrls: ['./volunteer-matching.component.scss']
 })
 export class VolunteerMatchingComponent implements OnInit {
-  profileForm!: FormGroup;
-
   matchingForm: FormGroup;
+  email = new FormControl('', [
+    Validators.required,
+    Validators.email,
+    Validators.maxLength(100),
+  ]);
+
+  userId = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+  ]);
   alertMessage: string = '';
-  
-  
-  events: Event[] = [
-    { eventName: 'Community Cleanup', requiredSkills: ['Teamwork', 'Environmental Awareness'] },
-    { eventName: 'Charity Run', requiredSkills: ['Running', 'Fundraising'] },
-    { eventName: 'Food Drive', requiredSkills: ['Organizing', 'Public Speaking'] },
-    { eventName: 'Tree Planting', requiredSkills: ['Gardening', 'Teamwork'] },
-    { eventName: 'Coding Workshop', requiredSkills: ['Programming', 'Teaching'] }
-  ];
-  
-  
-  users: User[] = [
-    { fullName: 'John Doe', skills: ['Teamwork', 'Environmental Awareness'] },
-    { fullName: 'Jane Smith', skills: ['Programming', 'Teaching'] },
-    { fullName: 'Emily Johnson', skills: ['Running', 'Fundraising'] },
-    { fullName: 'Michael Brown', skills: ['Gardening', 'Organizing'] },
-    { fullName: 'Sarah Davis', skills: ['Public Speaking', 'Environmental Awareness'] }
-  ];
-  
+  events: Event[] = [];
+  users: User[] = [];
   matchedEvents: Event[] = []; 
+  errorMessage: string = '';
+  successMessage: string = '';
+  loading: boolean = false;
 
-  constructor(private fb: FormBuilder,private router: Router) {
-    
+  constructor(private fb: FormBuilder, private router: Router, private volunteerMatchingService: volunteerMatchingService) {
     this.matchingForm = this.fb.group({
-      selectedUser: [''], 
-      matchedEvent: ['']
+      selectedUser: new FormControl('', Validators.required),
+      selectedEvent: new FormControl('', Validators.required),
     });
   }
-
+  
   ngOnInit(): void {
-    
-    this.matchingForm.get('selectedUser')?.valueChanges.subscribe((selectedUser) => {
-      this.matchEvents(selectedUser);
+    this.volunteerMatchingService.getUsers().subscribe((users) => {
+      this.users = users;
+    });
+
+    this.volunteerMatchingService.getEvents().subscribe((events) => {
+      this.events = events;
     });
   }
 
-  matchEvents(selectedUser: string): void {
-    const user = this.users.find(u => u.fullName === selectedUser);
-    if (user) {
-      this.matchedEvents = this.events.filter(event =>
-        event.requiredSkills.some(skill => user.skills.includes(skill))
-      );
-
-      
-      if (this.matchedEvents.length > 0) {
-        this.matchingForm.patchValue({
-          matchedEvent: this.matchedEvents[0].eventName
-        });
-      } else {
-        this.matchingForm.patchValue({
-          matchedEvent: ''
-        });
-      }
-    }
-  }
 
   onMatchSubmit(): void {
     const selectedUser = this.matchingForm.get('selectedUser')?.value;
-    const selectedEvent = this.matchingForm.get('matchedEvent')?.value;
+    const selectedEvent = this.matchingForm.get('selectedEvent')?.value;
+
+
+    console.log("SUBMIT")
+
     if (selectedUser && selectedEvent) {
-      this.alertMessage = `Volunteer ${selectedUser} successfully matched to: ${selectedEvent}`;
-      console.log(this.alertMessage);
+      this.loading = true;
+      const matchData = { email: selectedUser, event_id: selectedEvent };
+
+      this.volunteerMatchingService.match(matchData).subscribe(
+        (response: any) => {
+          this.successMessage = `Volunteer ${selectedUser} successfully matched to: ${selectedEvent}`;
+          this.errorMessage = '';
+          this.loading = false;
+          this.matchingForm.reset();
+        },
+        (error) => {
+          this.successMessage = '';
+          this.errorMessage = error.error?.error || 'An unexpected error occurred. Please try again.';
+          this.loading = false;
+        }
+      );
+    } else {
+      this.errorMessage = 'Please select both a user and an event.';
     }
   }
+
   onCancel(): void {
     this.router.navigate(['/admin']); 
   }
