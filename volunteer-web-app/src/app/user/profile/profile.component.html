@@ -157,62 +157,65 @@
         </div>
       </div>
   
-      <!-- Preferences Text Area and Availability -->
-      <div class="row mb-2 d-flex align-items-center">
-        <div class="col">
-          <label class="form-label me-2" for="preferences" style="min-width: 100px;">Preferences:</label>
-          <textarea
-            id="preferences"
-            class="form-control input-sm"
-            formControlName="preferences"
-            style="background-color: #f0f0f0;"
-          ></textarea>
-        </div>
-  
-        <div class="col">
-          <label class="form-label me-2" for="availability">Availability:</label>
-          <div class="availability-container">
-            <mat-form-field appearance="fill" class="full-width">
-              <input
-                matInput
-                [matDatepicker]="picker"
-                placeholder="Select a date"
-                (dateInput)="addDate($event.value)"
-              />
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-          
-            <!-- Display Selected Dates as Chips -->
-            <mat-chip-set>
-              <mat-chip
-                *ngFor="let date of profileForm.controls['availability'].value"
-                [removable]="true"
-                (removed)="removeDate(date)"
-                class="selected-dates-container"
-              >
-                {{ date }}
-                <mat-icon matChipRemove>cancel</mat-icon>
-              </mat-chip>
-            </mat-chip-set>
+      <div class="container">
+        <div class="row">
+          <!-- Preferences Column -->
+          <div class="col-ms-12 mb-3">
+            <div class="form-group">
+              <label class="form-label" for="preferences">Preferences</label>
+              <textarea
+                id="preferences"
+                class="form-control"
+                formControlName="preferences"
+                style="background-color: #f0f0f0;"
+              ></textarea>
+            </div>
           </div>
-          
-          
-          <mat-error *ngIf="profileForm.controls['availability'].hasError('required') && profileForm.controls['availability'].touched">
-            Please select at least one availability date.
-          </mat-error>
-          
       
-          <mat-error *ngIf="profileForm.controls['availability'].hasError('required') && profileForm.controls['availability'].touched">
-            Please select at least one availability date.
-          </mat-error>
+          <!-- Availability Column -->
+          <div class="row">
+            <div class="col-ms-4">
+              <label class="form-label" for="availability">Availability</label>
+              <mat-form-field appearance="fill" class="full-width">
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  placeholder="Select a date"
+                  (dateInput)="addDate($event.value)"
+                />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-ms-4 ">
+      
+              <!-- Display Selected Dates as Chips -->
+              <mat-chip-set>
+                <mat-chip
+                  *ngFor="let date of profileForm.controls['availability'].value"
+                  [removable]="true"
+                  (removed)="removeDate(date)"
+                  class="selected-dates-container"
+                >
+                  {{ date | date: 'longDate' }}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-set>
+      
+              <mat-error *ngIf="profileForm.controls['availability'].hasError('required') && profileForm.controls['availability'].touched">
+                Please select at least one availability date.
+              </mat-error>
+            </div>
+          </div>
         </div>
       </div>
+      
   
       <!-- Submit Button -->
-      <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary btn-block mb-4">
-          Save Changes
+      <div class="d-flex justify-content-start mb-4">
+        <button type="cancel" class="btn btn-secondary mb-4 buttonCancel" ><span ><i class="bi bi-x-octagon iconC"></i></span>Cancel</button>
+        <button type="submit" class="btn btn-primary  mb-4 buttonLogin">
+          Save <span ><i class="bi bi-save icon"></i></span>
         </button>
       </div>
     </form>

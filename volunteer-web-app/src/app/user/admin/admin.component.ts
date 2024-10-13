@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -7,12 +7,13 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatRippleModule } from '@angular/material/core';
 
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatSidenavModule, MatMenuModule, MatButtonModule, MatIconModule],
+  imports: [RouterModule, CommonModule, MatSidenavModule, MatMenuModule, MatButtonModule, MatIconModule,MatRippleModule],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
@@ -28,7 +29,7 @@ export class AdminComponent implements OnInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router,private renderer: Renderer2) {}
 
   ngOnInit(): void {
     if (this.authService.getIsLoggedIn()) {
