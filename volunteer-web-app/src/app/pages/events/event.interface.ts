@@ -8,6 +8,7 @@ export interface Event {
   urgency: string;
   eventDate: string;
   showFullDescription?: boolean;
+  
 }
 
   
