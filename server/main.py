@@ -326,6 +326,11 @@ def complete_profile():
 def get_events():
     return jsonify(events_db)
 
+# Get all useras
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    return jsonify(users_db)
+
 # Get all user event matchings
 @app.route('/api/admin/eventUserMatchings', methods=['GET'])
 def get_user_event_matchings():
