@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 
 .admin-container {
     display: flex;
@@ -37,7 +38,16 @@
   background: none;
   cursor: pointer;
   padding: 0;
+
+  &:hover{
+    
+    background: linear-gradient(90deg, rgba(40, 180, 131, 0.8), rgba(68, 68, 117, 0.8));
+    cursor: pointer;
+    
+  }
 }
+
+
 
 .profile-pic {
   width: 30px;
@@ -52,11 +62,15 @@
 }
 
 .dropdown-icon {
-  margin-left: 5px; /* Space between the username and the icon */
+  margin-left: 5px; 
   color: white;
   font-size: 24px; 
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0; 
   padding-top: 5px;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: rotate(180deg); 
+  }
 }
 
   
@@ -156,6 +170,12 @@
     padding: 2rem;
   }
 
+  .dashboard-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
  
   
   

@@ -41,15 +41,21 @@ export class AuthService {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userRole', role);
         localStorage.setItem('userEmail', email);
+        console.log(localStorage.getItem('userEmail'));
       } catch (error) {
         console.error('Error accessing localStorage', error);
       }
     }
-    this.fetchUserProfile(email).subscribe();
+    this.fetchUserProfile(email).subscribe((profile) => {
+      if (profile && profile.full_name) {
+        // Store full_name in localStorage
+        localStorage.setItem('fullName', profile.full_name);
+      }
+    });
   }
 
   logout(): void {
-    this.isLoggedInSubject.next(false);  // Immediately update the observable
+    this.isLoggedInSubject.next(false);
     this.userRole = null;
     this.userEmail = '';
     this.profileCompleted = false;
@@ -60,13 +66,14 @@ export class AuthService {
         localStorage.removeItem('userRole');
         localStorage.removeItem('userEmail');
         localStorage.removeItem('profileCompleted');
+        localStorage.removeItem('userProfile'); // Remove the user profile as well
       } catch (error) {
-        console.error('Error accessing localStorage', error);
+        console.error('Error clearing localStorage', error);
       }
     }
     this.userProfileSubject.next(null);
-    
   }
+  
   
 
   getIsLoggedIn(): boolean {
@@ -120,10 +127,20 @@ export class AuthService {
         if (profile) {
           this.userProfileSubject.next(profile);
           console.log('Profile fetched and updated in AuthService:', profile);
+  
+          // Store profile in local storage
+          if (isPlatformBrowser(this.platformId)) {
+            try {
+              localStorage.setItem('userProfile', JSON.stringify(profile));
+            } catch (error) {
+              console.error('Error storing profile in localStorage', error);
+            }
+          }
         }
       })
     );
   }
+  
 
   setProfileCompleted(completed: boolean): void {
     this.profileCompleted = completed;
