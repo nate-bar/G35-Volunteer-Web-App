@@ -13,7 +13,7 @@
             (click)="selectLink('home')"
           >
             <i class="fas fa-home"></i> <!-- Home icon -->
-            Home
+            DASHBOARD
           </a>
         </li>
   
@@ -25,7 +25,7 @@
           </a>
           <!-- Submenu -->
           <ul class="submenu" *ngIf="isUsersMenuOpen">
-            <li [class.active]="selectedLink === 'allUsers'">
+            <!-- <li [class.active]="selectedLink === 'allUsers'">
               <a 
                 routerLink="allUsers" 
                 routerLinkActive="active-link" 
@@ -34,22 +34,22 @@
                 <i class="fas fa-user"></i>
                 All Users
               </a>
-            </li>
-            <li [class.active]="selectedLink === 'addUser'">
+            </li> -->
+            <li [class.active]="selectedLink === 'manageUser'">
               <a 
-                routerLink="addUser" 
+                routerLink="manageUser" 
                 routerLinkActive="active-link" 
-                (click)="selectLink('addUser')"
+                (click)="selectLink('manageUser')"
               >
                 <i class="fas fa-user-plus"></i>
-                Add User
+                User Management
               </a>
             </li>
-            <li [class.active]="selectedLink === 'volunteeringHistory'">
+            <li [class.active]="selectedLink === 'volunteerHistory'">
               <a 
-                routerLink="volunteeringHistory" 
+                routerLink="volunteerHistory" 
                 routerLinkActive="active-link" 
-                (click)="selectLink('volunteeringHistory')"
+                (click)="selectLink('volunteerHistory')"
               >
                 <i class="fas fa-history"></i>
                 Volunteering History

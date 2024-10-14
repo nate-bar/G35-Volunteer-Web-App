@@ -1,0 +1,26 @@
+.notification-container {
+    position: relative;
+    padding-top: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  
+    .notification-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      z-index: 1000;
+      padding: 5px;
+      margin-top:0.5rem;
+    }
+  }
+
+  .text-muted {
+    color: gray;
+  }
+  
+  

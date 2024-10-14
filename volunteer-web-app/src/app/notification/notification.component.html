@@ -1,0 +1,35 @@
+<div class="notification-container">
+   
+    <button class="btn btn-light position-relative" (click)="toggleDropdown()">
+      <i class="bi bi-bell"></i>
+      <span class="badge bg-danger" *ngIf="unreadCount > 0">
+        {{ unreadCount }}
+      </span>
+    </button>
+  
+   
+    <div *ngIf="showDropdown" class="notification-dropdown mt-2 p-2 bg-white border rounded shadow-sm">
+      <div *ngIf="notifications.length > 0; else noNotifications" class="overflow-auto" style="max-height: 300px;">
+        <ul class="list-group">
+          <li 
+            class="list-group-item d-flex justify-content-between align-items-start" 
+            *ngFor="let notif of notifications"
+            [ngClass]="{ 'text-muted': notif.read }">
+            <div>
+              <strong>{{ notif.title }}</strong>
+              <p class="mb-1">{{ notif.message }}</p>
+              <small class="text-muted">{{ notif.date | date: 'short' }}</small>
+            </div>
+            <button class="btn btn-sm btn-link" (click)="markAsRead(notif.id)">Mark as Read</button>
+          </li>
+        </ul>
+        <button class="btn btn-danger w-100 mt-2" (click)="clearNotifications()">Clear All</button>
+      </div>
+  
+      
+      <ng-template #noNotifications>
+        <p class="text-center m-2">No notifications</p>
+      </ng-template>
+    </div>
+  </div>
+  
