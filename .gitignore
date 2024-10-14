@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 node_modules
+=======
+
+/server/.venv
+/server/__pycache__
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443

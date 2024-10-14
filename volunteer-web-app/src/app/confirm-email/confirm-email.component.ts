@@ -45,7 +45,7 @@ export class ConfirmEmailComponent implements OnInit {
 
             // Redirect to the profile page after another delay
             setTimeout(() => {
-              this.router.navigate(['/profile']);
+              this.router.navigate(['/login']);
             }, 3000);
           }, 2000); // Delay before showing the redirection message
         },

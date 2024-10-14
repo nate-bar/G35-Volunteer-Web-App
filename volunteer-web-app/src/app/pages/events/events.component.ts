@@ -17,11 +17,15 @@ import { EventService } from './event.service';
 import { Event } from './event.interface';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { MatIconModule } from '@angular/material/icon';
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+import { MatIconModule } from '@angular/material/icon';
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
 
 @Component({
   selector: 'app-events',
@@ -40,11 +44,15 @@ import { MatIconModule } from '@angular/material/icon';
     MatCheckboxModule,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     MatIconModule
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+    MatIconModule
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
   ],
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
@@ -66,6 +74,7 @@ export class EventsComponent implements OnInit {
   pageSize = 5;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   apiMessage: string = '';
   loading: boolean = false;
   presetImages = [
@@ -82,6 +91,10 @@ export class EventsComponent implements OnInit {
 =======
   apiMessage: string = ''; 
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+  apiMessage: string = '';
+  loading: boolean = false;
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
 
   constructor(
     private fb: FormBuilder,
@@ -103,6 +116,7 @@ export class EventsComponent implements OnInit {
   ngOnInit(): void {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     this.loading = true;
     // Fetch events from the Flask API
     this.eventService.getEvents().subscribe(
@@ -117,21 +131,33 @@ export class EventsComponent implements OnInit {
 =======
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+    this.loading = true;
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
     // Fetch events from the Flask API
     this.eventService.getEvents().subscribe(
       (data: Event[]) => {
-        this.events = data;
+        // Initialize showFullDescription for each event
+        this.events = data.map(event => ({
+          ...event,
+          showFullDescription: false  // Set the default value to false
+        }));
+  
         this.filteredEvents = [...this.events];
+<<<<<<< HEAD
         
 <<<<<<< HEAD
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
       },
       error => {
         console.error('Error fetching events', error);
       }
     );
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   
@@ -141,6 +167,9 @@ export class EventsComponent implements OnInit {
 =======
 
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+  
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
     // Subscribe to filter input changes
     this.filter.valueChanges.subscribe((searchTerm: string | null) => {
       this.filterEvents(searchTerm || '');
@@ -168,10 +197,8 @@ export class EventsComponent implements OnInit {
       const newEvent = { ...this.eventForm.value, eventDate: new Date(this.eventForm.value.eventDate).toISOString() };
       
       if (this.isEditMode && this.editIndex !== null) {
-        // Store the old event data before updating
-        const oldEvent = { ...this.events[this.editIndex] };
-  
         // Update the existing event
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         this.eventService.updateEvent(this.editIndex, newEvent).subscribe(
@@ -198,30 +225,42 @@ export class EventsComponent implements OnInit {
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
         const eventId = this.events[this.editIndex].id;
         this.eventService.updateEvent(eventId, newEvent).subscribe(
+=======
+        this.eventService.updateEvent(this.editIndex, newEvent).subscribe(
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
           (response) => {
-            // Correctly access `event` from the response
             const updatedEvent = response.event;
-            this.events[this.editIndex!] = updatedEvent;
+            
+            // Find the index of the event in the events array by ID and update it
+            const eventIndex = this.events.findIndex(event => event.id === this.editIndex);
+            if (eventIndex !== -1) {
+              this.events[eventIndex] = updatedEvent;
+            }
+  
             this.isEditMode = false;
             this.editIndex = null;
-  
             this.apiMessage = response.message;
   
-            // Notify about the updated event with old details
+            // Notify about the updated event
             this.notificationService.addNotification({
               id: Date.now(),
               title: 'Event Updated',
+<<<<<<< HEAD
               message: `The event "${oldEvent.eventName}" has been updated.`,
 <<<<<<< HEAD
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+              message: `The event "${updatedEvent.eventName}" has been updated.`,
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
               read: false,
               date: new Date(),
             });
   
             this.eventForm.reset();
             this.filterEvents(this.filter.value || '');
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             modal.close(); // Close the 
@@ -232,6 +271,10 @@ export class EventsComponent implements OnInit {
 =======
             modal.close();
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+            modal.close(); // Close the 
+            window.location.reload();
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
           },
           error => {
             this.apiMessage = error.error?.message || 'Error updating event';
@@ -260,11 +303,15 @@ export class EventsComponent implements OnInit {
             modal.close();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             window.location.reload();
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+            window.location.reload();
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
           },
           error => {
             this.apiMessage = error.error?.message || 'Error adding new event';
@@ -281,12 +328,16 @@ export class EventsComponent implements OnInit {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   openModal(content: any, editMode: boolean, event?: Event): void {
 =======
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
   openModal(content: any, editMode: boolean, index?: number): void {
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+  openModal(content: any, editMode: boolean, event?: Event): void {
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
     this.isEditMode = editMode;
   
     if (editMode && event) {
@@ -310,6 +361,11 @@ export class EventsComponent implements OnInit {
   }
   
   
+<<<<<<< HEAD
+=======
+  
+
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
   onCancel(): void {
     this.eventForm.reset();
     this.isEditMode = false;
@@ -370,13 +426,19 @@ export class EventsComponent implements OnInit {
   }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
 
   toggleFullDescription(event: any) {
     event.showFullDescription = !event.showFullDescription;
   }
   
+<<<<<<< HEAD
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
 =======
 >>>>>>> e645b58f7fff69b6da1921410ed7e22d8070b997
+=======
+>>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
 }

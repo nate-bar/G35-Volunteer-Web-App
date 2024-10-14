@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatIconModule } from '@angular/material/icon';
 
 interface User {
   email: string;
@@ -23,7 +24,8 @@ interface User {
     MatSelectModule,
     MatInputModule,
     MatOptionModule,
-    NgbPaginationModule
+    NgbPaginationModule,
+    MatIconModule
   ],
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']

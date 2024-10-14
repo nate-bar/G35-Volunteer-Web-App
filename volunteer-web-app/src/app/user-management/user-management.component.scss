@@ -4,4 +4,24 @@ label{
 thead th {
     color: white;
     background-color: black;
+}
+
+.icon-button:hover mat-icon {
+    transform: scale(1.2); 
+    color: gray; 
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+div{
+    background: linear-gradient(90deg, rgba(40, 180, 131, 0.8),rgba(68, 68, 117, 0.8));
+  
   }
+
+  .error-message {
+    background-color: black;
+    color: red; 
+    padding: 5px;
+    
+    background-image: none !important;
+  }
+  

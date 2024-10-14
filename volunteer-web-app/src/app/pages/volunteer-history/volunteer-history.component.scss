@@ -2,6 +2,58 @@ label{
     color: white;
 }
 div{
-    background-image: linear-gradient(to top, #04AA6D,  #202123 );
+    background: linear-gradient(90deg, rgba(40, 180, 131, 0.8),rgba(68, 68, 117, 0.8));
     
 }
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1rem;
+    text-align: left;
+  }
+  
+  .styled-table thead tr {
+    background-color: #343a40;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .styled-table th, 
+  .styled-table td {
+    padding: 12px 15px;
+  }
+  
+  .styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+  
+  .styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+  
+  .styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #1abc9c;
+  }
+  
+  .styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+  
+  .styled-table th {
+    font-weight: bold;
+    background: #212529;
+    color: white !important;
+  }
+  
+  .ngb-pagination {
+    margin-top: 20px;
+  }
+  
+  .d-flex {
+    display: flex;
+    justify-content: center;
+  }
+  

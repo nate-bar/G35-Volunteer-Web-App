@@ -2,7 +2,14 @@
     {
         "email": "admin@gmail.com",
         "password": "$2b$12$v1w0RENkOlGIr4eqm2Vv.uGgtAgGwlGisLMZ54q/Bq/lrJRH.zCGK",
-        "role": "admin"
+        "role": "admin",
+        "full_name": "dssafsdfg",
+        "address1": "2800 S Dairy Ashford Rd",
+        "address2": "Apt 1708",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77082",
+        "profile_completed": true
     },
     {
         "email": "user@gmail.com",
@@ -10,13 +17,28 @@
         "role": "user"
     },
     {
-        "email": "allaman.konate@techwave.net",
-        "password": "$2b$12$miX2NNq43plVs0trz6s3VenK3DNzu0nFE4p5nhXWw5Elj/lawFsAi",
-        "role": "admin"
-    },
-    {
         "email": "konateallamanhamed@gmail.com",
-        "password": "$2b$12$tSNdY.fqA/fZZd7lBLkd0ugZkqHPhJmnlfBsyfrB1HfKkW7CjHus2",
-        "role": "admin"
+        "password": "$2b$12$SlJbLcktvN6QuRsoFVa4ju35iOyNt9OOXpJ7GlsHuStpgnTSSTecy",
+        "role": "admin",
+        "full_name": "Allaman",
+        "address1": "ieiurutytru",
+        "address2": ",ksjdjdujiit",
+        "zip_code": "34567",
+        "availability": [
+            "10/30/2024",
+            "10/31/2024",
+            "10/26/2024",
+            "11/15/2024",
+            "10/23/2024",
+            "11/23/2024"
+        ],
+        "city": "Houston",
+        "state": "TX",
+        "preferences": "oirytyeuwiwowl",
+        "skills": [
+            "Leadership",
+            "Teamwork"
+        ],
+        "profile_completed": true
     }
 ]
