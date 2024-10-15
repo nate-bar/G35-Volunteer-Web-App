@@ -1,21 +1,30 @@
-from flask import Flask, jsonify, request, url_for
+from flask import Flask, jsonify, request, urlfor, rendertemplate_string
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
+import datetime
 import re
 import secrets
 import datetime
 from users_db import users_db, save_users
+from user_profiles_db import user_profiles_db,save_profile
+from notifications_db import notifications_db, save_notifications
 from events_data import events_db, save_events
 from user_event_matching_db import user_event_matching_db, save_user_event_matchings
 from config import Config  # Import your configuration
 from threading import Thread
+from werkzeug.utils import secure_filename
+import os,json
 
-app = Flask(__name__)
+app = Flask(__name)
 CORS(app)  # Allow cross-origin requests
 
-# Apply the configuration from config.py
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+#Apply the configuration from config.py
 app.config.from_object(Config)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 bcrypt = Bcrypt(app)
 mail = Mail(app)
@@ -333,11 +342,6 @@ def complete_profile():
 
     return jsonify({'message': 'Profile completed successfully.'}), 201
 
-# Get all events
-@app.route('/api/events', methods=['GET'])
-def get_events():
-    return jsonify(events_db)
-
 # Get all useras
 @app.route('/api/users', methods=['GET'])
 def get_users():
@@ -348,28 +352,184 @@ def get_users():
 def get_user_event_matchings():
     return jsonify(user_event_matching_db)
 
+# Function to check if the file extension is allowed
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Validate the event form fields
+def validate_event_form(event_name, event_description, location, required_skills, urgency, event_date):
+    # Event Name: required, max 100 characters
+    if not event_name or len(event_name) > 100:
+        return 'Event Name is required and must be at most 100 characters.'
+
+    # Event Description: required
+    if not event_description:
+        return 'Event Description is required.'
+
+    # Location: required
+    if not location:
+        return 'Location is required.'
+
+    # Required Skills: must be a non-empty list
+    if not required_skills or not isinstance(required_skills, list) or len(required_skills) == 0:
+        return 'Required Skills must be selected.'
+
+    # Urgency: must be one of 'High', 'Medium', 'Low'
+    if urgency not in ['High', 'Medium', 'Low']:
+        return 'Urgency must be one of "High", "Medium", or "Low".'
+
+    # Event Date: required (could add further validation, e.g., proper date format)
+    if not event_date:
+        return 'Event Date is required.'
+
+    return None  # No errors
+
+# Get all events
+@app.route('/api/events', methods=['GET'])
+def get_events():
+    return jsonify(events_db)
+
 # Add a new event
 @app.route('/api/events', methods=['POST'])
 def add_event():
     try:
-        new_event = request.get_json()
-        new_event['id'] = len(events_db) + 1
+        # Check if the post request has the file part
+        if 'eventImage' not in request.files:
+            return jsonify({'error': 'No file part in the request'}), 400
+
+        file = request.files['eventImage']
+
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+
+        # Check if file extension is allowed
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.makedirs(app.config['UPLOAD_FOLDER'])
+
+            file.save(file_path)
+
+            # Convert file path to a URL that can be accessed by the frontend
+            file_url = url_for('static', filename=f'uploads/{filename}', _external=True)
+        else:
+            return jsonify({'error': 'File type not allowed'}), 400
+
+        # Parse other form data
+        event_name = request.form.get('eventName')
+        event_description = request.form.get('eventDescription')
+        location = request.form.get('location')
+        urgency = request.form.get('urgency')
+        event_date = request.form.get('eventDate')
+
+        # Parse the requiredSkills field (sent as a JSON string)
+        required_skills_raw = request.form.get('requiredSkills')
+        required_skills = json.loads(required_skills_raw) if required_skills_raw else []
+
+        # Validate form data
+        validation_error = validate_event_form(event_name, event_description, location, required_skills, urgency, event_date)
+        if validation_error:
+            return jsonify({'error': validation_error}), 400
+
+        if not event_name or not event_description or not location or not urgency or not event_date:
+            return jsonify({'error': 'Missing required event details'}), 400
+        # Check if the event with the same name and date already exists
+        for event in events_db:
+            if event['eventName'].lower() == event_name.lower() and event['eventDate'] == event_date:
+                return jsonify({'error': 'An event with the same name and date already exists.'}), 400
+
+        new_event = {
+            'id': len(events_db) + 1,
+            'eventName': event_name,
+            'eventDescription': event_description,
+            'location': location,
+            'requiredSkills': required_skills,
+            'urgency': urgency,
+            'eventDate': event_date,
+            'eventImage': file_url  # Store the file URL instead of the file path
+        }
+
         events_db.append(new_event)
         save_events(events_db)
+        # Create notifications for all users
+        for user in users_db:
+           create_notification_for_users(
+            'New Event Created',
+            f'A new event "{event_name}" has been created.'
+        )
+
+
         return jsonify({'message': 'Event added successfully', 'event': new_event}), 201
+
     except Exception as e:
         return jsonify({'error': 'Failed to add event', 'details': str(e)}), 500
+
+
 
 # Update an event
 @app.route('/api/events/<int:event_id>', methods=['PUT'])
 def update_event(event_id):
     try:
-        updated_event = request.get_json()
+        # Check if the request has a file part for the image
+        file = request.files.get('eventImage')
+
+        # Get form data for other event fields
+        event_name = request.form.get('eventName')
+        event_description = request.form.get('eventDescription')
+        location = request.form.get('location')
+        urgency = request.form.get('urgency')
+        event_date = request.form.get('eventDate')
+
+        # Parse the requiredSkills field (sent as a JSON string)
+        required_skills_raw = request.form.get('requiredSkills')
+        required_skills = json.loads(required_skills_raw) if required_skills_raw else []
+
+         # Validate form data
+        validation_error = validate_event_form(event_name, event_description, location, required_skills, urgency, event_date)
+        if validation_error:
+            return jsonify({'error': validation_error}), 400
+
         for event in events_db:
             if event['id'] == event_id:
-                event.update(updated_event)
+                event['eventName'] = event_name
+                event['eventDescription'] = event_description
+                event['location'] = location
+                event['requiredSkills'] = required_skills
+                event['urgency'] = urgency
+                event['eventDate'] = event_date
+
+                # Handle image upload
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    file.save(file_path)
+
+                    # Convert file path to a URL for frontend
+                    file_url = url_for('static', filename=f'uploads/{filename}', _external=True)
+                    event['eventImage'] = file_url
+                elif not file:
+                    if 'eventImage' in event and event['eventImage']:
+                        if not event['eventImage'].startswith('http'):
+                            filename = os.path.basename(event['eventImage'])
+                            event['eventImage'] = url_for('static', filename=f'uploads/{filename}', _external=True)
+
                 save_events(events_db)
+
+                 # After updating, send notification
+                # for user in users_db:
+                #     create_notification(
+                #         user['email'],
+                #         'Event Updated',
+                #         f'The event "{event_name}" has been updated.'
+                #     )
+                create_notification_for_users(
+                    'Event Updated',
+                    f'The event "{event_name}" has been updated.'
+                )
                 return jsonify({'message': 'Event updated successfully', 'event': event}), 200
+
         return jsonify({'error': 'Event not found'}), 404
     except Exception as e:
         return jsonify({'error': 'Failed to update event', 'details': str(e)}), 500
