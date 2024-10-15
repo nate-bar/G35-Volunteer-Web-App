@@ -44,6 +44,7 @@ export class EventsComponent implements OnInit {
   eventForm: FormGroup;
   events: Event[] = [];
   selectedFile: string | File | null = null;
+  imagePreview :string | File | null = null;
 
   skillOptions: string[] = [
     'Teamwork', 'Environmental Awareness', 'Running', 'Fundraising', 'Organizing', 'Public Speaking',
@@ -316,12 +317,19 @@ export class EventsComponent implements OnInit {
       this.selectedFile = file;
       console.log('Selected file:', this.selectedFile);
     }
+    this.previewImage(file);
   }
 // Check if the selected file is an image path (string) or a File object
 isImagePath(): boolean {
   return typeof this.selectedFile === 'string' && this.selectedFile !== null && this.selectedFile.startsWith('http');
 }
 
-
+previewImage(file: File) {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => {
+    this.imagePreview = reader.result as string;
+  };
+}
   
 }

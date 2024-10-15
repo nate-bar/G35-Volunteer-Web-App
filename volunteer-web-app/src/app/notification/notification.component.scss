@@ -1,9 +1,12 @@
 /* Styling for the entire notification container */
 .notification-container {
-  position: relative;
-  padding-top: 0.5rem;
-  margin-left: 1rem;
+  // position: relative;
+  position: absolute;
+  // padding-top: 0.5rem;
+  // margin-left: 1rem;
   margin-right: 1rem;
+  right: 3rem;
+  z-index: 1000;
 }
 
 .notification-container .btn {
@@ -32,12 +35,13 @@
 /* Notification dropdown styling */
 .notification-dropdown {
   position: absolute;
-  top: 100%; /* Ensures the dropdown appears just below the button */
-  right: 0; /* Aligns the dropdown to the right edge of the button */
+  top: 100%; 
+  // left: 0;
+  right: 1rem;
   width: 320px;
   max-height: 400px;
   overflow-y: auto;
-  background-color: #fff;
+  background-color: goldenrod;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -45,6 +49,7 @@
   padding: 10px;
   margin-top: 0.5rem;
   transition: all 0.3s ease;
+ 
 }
 
 
@@ -77,6 +82,7 @@
   padding: 10px;
   border-bottom: 1px solid #eee;
   transition: background-color 0.2s ease;
+  flex-wrap: wrap;
 }
 
 .notification-dropdown li:hover {
@@ -126,3 +132,46 @@
   border-radius: 4px;
 }
 
+.notification-dropdown li .btn-group {
+  display: flex;
+  gap: 5px; 
+}
+
+@media (max-width: 768px) {
+  
+  .notification-container {
+    right: 0;
+    left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    width: 100%; 
+    text-align: center; 
+  }
+
+  
+  .notification-dropdown {
+    width: 90%; 
+    max-height: 250px; 
+    right: 0;
+    left: 0;
+  }
+  
+  
+  .notification-dropdown li {
+    padding: 8px;
+  }
+
+  
+  .notification-dropdown li .btn-group {
+    flex-direction: column; 
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  
+  .notification-dropdown li .btn-link {
+    width: 100%; 
+    text-align: left;
+    margin-top: 5px;
+  }
+}

@@ -461,8 +461,7 @@ def add_event():
         events_db.append(new_event)
         save_events(events_db)
         # Create notifications for all users
-        for user in users_db:
-           create_notification_for_users(
+        create_notification_for_users(
             'New Event Created',
             f'A new event "{event_name}" has been created.'
         )
