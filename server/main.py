@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+from flask import Flask, jsonify, request, urlfor, rendertemplate_string
+=======
 from flask import Flask, jsonify, request, url_for,render_template_string
+>>>>>>> 3b45f9b806d5ff28de101687064073665aa8449c
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
@@ -16,7 +20,7 @@ from threading import Thread
 from werkzeug.utils import secure_filename
 import os,json
 
-app = Flask(__name__)
+app = Flask(__name)
 CORS(app)  # Allow cross-origin requests
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -346,8 +350,11 @@ def complete_profile():
 
     return jsonify({'message': 'Profile completed successfully.'}), 201
 
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 3b45f9b806d5ff28de101687064073665aa8449c
 # Get all useras
 @app.route('/api/users', methods=['GET'])
 def get_users():
@@ -357,6 +364,43 @@ def get_users():
 @app.route('/api/admin/eventUserMatchings', methods=['GET'])
 def get_user_event_matchings():
     return jsonify(user_event_matching_db)
+
+# Function to check if the file extension is allowed
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Validate the event form fields
+def validate_event_form(event_name, event_description, location, required_skills, urgency, event_date):
+    # Event Name: required, max 100 characters
+    if not event_name or len(event_name) > 100:
+        return 'Event Name is required and must be at most 100 characters.'
+
+    # Event Description: required
+    if not event_description:
+        return 'Event Description is required.'
+
+    # Location: required
+    if not location:
+        return 'Location is required.'
+
+    # Required Skills: must be a non-empty list
+    if not required_skills or not isinstance(required_skills, list) or len(required_skills) == 0:
+        return 'Required Skills must be selected.'
+
+    # Urgency: must be one of 'High', 'Medium', 'Low'
+    if urgency not in ['High', 'Medium', 'Low']:
+        return 'Urgency must be one of "High", "Medium", or "Low".'
+
+    # Event Date: required (could add further validation, e.g., proper date format)
+    if not event_date:
+        return 'Event Date is required.'
+
+    return None  # No errors
+
+# Get all events
+@app.route('/api/events', methods=['GET'])
+def get_events():
+    return jsonify(events_db)
 
 # Add a new event
 # Function to check if the file extension is allowed
@@ -461,8 +505,7 @@ def add_event():
         events_db.append(new_event)
         save_events(events_db)
         # Create notifications for all users
-        for user in users_db:
-           create_notification_for_users(
+        create_notification_for_users(
             'New Event Created',
             f'A new event "{event_name}" has been created.'
         )

@@ -94,6 +94,7 @@ section.alert-danger {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 6px rgba(0, 0, 0, 0.23);
   color: white;
 }
+
 .buttonAdd:hover{
   background-color: gray;
 }
@@ -146,17 +147,16 @@ section.alert-danger {
   background-color: gray;
 }
 
-/* Apply to the button to affect both button and icon when hovering */
+/* Apply to the button to affect both button and icon when hovering /
 .icon-button:hover mat-icon {
   transform: scale(1.2); 
   color: gray; 
   transition: transform 0.3s ease, color 0.3s ease; 
 }
 
-/* Apply hover directly to the icon */
+/ Apply hover directly to the icon */
 .hover-effect:hover {
   transform: scale(1.2);
   color: gray; 
   transition: transform 0.3s ease, color 0.3s ease; 
 }
-
