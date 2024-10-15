@@ -1,40 +1,45 @@
 <header>
-  <ul>
-    <!-- Always visible links -->
-    <li><a routerLink="/"><span><i class="bi bi-house-fill"></i></span> Home</a></li>
-    <!-- <li><a routerLink="/volunteer-opportunities"><span><i class="bi bi-bag"></i></span> Volunteer Opportunities</a></li> -->
-    <li><a routerLink="/userEvent"><span><i class="bi bi-calendar-event"></i></span> Volunteer Opportunities</a></li>
-    <!-- <li><a routerLink="/contact-us"><span><i class="bi bi-telephone-outbound-fill"></i></span> Contact Us</a></li> -->
+    <ul>
+        <!-- Always visible links -->
+        <li><a routerLink="/"><span><i class="bi bi-house-fill"></i></span> Home</a></li>
+        <!-- <li><a routerLink="/volunteer-opportunities"><span><i class="bi bi-bag"></i></span> </a></li> -->
+        <li><a routerLink="/userEvent"><span><i class="bi bi-calendar-event"></i></span> Volunteer Opportunities</a></li>
+        <!-- <li><a routerLink="/contact-us"><span><i class="bi bi-telephone-outbound-fill"></i></span> Contact Us</a></li> -->
 
-    <!-- User menu when logged in -->
-    <li *ngIf="authService.getIsLoggedIn() && userFullName" class="user-menu">
-      <div class="dropdown">
-        <button class="btn btn-link user-button" type="button" (click)="toggleDropdown()">
-          <i class="bi bi-person-circle"></i> Welcome, {{ userFullName }} <span><mat-icon class="dropdown-icon ">arrow_drop_down</mat-icon></span>
-        </button>
-        <div *ngIf="showDropdown" class="dropdown-menu" style="background-color: black;">
-          <a class="dropdown-item" (click)="navigateToProfile()"><mat-icon>brightness_high</mat-icon> My Profile</a>
-          <a class="dropdown-item" (click)="logout()"><mat-icon>settings_power</mat-icon> Logout</a>
-        </div>
-      </div>
-    </li>
+        <!-- Show 'My Profile' link if the user is logged in -->
+        <li *ngIf="authService.getIsLoggedIn()">
+            <a (click)="navigateToProfile()"><span><i class="bi bi-person-lines-fill"></i></span> My Profile</a>
+        </li>
 
-    <!-- Show the 'Dashboard' link only if logged in and the role is 'admin' -->
-    <li *ngIf="authService.getIsLoggedIn() && authService.getUserRole() === 'admin'">
-      <a routerLink="/admin"><span><i class="bi bi-speedometer"></i></span> Dashboard</a>
-    </li>
+        <!-- <li *ngIf="authService.getIsLoggedIn() && userFullName ">
+            <span><i class="bi bi-person-circle"></i></span> Welcome, {{ userFullName }} <span><mat-icon class="dropdown-icon ">arrow_drop_down</mat-icon></span>
 
-    <!-- Show 'Login' link if not logged in -->
-    <li *ngIf="!authService.getIsLoggedIn()">
-      <a routerLink="/login"><span><i class="bi bi-box-arrow-in-right"></i></span> Login</a>
-    </li>
+        </li> -->
+        
+        <li *ngIf="authService.getIsLoggedIn() && userFullName && authService.getUserRole() === 'user'" class="whitecolor">
+             Hi, {{ userFullName }} 
 
-    <!-- Show 'Sign Up' link if not logged in and not on the register page -->
-    <li *ngIf="!authService.getIsLoggedIn() && !isRegisterPage">
-      <a routerLink="/register"><span><i class="bi bi-box-arrow-right"></i></span> Sign Up</a>
-    </li>
-  </ul>
+        </li>
+        <!-- <span><i class="bi bi-person-circle"></i></span> -->
+        <!-- Show the 'Dashboard' link only if logged in and the role is 'admin' -->
+        <li *ngIf="authService.getIsLoggedIn() && authService.getUserRole() === 'admin'">
+            <a routerLink="/admin"><span><i class="bi bi-speedometer"></i></span> Dashboard</a>
+        </li>
+
+        <!-- Show 'Login' link if not logged in -->
+        <li *ngIf="!authService.getIsLoggedIn()">
+            <a routerLink="/login"><span><i class="bi bi-box-arrow-in-right"></i></span> Login</a>
+        </li>
+
+        <!-- Show 'Sign Up' link if not logged in and not on the register page -->
+        <li *ngIf="!authService.getIsLoggedIn() && !isRegisterPage">
+            <a routerLink="/register"><span><i class="bi bi-box-arrow-right"></i></span> Sign Up</a>
+        </li>
+
+        <!-- Show 'Logout' link if logged in -->
+        <li *ngIf="authService.getIsLoggedIn()">
+            <a (click)="logout()"><span ><i class="bi bi-box-arrow-left"></i></span> Logout</a>
+        </li>
+        
+    </ul>
 </header>
-<br>
-<br>
-<br>
