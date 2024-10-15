@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "user_email": "user@gmail.com",
+        "title": "Event Updated",
+        "message": "The event \"Blood test 200\" has been updated.",
+        "read": false,
+        "date": "2024-10-14T21:24:00.250611"
+    },
+    {
+        "id": 2,
+        "user_email": "user@gmail.com",
+        "title": "New Event Created",
+        "message": "A new event \"daniel\" has been created.",
+        "read": false,
+        "date": "2024-10-14T21:27:00.493415"
+    },
+    {
+        "id": 3,
+        "user_email": "user@gmail.com",
+        "title": "New Event Created",
+        "message": "A new event \"daniel\" has been created.",
+        "read": false,
+        "date": "2024-10-14T21:27:00.495296"
+    },
+    {
+        "id": 4,
+        "user_email": "user@gmail.com",
+        "title": "New Event Created",
+        "message": "A new event \"daniel\" has been created.",
+        "read": false,
+        "date": "2024-10-14T21:27:00.496402"
+    }
+]

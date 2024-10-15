@@ -1,26 +1,128 @@
+/* Styling for the entire notification container */
 .notification-container {
-    position: relative;
-    padding-top: 0.5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  
-    .notification-dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 300px;
-      max-height: 400px;
-      overflow-y: auto;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      z-index: 1000;
-      padding: 5px;
-      margin-top:0.5rem;
-    }
-  }
+  position: relative;
+  padding-top: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 
-  .text-muted {
-    color: gray;
-  }
-  
-  
+.notification-container .btn {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+}
+
+.notification-container .btn:hover {
+  background-color: #e2e6ea;
+}
+
+.notification-container .badge {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  font-size: 0.75rem;
+  padding: 5px 8px;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Notification dropdown styling */
+.notification-dropdown {
+  position: absolute;
+  top: 100%; /* Ensures the dropdown appears just below the button */
+  right: 0; /* Aligns the dropdown to the right edge of the button */
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 10px;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+
+.notification-dropdown ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Unread notification styling */
+.notification-dropdown li.unread {
+  background-color: #e9f5ff; /* Light blue for unread notifications */
+  font-weight: bold;
+  border-left: 5px solid #007bff; /* Blue border for unread notifications */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Read notification styling */
+.notification-dropdown li.read {
+  background-color: #f9f9f9; /* Light gray for read notifications */
+  color: #6c757d;
+  font-weight: normal;
+  border-left: 5px solid transparent; /* No border for read notifications */
+}
+
+.notification-dropdown li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.notification-dropdown li:hover {
+  background-color: #f1f1f1; /* Hover effect on both read and unread notifications */
+}
+
+.notification-dropdown li strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.notification-dropdown li .btn-link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.notification-dropdown li .btn-link:hover {
+  text-decoration: underline;
+}
+
+.notification-dropdown .btn-danger {
+  background-color: #dc3545;
+  border: none;
+  font-weight: bold;
+}
+
+.notification-dropdown .btn-danger:hover {
+  background-color: #c82333;
+}
+
+.text-muted {
+  color: gray;
+}
+
+.overflow-auto {
+  max-height: 300px;
+  padding-right: 5px;
+}
+
+.overflow-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+

@@ -21,6 +21,7 @@
   color: white;
   flex: 1; 
   text-align: left; 
+  text-shadow: 0 20px 30px rgba(0, 0, 0, 0.3), 0 12px 12px rgba(0, 0, 0, 0.23);
 }
 .user-menu {
   position: absolute;
@@ -163,7 +164,8 @@
   }
   
   .menu-icon {
-    margin-right: 12px; 
+    margin-right: 12px;
+    
   }
   
   .content-area {
@@ -177,5 +179,37 @@
     margin: 0 auto;
   }
  
+  .image-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  /* Style for the image with a circular shape, shadow, and movement animation */
+  .imgm {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 6px rgba(0, 0, 0, 0.23);
+    animation: moveSideToSide 5s ease-in-out infinite;
+  }
+
+  /* Keyframes to move the image from left to right and back */
+  @keyframes moveSideToSide {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(50px); 
+    }
+    100% {
+      transform: translateX(0); 
+    }
+    50% {
+      transform: translateX(-50px); 
+    }
+    100% {
+      transform: translateX(0); 
+    }
+  }
   
   
