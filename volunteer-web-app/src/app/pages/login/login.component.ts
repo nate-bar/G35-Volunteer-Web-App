@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         console.log('Login successful:', response);
         
-  
+        this.authService.setProfileCompleted(response.profile_completed);
         // Log in the user using AuthService regardless of profile status
         this.authService.login(response.role, response.email);
         localStorage.setItem('userName', this.username); 

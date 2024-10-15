@@ -1,17 +1,5 @@
 [
     {
-        "id": 2,
-        "eventName": "Charity Run",
-        "eventDescription": "Participate in our annual charity run to support local schools.",
-        "location": "houston",
-        "requiredSkills": [
-            "Running",
-            "Fundraising"
-        ],
-        "urgency": "High",
-        "eventDate": "2024-11-05T00:00:00.000Z"
-    },
-    {
         "id": 3,
         "eventName": "Blood test 200",
         "eventDescription": "A blood donation drive to help support the local hospital.",
@@ -20,8 +8,9 @@
             "Nursing",
             "First Aid"
         ],
-        "urgency": "High",
-        "eventDate": "2024-10-31T05:00:00.000Z"
+        "urgency": "Medium",
+        "eventDate": "2024-10-31T05:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_2024-06-08_202708.png"
     },
     {
         "id": 4,
@@ -45,7 +34,7 @@
             "Organizing",
             "Communication"
         ],
-        "urgency": "Low",
+        "urgency": "Medium",
         "eventDate": "2024-12-13T06:00:00.000Z"
     },
     {
@@ -58,7 +47,8 @@
             "Communication"
         ],
         "urgency": "Medium",
-        "eventDate": "2024-12-20T06:00:00.000Z"
+        "eventDate": "2025-02-28T06:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/ptitRRR.jpg"
     },
     {
         "id": 14,
@@ -83,7 +73,8 @@
         ],
         "urgency": "Medium",
         "eventDate": "2024-09-30T05:00:00.000Z",
-        "id": 8
+        "id": 8,
+        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_2024-08-11_195407.png"
     },
     {
         "eventName": "harsha",
@@ -341,11 +332,105 @@
         "eventDescription": "lkdskdsgkjrd",
         "location": "rstrtr",
         "requiredSkills": [
+            "Teamwork",
             "Environmental Awareness",
             "Running"
         ],
         "urgency": "Medium",
         "eventDate": "2024-10-31T05:00:00.000Z",
         "id": 29
+    },
+    {
+        "id": 30,
+        "eventName": "image testt",
+        "eventDescription": "testing",
+        "location": "houston",
+        "requiredSkills": [
+            "Teaching",
+            "Animal Care"
+        ],
+        "urgency": "Medium",
+        "eventDate": "2024-10-30T05:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/ptitRRR.jpg"
+    },
+    {
+        "id": 31,
+        "eventName": "group 5",
+        "eventDescription": "chelsea",
+        "location": "houston",
+        "requiredSkills": [
+            "Organizing"
+        ],
+        "urgency": "High",
+        "eventDate": "2024-10-31T05:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_2023-03-05_210648.png"
+    },
+    {
+        "id": 32,
+        "eventName": "nwagor",
+        "eventDescription": "chelly chelly",
+        "location": "sds",
+        "requiredSkills": [
+            "Running",
+            "Fundraising"
+        ],
+        "urgency": "High",
+        "eventDate": "2024-10-30T05:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_20221206_112137.png"
+    },
+    {
+        "id": 33,
+        "eventName": "group 5",
+        "eventDescription": "ddtrtuytyui",
+        "location": "yiyu",
+        "requiredSkills": [
+            "Environmental Awareness",
+            "Running",
+            "Fundraising"
+        ],
+        "urgency": "Low",
+        "eventDate": "2024-11-30T06:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_2023-03-05_210648.png"
+    },
+    {
+        "id": 34,
+        "eventName": "charity run",
+        "eventDescription": "retrytrutwdsfdgfuy",
+        "location": "ortriritri",
+        "requiredSkills": [
+            "Environmental Awareness",
+            "Running",
+            "Fundraising"
+        ],
+        "urgency": "Medium",
+        "eventDate": "2024-11-04T06:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_20221201_105936.png"
+    },
+    {
+        "id": 34,
+        "eventName": "Daniel",
+        "eventDescription": "welwrr rretirerete irtriy",
+        "location": "houston",
+        "requiredSkills": [
+            "Environmental Awareness",
+            "Running",
+            "Fundraising"
+        ],
+        "urgency": "Low",
+        "eventDate": "2024-10-31T05:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_20230106_120544.png"
+    },
+    {
+        "id": 35,
+        "eventName": "daniel",
+        "eventDescription": "dtreytuyuoiu",
+        "location": "drtytuyti",
+        "requiredSkills": [
+            "Running",
+            "Fundraising"
+        ],
+        "urgency": "Medium",
+        "eventDate": "2024-11-30T06:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/register.png"
     }
 ]

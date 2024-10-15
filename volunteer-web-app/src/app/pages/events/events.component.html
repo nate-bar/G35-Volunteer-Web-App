@@ -1,7 +1,13 @@
 <div class="container mt-1">
-  <div *ngIf="apiMessage" class="alert alert-info d-flex justify-content-center" role="alert"  style="background-image: initial;">
+  <br>
+  <section *ngIf="apiMessage" [ngClass]="{
+    'alert-success': messageType === 'success',
+    'alert-danger': messageType === 'error'
+  }" class="alert text-center" role="alert">
     {{ apiMessage }}
-  </div>
+  </section>
+  
+
   <h2 class="mb-1 text-center"><strong><u>Event Management</u></strong></h2>
 
 
@@ -112,7 +118,7 @@
         <div class="row mb-1" style="background-image: initial;"> 
           <label for="eventName" class="col-sm-2 col-form-label">Event Name:</label>
           <div class="col-sm-10" style="background-image: initial;">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="fill" class="w-100" appearance="outline">
               <mat-label>Event Name</mat-label>
               <input matInput id="eventName" formControlName="eventName" placeholder="Enter event name" required />
             </mat-form-field>
@@ -123,19 +129,39 @@
         <div class="row mb-1" style="background-image: initial;">
           <label for="eventDescription" class="col-sm-2 col-form-label">Description:</label>
           <div class="col-sm-10" style="background-image: initial;">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="fill" class="w-100" appearance="outline">
               <mat-label>Description</mat-label>
               <textarea matInput id="eventDescription" formControlName="eventDescription" placeholder="Enter description" required></textarea>
             </mat-form-field>
           </div>
         </div>
-        
+<!-- Image Upload Section -->
+
+<div class="row mb-1" style="background-image: initial; align-items: center;">
+  <label for="eventImage" class="col-sm-2 col-form-label">Event Image:</label>
+  
+  <!-- File Input aligned with the label -->
+  <div class="col-sm-6" style="background-image: initial;">
+    <input type="file" class="form-control" id="eventImage" (change)="onFileSelected($event)" />
+  </div>
+  
+  <!-- Show the current image if available -->
+  <div class="col-sm-2" *ngIf="selectedFile">
+    <img [src]="selectedFile" alt="Event Image Preview" style="max-width: 100px; max-height: 100px;" />
+  </div>
+</div>
+
+
+
+
+
+  
     
         <!-- Location Input -->
         <div class="row mb-1" style="background-image: initial;">
           <label for="location" class="col-sm-2 col-form-label">Location:</label>
           <div class="col-sm-10" style="background-image: initial;">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="fill" class="w-100" appearance="outline">
               <mat-label>Location</mat-label>
               <input matInput id="location" formControlName="location" placeholder="Enter location" required />
             </mat-form-field>
@@ -146,10 +172,10 @@
         <div class="row mb-1" style="background-image: initial;"> 
           <label for="requiredSkills" class="col-sm-2 col-form-label">Required Skills:</label>
           <div class="col-sm-10" style="background-image: initial;">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Select Skills</mat-label>
-              <mat-select formControlName="requiredSkills" multiple>
-                <mat-option *ngFor="let skill of skillOptions" [value]="skill">
+              <mat-select formControlName="requiredSkills" multiple >
+                <mat-option *ngFor="let skill of skillOptions" [value]="skill" >
                   {{ skill }}
                 </mat-option>
               </mat-select>
@@ -161,7 +187,7 @@
         <div class="row mb-1" style="background-image: initial;"> 
           <label for="urgency" class="col-sm-2 col-form-label">Urgency:</label>
           <div class="col-sm-10" style="background-image: initial;">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="fill" class="w-100" appearance="outline">
               <mat-label>Urgency</mat-label>
               <mat-select formControlName="urgency">
                 <mat-option value="High">High</mat-option>
@@ -176,7 +202,7 @@
         <div class="row mb-1" style="background-image: initial;"> 
           <label for="eventDate" class="col-sm-2 col-form-label">Date:</label>
           <div class="col-sm-10" style="background-image: initial;">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="fill" class="w-100" appearance="outline">
               <mat-label>Event Date</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="eventDate" placeholder="Choose a date" required />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -187,8 +213,13 @@
     
         <div class="modal-footer" style="background-image: initial;">
           <button type="button" class="btn btn-danger buttonAddC me-2" (click)="modal.dismiss()">Cancel</button>
-          <button type="submit" class="btn buttonAddE" [disabled]="eventForm.invalid">{{ isEditMode ? 'Update Event' : 'Save Event' }}</button>
+          
+          <button type="submit" class="btn buttonAddE" [disabled]="eventForm.invalid">
+            <i class="fa" [ngClass]="isEditMode ? 'fa-edit' : 'fa-save'" aria-hidden="true"></i> 
+            {{ isEditMode ? 'Update Event' : 'Save Event' }}
+          </button>
         </div>
+        
       </form>
     </div>
     

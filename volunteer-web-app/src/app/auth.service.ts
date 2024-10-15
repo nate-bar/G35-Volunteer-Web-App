@@ -132,6 +132,7 @@ export class AuthService {
           if (isPlatformBrowser(this.platformId)) {
             try {
               localStorage.setItem('userProfile', JSON.stringify(profile));
+              
             } catch (error) {
               console.error('Error storing profile in localStorage', error);
             }

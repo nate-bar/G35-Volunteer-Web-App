@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../notification.service';
 import { CommonModule } from '@angular/common';
@@ -24,15 +24,17 @@ export class NotificationComponent implements OnInit {
   unreadCount: number = 0;
   showDropdown: boolean = false; 
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.notificationService.notifications$.subscribe((notifications) => {
       this.notifications = notifications;
+      this.cdr.markForCheck();
     });
 
     this.notificationService.unreadCount$.subscribe((count) => {
       this.unreadCount = count;
+      this.cdr.markForCheck();
     });
   }
 
@@ -53,7 +55,10 @@ export class NotificationComponent implements OnInit {
     this.showDropdown = !this.showDropdown;
   }
 
-  
+  deleteNotification(id: number) {
+    this.notificationService.deleteNotification(id);
+  }
+
   closeDropdown() {
     this.showDropdown = false;
   }

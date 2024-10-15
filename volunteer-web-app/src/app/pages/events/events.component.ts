@@ -16,6 +16,8 @@ import { NotificationService } from '../../notification.service';
 import { EventService } from './event.service';
 import { Event } from './event.interface';
 import { MatIconModule } from '@angular/material/icon';
+import { error } from 'console';
+import { response } from 'express';
 
 @Component({
   selector: 'app-events',
@@ -41,6 +43,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class EventsComponent implements OnInit {
   eventForm: FormGroup;
   events: Event[] = [];
+  selectedFile: string | File | null = null;
+
   skillOptions: string[] = [
     'Teamwork', 'Environmental Awareness', 'Running', 'Fundraising', 'Organizing', 'Public Speaking',
     'Nursing', 'Gardening', 'Compassion', 'Creativity', 'Patience', 'Music', 'Empathy', 'Coding',
@@ -54,6 +58,7 @@ export class EventsComponent implements OnInit {
   pageSize = 5;
   apiMessage: string = '';
   loading: boolean = false;
+  messageType: 'success' | 'error' = 'success';
 
   constructor(
     private fb: FormBuilder,
@@ -62,7 +67,7 @@ export class EventsComponent implements OnInit {
     private eventService: EventService,
   ) {
     this.eventForm = this.fb.group({
-      eventName: ['', Validators.required],
+      eventName: ['', [Validators.required, Validators.maxLength(100)]],
       eventDescription: ['', Validators.required],
       location: ['', Validators.required],
       requiredSkills: [[], Validators.required],
@@ -113,15 +118,31 @@ export class EventsComponent implements OnInit {
 
   onAddOrUpdateEvent(modal: any): void {
     if (this.eventForm.valid) {
-      const newEvent = { ...this.eventForm.value, eventDate: new Date(this.eventForm.value.eventDate).toISOString() };
-      
+      const formData = new FormData();
+  
+      // Append form fields to FormData
+      formData.append('eventName', this.eventForm.get('eventName')?.value);
+      formData.append('eventDescription', this.eventForm.get('eventDescription')?.value);
+      formData.append('location', this.eventForm.get('location')?.value);
+      formData.append('urgency', this.eventForm.get('urgency')?.value);
+      formData.append('eventDate', new Date(this.eventForm.get('eventDate')?.value).toISOString());
+  
+      // Append `requiredSkills` as a JSON string
+      const requiredSkills = this.eventForm.get('requiredSkills')?.value;
+      formData.append('requiredSkills', JSON.stringify(requiredSkills));
+  
+      // Handle the file upload
+      if (this.selectedFile instanceof File) {
+        formData.append('eventImage', this.selectedFile);
+      }
+  
       if (this.isEditMode && this.editIndex !== null) {
         // Update the existing event
-        this.eventService.updateEvent(this.editIndex, newEvent).subscribe(
+        this.eventService.updateEvent(this.editIndex, formData).subscribe(
           (response) => {
             const updatedEvent = response.event;
-            
-            // Find the index of the event in the events array by ID and update it
+  
+            // Update the event in the events array
             const eventIndex = this.events.findIndex(event => event.id === this.editIndex);
             if (eventIndex !== -1) {
               this.events[eventIndex] = updatedEvent;
@@ -129,67 +150,72 @@ export class EventsComponent implements OnInit {
   
             this.isEditMode = false;
             this.editIndex = null;
-            this.apiMessage = response.message;
+            this.apiMessage = response.message;  // Backend success message
+            this.messageType = 'success'; 
   
-            // Notify about the updated event
-            this.notificationService.addNotification({
-              id: Date.now(),
-              title: 'Event Updated',
-              message: `The event "${updatedEvent.eventName}" has been updated.`,
-              read: false,
-              date: new Date(),
-            });
+            // // Notify about the updated event
+            // this.notificationService.addNotification({
+            //   id: Date.now(),
+            //   title: 'Event Updated',
+            //   message: `The event "${updatedEvent.eventName}" has been updated.`,
+            //   read: false,
+            //   date: new Date(),
+            // });
   
             this.eventForm.reset();
             this.filterEvents(this.filter.value || '');
-            modal.close(); // Close the 
-            window.location.reload();
+            modal.close();
           },
-          error => {
-            this.apiMessage = error.error?.message || 'Error updating event';
+          (error) => {
+            // Display the exact error message from the backend
+            this.apiMessage = error.error?.details || error.error?.error || 'Error updating event';
+            this.messageType = 'error'; 
             console.error('Error updating event:', error);
           }
         );
       } else {
-        // Add new event
-        this.eventService.addEvent(newEvent).subscribe(
+        // Add a new event
+        this.eventService.addEvent(formData).subscribe(
           (addedEvent) => {
-            //console.log('Added Event Response:', addedEvent);
-            this.events.push(addedEvent.event);  // Access the `event` key from response
-            this.apiMessage = 'New event created successfully';
-        
-            // Notify about the new event
-            this.notificationService.addNotification({
-              id: Date.now(),
-              title: 'New Event Created',
-              message: `A new event "${addedEvent.event.eventName}" has been created.`,
-              read: false,
-              date: new Date(),
-            });
-        
+            this.events.push(addedEvent.event);
+            this.apiMessage = addedEvent.message;  // Backend success message
+            this.messageType = 'success'; 
+  
+            // this.notificationService.addNotification({
+            //   id: Date.now(),
+            //   title: 'New Event Created',
+            //   message: `A new event "${addedEvent.event.eventName}" has been created.`,
+            //   read: false,
+            //   date: new Date(),
+            // });
+  
             this.eventForm.reset();
-            this.filterEvents(this.filter.value || '');
             modal.close();
-            window.location.reload();
           },
-          error => {
-            this.apiMessage = error.error?.message || 'Error adding new event';
+          (error) => {
+            // Display the exact error message from the backend
+            this.apiMessage = error.error?.details || error.error?.error ;
+            this.messageType = 'error'; 
             console.error('Error adding new event:', error);
           }
         );
-      }        
+      }
     } else {
       this.apiMessage = 'Form is invalid. Please check the fields and try again.';
       console.error('Form is invalid');
     }
   }
+  
+  
+  
+  
+  
 
 
   openModal(content: any, editMode: boolean, event?: Event): void {
     this.isEditMode = editMode;
   
     if (editMode && event) {
-      // Populate the form with the selected event's data
       this.eventForm.setValue({
         eventName: event.eventName,
         eventDescription: event.eventDescription,
@@ -199,14 +225,21 @@ export class EventsComponent implements OnInit {
         eventDate: new Date(event.eventDate),
       });
   
-      this.editIndex = event.id; // Save the event ID for editing
+      // Set the current image path if editing and the event has an image
+      this.selectedFile = event.eventImage || null; // Keep reference to the current image path
+  
+      this.editIndex = event.id;
     } else {
       this.editIndex = null;
       this.eventForm.reset();
+      this.selectedFile = null;
     }
-    
+  
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
+  
+  
+  
   
   
   
@@ -232,9 +265,10 @@ export class EventsComponent implements OnInit {
       (response) => {
         this.events = this.events.filter((event) => event.id !== eventId);
         this.filterEvents(this.filter.value || '');
-
-        this.apiMessage = response.message;  // Set message from API response
-
+  
+        this.apiMessage = response.message;  // Backend success message
+        this.messageType = 'success'; 
+  
         // Notify about the deletion
         this.notificationService.addNotification({
           id: Date.now(),
@@ -244,13 +278,15 @@ export class EventsComponent implements OnInit {
           date: new Date(),
         });
       },
-      error => {
-        this.apiMessage = error.error?.message || 'Error deleting event';
+      (error) => {
+        // Display the exact error message from the backend
+        this.apiMessage = error.error?.details || error.error?.error || 'Error deleting event';
+        this.messageType = 'error'; 
         console.error('Error deleting event:', error);
       }
     );
   }
-
+  
   
 
   onSkillChange(event: any, skill: string): void {
@@ -273,5 +309,19 @@ export class EventsComponent implements OnInit {
   toggleFullDescription(event: any) {
     event.showFullDescription = !event.showFullDescription;
   }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      console.log('Selected file:', this.selectedFile);
+    }
+  }
+// Check if the selected file is an image path (string) or a File object
+isImagePath(): boolean {
+  return typeof this.selectedFile === 'string' && this.selectedFile !== null && this.selectedFile.startsWith('http');
+}
+
+
   
 }
