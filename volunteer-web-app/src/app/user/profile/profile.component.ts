@@ -122,7 +122,7 @@ export class ProfileComponent implements OnInit {
       this.profileService.completeUserProfile(profileData).subscribe(
         (response) => {
           console.log('Profile completed successfully:', response);
-          this.successMessage = 'Profile completed successfully!';
+          this.successMessage = response.message || 'completed successfully!';
           this.errorMessage = '';
           this.warmingMessage = '';
   
@@ -137,7 +137,7 @@ export class ProfileComponent implements OnInit {
         },
         (error) => {
           console.error('Error completing profile:', error);
-          this.errorMessage = 'An error occurred while completing the profile. Please try again.';
+          this.errorMessage = error.error?.error || 'An error occurred while completing the profile. Please try again.';
           this.successMessage = '';
           this.warmingMessage = '';
         }

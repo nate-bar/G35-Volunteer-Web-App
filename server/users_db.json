@@ -14,31 +14,13 @@
     {
         "email": "user@gmail.com",
         "password": "$2b$12$yGlvcJDGEJhkaDowySS8r.GpErD8JvPqXqcp0w1HchQAGbMdGcAaq",
-        "role": "user"
+        "role": "user",
+        "profile_completed": true
     },
     {
         "email": "konateallamanhamed@gmail.com",
-        "password": "$2b$12$SlJbLcktvN6QuRsoFVa4ju35iOyNt9OOXpJ7GlsHuStpgnTSSTecy",
+        "password": "$2b$12$IaHkMjj9YRF5lzmEiStrk.oFPPP0x2NP5gyAPvzh7z0DCQun4G.a2",
         "role": "admin",
-        "full_name": "Allaman",
-        "address1": "ieiurutytru",
-        "address2": ",ksjdjdujiit",
-        "zip_code": "34567",
-        "availability": [
-            "10/30/2024",
-            "10/31/2024",
-            "10/26/2024",
-            "11/15/2024",
-            "10/23/2024",
-            "11/23/2024"
-        ],
-        "city": "Houston",
-        "state": "TX",
-        "preferences": "oirytyeuwiwowl",
-        "skills": [
-            "Leadership",
-            "Teamwork"
-        ],
         "profile_completed": true
     }
 ]
