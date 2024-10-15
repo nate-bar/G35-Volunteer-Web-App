@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 interface Notification {
   id: number;
@@ -23,25 +24,30 @@ export class NotificationService {
 
   private apiUrl = 'http://127.0.0.1:5000/api/notifications';  // my backend API endpoint
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) {
     this.fetchNotifications();
   }
 
   // Fetch notifications from the backend
   fetchNotifications(): void {
-    const email = localStorage.getItem('userEmail');  // Get user email from localStorage
-    if (email) {
-      this.http.get<Notification[]>(`${this.apiUrl}/${email}`).subscribe(
-        (notifications) => {
-          this.notifications = notifications;
-          this.updateNotifications();
-        },
-        (error) => {
-          console.error('Failed to fetch notifications:', error);
-        }
-      );
+    if (isPlatformBrowser(this.platformId)) {
+      // Only execute this code if running in the browser
+      const email = localStorage.getItem('userEmail'); // Assuming the email is stored here
+      if (email) {
+        this.http.get<Notification[]>(`${this.apiUrl}/${email}`).subscribe(
+          (notifications) => {
+            this.notifications = notifications;
+            this.updateNotifications();
+          },
+          (error) => {
+            console.error('Failed to fetch notifications:', error);
+          }
+        );
+      } else {
+        console.error('No user email found in localStorage.');
+      }
     } else {
-      console.error('No user email found in localStorage.');
+      console.warn('fetchNotifications was called in a non-browser environment.');
     }
   }
   
