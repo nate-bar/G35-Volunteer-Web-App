@@ -26,6 +26,7 @@ li a {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  font-size: 18px;
 }
 
 li a:hover:not(.active) {
@@ -105,3 +106,103 @@ color:white;
   display: block;
 }
 
+
+/* Dropdown positioning */
+.user-menu {
+  position: relative;
+  z-index: 1000; /* Ensure dropdown is on top of other content */
+}
+
+/* Styling the dropdown */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Align dropdown under the button */
+  right: 0;
+  background-color: #fff; /* Ensure white background */
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1000;
+  display: block;
+  min-width: 150px;
+  max-width: 250px; /* Limit width */
+  overflow: visible;
+  color: black; /* Ensure the text color is black */
+}
+
+/* Dropdown items style */
+.dropdown-item {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Dropdown item hover effect */
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: black;
+}
+
+/* Ensure dropdown is not cut off by the page or parent container */
+header,
+ul,
+.dropdown-menu {
+  overflow: visible;
+  position: relative;
+}
+
+/* Fix for when content overflows the screen */
+.dropdown-menu {
+  right: auto;
+  left: auto;
+  margin-left: 0; /* Prevent being cut off */
+  margin-right: 0; /* Align properly */
+  max-height: 300px; /* Limit the height */
+  overflow-y: auto; /* Scroll if necessary */
+}
+
+/* Additional responsiveness for smaller screens */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    left: 0; /* Adjust positioning */
+    right: 0;
+    min-width: 100%; /* Take full width in smaller screens */
+  }
+}
+
+.btn-link {
+  color: #333;
+  text-decoration: none;
+}
+
+// .btn-link:hover {
+//   text-decoration: underline;
+//   color: #007bff;
+// }
+
+.user-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  background: black;
+  color: white;
+  font: bold;
+
+  &:hover{
+    
+    background: white;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    
+  }
+}
+
+// .dropdown{
+//   background: lightgreen;
+// }

@@ -1,6 +1,13 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" class="sidenav" [(opened)]="sidenavOpened">
-    <h2 class="sidenav-title">Menu</h2>
+    <!-- <h2 class="sidenav-title">Menu</h2> -->
+     
+     <div class="image-container">
+      <img src="gicon.jpg" alt="menu icon" class="imgm">
+    </div>
+    <br>
+    
+    
     <ul class="sidenav-menu">
       <li [class.active]="selectedLink === 'home'"matRipple   [matRippleColor]="'rgba(255, 255, 255, 0.5)'"
       [matRippleCentered]="true"
