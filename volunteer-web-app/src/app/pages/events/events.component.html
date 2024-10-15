@@ -146,8 +146,13 @@
   </div>
   
   <!-- Show the current image if available -->
-  <div class="col-sm-2" *ngIf="selectedFile">
+  <div class="col-sm-2" *ngIf="selectedFile && isImagePath()">
     <img [src]="selectedFile" alt="Event Image Preview" style="max-width: 100px; max-height: 100px;" />
+   
+  </div>
+  <div class="col-sm-2" *ngIf="imagePreview">
+    
+    <img [src]="imagePreview" alt="Profile Image Preview"  style="max-width: 100px; max-height: 100px;">
   </div>
 </div>
 
@@ -225,4 +230,5 @@
     
   </ng-template>
 </div>
+  
   

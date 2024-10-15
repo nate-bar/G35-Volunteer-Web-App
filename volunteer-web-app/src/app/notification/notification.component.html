@@ -3,8 +3,9 @@
     <i class="bi bi-bell"></i>
     <span class="badge bg-danger" *ngIf="unreadCount > 0">
       {{ unreadCount }}
-    </span>
+    </span> Notifications
   </button>
+  
 
   <div *ngIf="showDropdown" class="notification-dropdown mt-2 p-2 bg-white border rounded shadow-sm">
     <div *ngIf="notifications.length > 0; else noNotifications" class="overflow-auto" style="max-height: 300px;">
