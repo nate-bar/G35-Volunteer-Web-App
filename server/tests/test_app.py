@@ -273,3 +273,88 @@ def test_get_events_for_user_no_user_found(client):
 
     assert response.status_code == 404
     assert response.json['error'] == 'User profile not found'
+
+def test_get_users_for_event(client):
+    user_profiles_db.clear()
+    events_db.clear()
+
+    user_profiles_db.append({
+        'email': 'user1@example.com',
+        'full_name': 'User One',
+        'city': 'Houston',
+        'skills': ['Leadership', 'Teamwork']
+    })
+    user_profiles_db.append({
+        'email': 'user2@example.com',
+        'full_name': 'User Two',
+        'city': 'Houston',
+        'skills': ['Teamwork']
+    })
+    user_profiles_db.append({
+        'email': 'user3@example.com',
+        'full_name': 'User Three',
+        'city': 'Austin',
+        'skills': ['Leadership']
+    })
+
+    events_db.append({
+        'id': 1,
+        'eventName': 'Leadership Conference',
+        'eventDescription': 'A conference to improve leadership skills.',
+        'location': 'Houston',
+        'requiredSkills': ['Leadership'],
+        'urgency': 'High',
+        'eventDate': '2024-10-15'
+    })
+
+    response = client.post('/api/users/getUsersForEvent', json={
+        'event_id': 1
+    })
+
+    assert response.status_code == 200
+    assert isinstance(response.get_json(), list)
+    assert len(response.json) == 1
+
+    user_emails = [user['email'] for user in response.json]
+    assert 'user1@example.com' in user_emails
+    assert 'user2@example.com' not in user_emails
+    assert 'user3@example.com' not in user_emails
+
+def test_get_users_for_event_no_skills_required(client):
+    user_profiles_db.append({
+        'email': 'user1@example.com',
+        'full_name': 'User One',
+        'city': 'Houston',
+        'skills': ['Leadership', 'Teamwork']
+    })
+
+    events_db.append({
+        'id': 2,
+        'eventName': 'General Volunteer Event',
+        'eventDescription': 'An event with no required skills.',
+        'location': 'Houston',
+        'requiredSkills': [],
+        'urgency': 'Medium',
+        'eventDate': '2024-11-01'
+    })
+
+    response = client.post('/api/users/getUsersForEvent', json={
+        'event_id': 2
+    })
+
+    assert response.status_code == 200
+    assert response.json['message'] == 'No skills required for this event'
+
+def test_get_users_for_event_not_found(client):
+    response = client.post('/api/users/getUsersForEvent', json={
+        'event_id': 999
+    })
+
+    assert response.status_code == 404
+    assert response.json['error'] == 'Event not found'
+
+def test_get_users_for_event_missing_event_id(client):
+    response = client.post('/api/users/getUsersForEvent', json={})
+
+    assert response.status_code == 400
+    assert response.json['error'] == 'Event ID is required'
