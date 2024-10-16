@@ -1,6 +1,6 @@
-<div class="container mt-4" >
+<div class="container mt-2" >
     
-  <h2 class="mb-4 text-center" style="color: white;"><strong><u>Volunteer Matching Form</u></strong></h2>
+  <h2 class="mb-4 text-center" style="color: white;"><strong>Volunteer Matching Form</strong></h2>
  <br>
   <div *ngIf="alertMessage" class="alert alert-success text-center" role="alert" style="all: initial; display: flex; justify-content: center;background-color: white;">
       <span style="color: green;">{{ alertMessage }}</span>
@@ -41,8 +41,9 @@
       </div>
     
       <div class="d-flex justify-content-center" style="all: initial; display: flex; justify-content: center;">
+        <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
         <button type="submit" class="btn btn-primary mx-2">Match Volunteer</button>
-        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        
       </div>
     </form>
 

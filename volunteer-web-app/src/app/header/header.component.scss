@@ -37,19 +37,27 @@ li a {
 
 
 li a:hover:not(.active) {
-  background-color: #111;
+  background-color: gray;
   text-decoration: none;
   color:white;
   cursor: pointer;
  
 }
 
-.active:hover{
-    color:white;
-    text-decoration: none;
-    background-color: #202123;
-  }
 
+
+li a.active {
+  background-color: black; 
+  color: white; 
+  text-decoration: none;
+}
+
+/* When the item is both active and hovered */
+li a.active:hover {
+  background-color: black; 
+  text-decoration: none;
+  color: white;
+}
 a{
 color:white;
 }
