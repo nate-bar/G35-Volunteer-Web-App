@@ -1,7 +1,9 @@
-<<<<<<< HEAD
 node_modules
-=======
-
 /server/.venv
 /server/__pycache__
->>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
+*.pyc
+volunteer-web-app/node_modules/webpack/lib/WebpackOptionsApply.js
+volunteer-web-app/node_modules/webpack/lib/webpack.js
+volunteer-web-app/node_modules/webpack/lib/index.js
+volunteer-web-app/node_modules/vite/bin/vite.js
+volunteer-web-app/node_modules/@angular/cli/bin/ng.js

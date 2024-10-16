@@ -6,45 +6,45 @@
       <span style="color: green;">{{ alertMessage }}</span>
     </div>
     <br>
-  <form [formGroup]="matchingForm" (ngSubmit)="onMatchSubmit()">
+    <form [formGroup]="matchingForm" (ngSubmit)="onMatchSubmit()">
+  
+      <div class="row mb-3" style="all: initial; display: flex; justify-content: center;">
+        <label for="selectedUser" class="col-sm-1 col-form-label">Select Volunteer:</label>
+        <div class="col-sm-5" style="all: initial; justify-content: center;">
+          <select
+            id="selectedUser"
+            class="form-select"
+            formControlName="selectedUser"
+            required
+          >
+            <option *ngFor="let user of (matchedUsers.length ? matchedUsers : users)" [value]="user.email">
+              {{ user.full_name }}
+            </option>
+          </select>
+        </div>
+      </div>
     
-    <div class="row mb-3" style="all: initial; display: flex; justify-content: center;">
-      <label for="selectedUser" class="col-sm-1 col-form-label">Select Volunteer:</label>
-      <div class="col-sm-5" style="all: initial; justify-content: center;">
-        <select
-          id="selectedUser"
-          class="form-select"
-          formControlName="selectedUser"
-          required
-        >
-          <option *ngFor="let user of users" [value]="user.full_name">
-            {{ user.full_name }}
-          </option>
-        </select>
+      <div class="row mb-4" style="all: initial; display: flex; justify-content: center;">
+        <label for="selectedEvent" class="col-sm-1 col-form-label">Matched Event:</label>
+        <div class="col-sm-5" style="all: initial;justify-content: center;width: 300px;">
+          <select
+            id="selectedEvent"
+            class="form-select"
+            formControlName="selectedEvent"
+            required
+          >
+            <option *ngFor="let event of (matchedEvents.length ? matchedEvents : events)" [value]="event.id">
+              {{ event.eventName }}
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
-
-    <div class="row mb-4" style="all: initial; display: flex; justify-content: center;">
-      <label for="selectedEvent" class="col-sm-1 col-form-label">Matched Event:</label>
-      <div class="col-sm-5" style="all: initial;justify-content: center;width: 300px;">
-        <select
-          id="selectedEvent"
-          class="form-select"
-          formControlName="selectedEvent"
-          required
-        >
-          <option *ngFor="let event of events" [value]="event.eventName">
-            {{ event.eventName }}
-          </option>
-        </select>
+    
+      <div class="d-flex justify-content-center" style="all: initial; display: flex; justify-content: center;">
+        <button type="submit" class="btn btn-primary mx-2">Match Volunteer</button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
       </div>
-    </div>
-
-    <div class="d-flex justify-content-center" style="all: initial; display: flex; justify-content: center;">
-      <button type="submit" class="btn btn-primary mx-2">Match Volunteer</button>
-      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-    </div>
-  </form>
+    </form>
 
   <br>
 </div>
