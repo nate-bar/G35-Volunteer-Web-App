@@ -1,14 +1,14 @@
 <header>
     <ul>
         <!-- Always visible links -->
-        <li><a routerLink="/"><span><i class="bi bi-house-fill"></i></span> Home</a></li>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><span><i class="bi bi-house-fill"></i></span> Home</a></li>
         <!-- <li><a routerLink="/volunteer-opportunities"><span><i class="bi bi-bag"></i></span> </a></li> -->
-        <li><a routerLink="/userEvent"><span><i class="bi bi-calendar-event"></i></span> Volunteer Opportunities</a></li>
+        <li><a routerLink="/userEvent" routerLinkActive="active"><span><i class="bi bi-calendar-event"></i></span> Volunteer Opportunities</a></li>
         <!-- <li><a routerLink="/contact-us"><span><i class="bi bi-telephone-outbound-fill"></i></span> Contact Us</a></li> -->
 
         <!-- Show 'My Profile' link if the user is logged in -->
         <li *ngIf="authService.getIsLoggedIn()">
-            <a (click)="navigateToProfile()"><span><i class="bi bi-person-lines-fill"></i></span> My Profile</a>
+            <a [routerLink]="['/profile']" (click)="navigateToProfile()" routerLinkActive="active"><span><i class="bi bi-person-lines-fill"></i></span> My Profile</a>
         </li>
 
         <!-- <li *ngIf="authService.getIsLoggedIn() && userFullName ">
@@ -23,17 +23,17 @@
         <!-- <span><i class="bi bi-person-circle"></i></span> -->
         <!-- Show the 'Dashboard' link only if logged in and the role is 'admin' -->
         <li *ngIf="authService.getIsLoggedIn() && authService.getUserRole() === 'admin'">
-            <a routerLink="/admin"><span><i class="bi bi-speedometer"></i></span> Dashboard</a>
+            <a routerLink="/admin" routerLinkActive="active"><span><i class="bi bi-speedometer"></i></span> Dashboard</a>
         </li>
 
         <!-- Show 'Login' link if not logged in -->
         <li *ngIf="!authService.getIsLoggedIn()">
-            <a routerLink="/login"><span><i class="bi bi-box-arrow-in-right"></i></span> Login</a>
+            <a routerLink="/login" routerLinkActive="active"><span><i class="bi bi-box-arrow-in-right"></i></span> Login</a>
         </li>
 
         <!-- Show 'Sign Up' link if not logged in and not on the register page -->
         <li *ngIf="!authService.getIsLoggedIn() && !isRegisterPage">
-            <a routerLink="/register"><span><i class="bi bi-box-arrow-right"></i></span> Sign Up</a>
+            <a routerLink="/register" routerLinkActive="active"><span><i class="bi bi-box-arrow-right"></i></span> Sign Up</a>
         </li>
 
         <!-- Show 'Logout' link if logged in -->
