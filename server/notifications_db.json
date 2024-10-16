@@ -1,18 +1,10 @@
 [
     {
-        "id": 15,
+        "id": 1,
         "user_email": "user@gmail.com",
-        "title": "New Event Created",
-        "message": "A new event \"haamed \" has been created.",
-        "read": true,
-        "date": "2024-10-15T17:55:06.265804"
-    },
-    {
-        "id": 2,
-        "user_email": "user@gmail.com",
-        "title": "New Event Created",
-        "message": "A new event \"haamed \" has been created.",
+        "title": "Event Updated",
+        "message": "The event \"haamed \" has been updated.",
         "read": false,
-        "date": "2024-10-15T18:36:48.374606"
+        "date": "2024-10-15T22:21:11.294094"
     }
 ]
