@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   isRegisterPage: boolean = false;
   userFullName: string = '';
   showDropdown: boolean = false;
+  
 
   constructor(public authService: AuthService, private router: Router,private cdRef: ChangeDetectorRef) {}
 
@@ -50,6 +51,7 @@ export class HeaderComponent implements OnInit {
 
     // Determine if the current page is the registration page
     this.isRegisterPage = this.router.url.includes('/register');
+    
     this.cdRef.detectChanges();
   }
 
@@ -63,6 +65,7 @@ export class HeaderComponent implements OnInit {
     if (this.userEmail) {
       this.router.navigate(['/profile'], { queryParams: { email: this.userEmail } });
     }
+    
   }
 
   toggleDropdown() {
