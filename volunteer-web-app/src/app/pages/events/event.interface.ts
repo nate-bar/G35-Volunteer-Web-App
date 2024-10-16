@@ -10,7 +10,6 @@ export interface Event {
   eventDate: string;
   showFullDescription?: boolean;
   
->>>>>>> d4d76fa17ef6c53b6b971eeaf3a9f8420db46443
 }
 
   
