@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from flask import Flask, jsonify, request, urlfor, rendertemplate_string
-=======
-from flask import Flask, jsonify, request, url_for,render_template_string
->>>>>>> 3b45f9b806d5ff28de101687064073665aa8449c
+from flask import Flask, jsonify, request, url_for, render_template_string
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
@@ -20,7 +16,7 @@ from threading import Thread
 from werkzeug.utils import secure_filename
 import os,json
 
-app = Flask(__name)
+app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -350,11 +346,6 @@ def complete_profile():
 
     return jsonify({'message': 'Profile completed successfully.'}), 201
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 3b45f9b806d5ff28de101687064073665aa8449c
 # Get all useras
 @app.route('/api/users', methods=['GET'])
 def get_users():
@@ -397,12 +388,6 @@ def validate_event_form(event_name, event_description, location, required_skills
 
     return None  # No errors
 
-# Get all events
-@app.route('/api/events', methods=['GET'])
-def get_events():
-    return jsonify(events_db)
-
-# Add a new event
 # Function to check if the file extension is allowed
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -584,10 +569,6 @@ def update_event(event_id):
     except Exception as e:
         return jsonify({'error': 'Failed to update event', 'details': str(e)}), 500
 
-
-
-
-
 # Delete an event
 @app.route('/api/events/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):
@@ -614,7 +595,82 @@ def delete_event(event_id):
     except Exception as e:
         return jsonify({'error': 'Failed to delete event', 'details': str(e)}), 500
 
-    
+
+# get users with complete profile
+@app.route('/api/users/getUsersWithCompleteProfile', methods=['GET'])
+def get_users_with_complete_profile():
+    required_fields = ['full_name', 'address1', 'city', 'state', 'zip_code', 'availability', 'skills']
+
+    complete_profiles = [
+        user_profile for user_profile in user_profiles_db
+        if all(user_profile.get(field) for field in required_fields)
+    ]
+
+    return jsonify(complete_profiles), 200
+
+# get events for user
+@app.route('/api/events/getEventsForUser', methods=['POST'])
+def get_events_for_user():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    user_profile = next((profile for profile in user_profiles_db if profile['email'] == email), None)
+
+    if not user_profile:
+        return jsonify({'error': 'User profile not found'}), 404
+
+    user_skills = user_profile.get('skills', [])
+    user_city = user_profile.get('city')
+
+    if not user_skills:
+        return jsonify({'error': 'User has not specified any skills'}), 400
+
+    matching_events = [
+        event for event in events_db
+        if any(skill in user_skills for skill in event.get('requiredSkills', []))
+        and event.get('location') == user_city
+    ]
+
+    if not matching_events:
+        return jsonify({'message': 'No events found that match user skills and location'}), 200
+
+    return jsonify(matching_events), 200
+
+
+# get users based on selected event
+@app.route('/api/users/getUsersForEvent', methods=['POST'])
+def get_users_for_event():
+    data = request.get_json()
+    event_id = data.get('event_id')
+
+    if not event_id:
+        return jsonify({'error': 'Event ID is required'}), 400
+
+    event = next((event for event in events_db if event['id'] == event_id), None)
+
+    if not event:
+        return jsonify({'error': 'Event not found'}), 404
+
+    required_skills = event.get('requiredSkills', [])
+    event_location = event.get('location')
+
+    if not required_skills:
+        return jsonify({'message': 'No skills required for this event'}), 200
+
+    matching_users = [
+        user_profile for user_profile in user_profiles_db
+        if any(skill in required_skills for skill in user_profile.get('skills', []))
+        and user_profile.get('city') == event_location
+    ]
+
+    if not matching_users:
+        return jsonify({'message': 'No users found with matching skills and location'}), 200
+
+    return jsonify(matching_users), 200
+
 # match volunteers
 @app.route('/api/admin/matchVolunteers', methods=['POST'])
 def match_volunteer_with_event():
@@ -637,7 +693,10 @@ def match_volunteer_with_event():
         user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
 
 
-        # TODO: make sure to throw error if the event and the user is already matched
+        # throw error if the event and the user is already matched
+        if user_match and any(evt['id'] == event_id for evt in user_match['events']):
+            return jsonify({'error': f'User {user["full_name"]} is already matched with event {event["eventName"]}'}), 400
+
 
         if user_match:
             user_match['events'].append(event)
