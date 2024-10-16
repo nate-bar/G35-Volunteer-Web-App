@@ -281,13 +281,13 @@ def test_get_users_for_event(client):
     user_profiles_db.append({
         'email': 'user1@example.com',
         'full_name': 'User One',
-        'city': 'Houston',
+        'city': 'Houston', # Matches event city
         'skills': ['Leadership', 'Teamwork']
     })
     user_profiles_db.append({
         'email': 'user2@example.com',
         'full_name': 'User Two',
-        'city': 'Houston',
+        'city': 'Houston', # Matches event city
         'skills': ['Teamwork']
     })
     user_profiles_db.append({
