@@ -1,5 +1,5 @@
 import pytest
-from main import app, bcrypt, users_db, events_db, user_event_matching_db
+from main import app, bcrypt, users_db, events_db, user_event_matching_db, user_profiles_db
 
 from flask import url_for
 
@@ -193,3 +193,83 @@ def test_match_volunteer_with_event(client):
     assert user_event_matching_db[0]['user_email'] == 'volunteer1@example.com'
     assert len(user_event_matching_db[0]['events']) == 1
     assert user_event_matching_db[0]['events'][0]['eventName'] == 'Charity Run'
+
+def test_get_events_for_user(client):
+    user_profiles_db.append({
+        'email': 'user@example.com',
+        'full_name': 'User One',
+        'address1': '123 Main St',
+        'address2': '',
+        'city': 'Houston',
+        'state': 'TX',
+        'zip_code': '77002',
+        'preferences': 'No preferences',
+        'availability': ['2024-10-01'],
+        'skills': ['Leadership', 'Teamwork']
+    })
+
+    events_db.append({
+        'id': 1,
+        'eventName': 'Team Leadership Workshop',
+        'eventDescription': 'A workshop to improve leadership skills.',
+        'location': 'Houston',  # Matches user city
+        'requiredSkills': ['Leadership'],  # Matches user skill
+        'urgency': 'High',
+        'eventDate': '2024-10-15'
+    })
+
+    events_db.append({
+        'id': 2,
+        'eventName': 'Teamwork Building Event',
+        'eventDescription': 'An event to enhance teamwork skills.',
+        'location': 'Houston',  # Matches user city
+        'requiredSkills': ['Teamwork'],  # Matches user skill
+        'urgency': 'Medium',
+        'eventDate': '2024-11-01'
+    })
+
+    events_db.append({
+        'id': 3,
+        'eventName': 'Non-Matching Event',
+        'eventDescription': 'An event unrelated to user skills.',
+        'location': 'Austin',  # Different city
+        'requiredSkills': ['Different Skill'],  # Different skill
+        'urgency': 'Low',
+        'eventDate': '2024-12-01'
+    })
+
+    response = client.post('/api/events/getEventsForUser', json={
+        'email': 'user@example.com'
+    })
+
+    assert response.status_code == 200
+    assert isinstance(response.json, list)
+    assert len(response.json) == 2
+
+    event_names = [event['eventName'] for event in response.json]
+    assert 'Team Leadership Workshop' in event_names
+    assert 'Teamwork Building Event' in event_names
+    assert 'Non-Matching Event' not in event_names
+
+def test_get_events_for_user_no_skills(client):
+    user_profiles_db.append({
+        'email': 'noskills@example.com',
+        'full_name': 'No Skills User',
+        'city': 'Houston',
+        'skills': []
+    })
+
+    response = client.post('/api/events/getEventsForUser', json={
+        'email': 'noskills@example.com'
+    })
+
+    assert response.status_code == 400
+    assert response.json['error'] == 'User has not specified any skills'
+
+def test_get_events_for_user_no_user_found(client):
+    response = client.post('/api/events/getEventsForUser', json={
+        'email': 'nonexistent@example.com'
+    })
+
+    assert response.status_code == 404
+    assert response.json['error'] == 'User profile not found'

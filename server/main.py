@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, urlfor, rendertemplate_string
+from flask import Flask, jsonify, request, url_for, render_template_string
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
@@ -16,7 +16,7 @@ from threading import Thread
 from werkzeug.utils import secure_filename
 import os,json
 
-app = Flask(__name)
+app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -388,12 +388,6 @@ def validate_event_form(event_name, event_description, location, required_skills
 
     return None  # No errors
 
-# Get all events
-@app.route('/api/events', methods=['GET'])
-def get_events():
-    return jsonify(events_db)
-
-# Add a new event
 # Function to check if the file extension is allowed
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -576,10 +570,6 @@ def update_event(event_id):
     except Exception as e:
         return jsonify({'error': 'Failed to update event', 'details': str(e)}), 500
 
-
-
-
-
 # Delete an event
 @app.route('/api/events/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):
@@ -609,7 +599,7 @@ def delete_event(event_id):
 
 # get users with complete profile
 @app.route('/api/users/getUsersWithCompleteProfile', methods=['GET'])
-def get_users():
+def get_users_with_complete_profile():
     required_fields = ['full_name', 'address1', 'city', 'state', 'zip_code', 'availability', 'skills']
 
     complete_profiles = [
