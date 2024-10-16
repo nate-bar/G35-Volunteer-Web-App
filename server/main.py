@@ -11,7 +11,7 @@ from user_profiles_db import user_profiles_db,save_profile
 from notifications_db import notifications_db, save_notifications
 from events_data import events_db, save_events
 from user_event_matching_db import user_event_matching_db, save_user_event_matchings
-from config import Config  # Import your configuration
+from config import Config  
 from threading import Thread
 from werkzeug.utils import secure_filename
 import os,json

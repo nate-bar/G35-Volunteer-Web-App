@@ -10,7 +10,7 @@
   justify-content: space-between;
   padding: 20px;
   background: linear-gradient(90deg,  rgba(40, 180, 131, 0.8),rgba(68, 68, 117, 0.8));
-  border-bottom: 1px solid #dee2e6;
+  // border-bottom: 1px solid #dee2e6;
   margin-left: 1rem;
   margin-right: 1rem;
   position: relative;
@@ -169,7 +169,7 @@
   }
   
   .content-area {
-    padding: 2rem;
+    padding: 1rem;
   }
 
   .dashboard-image {
@@ -211,5 +211,36 @@
       transform: translateX(0); 
     }
   }
+  
+  .dashboard-title span.dashboard-text {
+    display: inline-block;
+    position: absolute;
+    background: linear-gradient(90deg, white, orange, yellow, black, red, purple); /* Define the gradient colors */
+    background-size: 200%; /* Size it large enough to animate */
+    -webkit-background-clip: text; /* Clip the gradient to the text */
+    -webkit-text-fill-color: transparent; /* Make the text transparent to show the gradient */
+    animation: dashboardAnimation 3s ease-in-out, colorShift 5s ease-in-out infinite; /* Combine animations */
+  }
+  
+  @keyframes dashboardAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes colorShift {
+    0% {
+      background-position: 0% 50%; /* Start gradient on the left */
+    }
+    100% {
+      background-position: 100% 50%; /* Move gradient to the right */
+    }
+  }
+  
   
   
