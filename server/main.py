@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 from flask import Flask, jsonify, request, urlfor, rendertemplate_string
-=======
-from flask import Flask, jsonify, request, url_for,render_template_string
->>>>>>> 3b45f9b806d5ff28de101687064073665aa8449c
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
@@ -350,11 +346,6 @@ def complete_profile():
 
     return jsonify({'message': 'Profile completed successfully.'}), 201
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 3b45f9b806d5ff28de101687064073665aa8449c
 # Get all useras
 @app.route('/api/users', methods=['GET'])
 def get_users():
@@ -637,7 +628,10 @@ def match_volunteer_with_event():
         user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
 
 
-        # TODO: make sure to throw error if the event and the user is already matched
+        # throw error if the event and the user is already matched
+        if user_match and any(evt['id'] == event_id for evt in user_match['events']):
+            return jsonify({'error': f'User {user["full_name"]} is already matched with event {event["eventName"]}'}), 400
+
 
         if user_match:
             user_match['events'].append(event)
