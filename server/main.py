@@ -605,7 +605,48 @@ def delete_event(event_id):
     except Exception as e:
         return jsonify({'error': 'Failed to delete event', 'details': str(e)}), 500
 
-    
+
+# get users with complete profile
+@app.route('/api/users/getUsersWithCompleteProfile', methods=['GET'])
+def get_users():
+    required_fields = ['full_name', 'address1', 'city', 'state', 'zip_code', 'availability', 'skills']
+
+    complete_profiles = [
+        user_profile for user_profile in user_profiles_db
+        if all(user_profile.get(field) for field in required_fields)
+    ]
+
+    return jsonify(complete_profiles), 200
+
+# get events for user
+@app.route('/api/events/getEventsForUser', methods=['POST'])
+def get_events_by_skills():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    user_profile = next((profile for profile in user_profiles_db if profile['email'] == email), None)
+
+    if not user_profile:
+        return jsonify({'error': 'User profile not found'}), 404
+
+    user_skills = user_profile.get('skills', [])
+
+    if not user_skills:
+        return jsonify({'error': 'User has not specified any skills'}), 400
+
+    matching_events = [
+        event for event in events_db
+        if any(skill in user_skills for skill in event.get('requiredSkills', []))
+    ]
+
+    if not matching_events:
+        return jsonify({'message': 'No events found that match user skills'}), 200
+
+    return jsonify(matching_events), 200
+
 # match volunteers
 @app.route('/api/admin/matchVolunteers', methods=['POST'])
 def match_volunteer_with_event():
