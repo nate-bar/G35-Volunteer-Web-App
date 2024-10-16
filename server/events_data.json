@@ -491,7 +491,7 @@
             "Environmental Awareness",
             "Running"
         ],
-        "urgency": "Low",
+        "urgency": "Medium",
         "eventDate": "2025-01-31T06:00:00.000Z",
         "eventImage": "http://127.0.0.1:5000/static/uploads/ptitRRR.jpg"
     }
