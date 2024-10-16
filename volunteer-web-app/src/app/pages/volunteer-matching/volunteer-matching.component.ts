@@ -27,20 +27,11 @@ interface User {
 })
 export class VolunteerMatchingComponent implements OnInit {
   matchingForm: FormGroup;
-  email = new FormControl('', [
-    Validators.required,
-    Validators.email,
-    Validators.maxLength(100),
-  ]);
-
-  userId = new FormControl('', [
-    Validators.required,
-    Validators.minLength(8),
-  ]);
-  alertMessage: string = '';
   events: Event[] = [];
   users: User[] = [];
-  matchedEvents: Event[] = []; 
+  matchedEvents: Event[] = [];
+  alertMessage: string = '';
+  matchedUsers: User[] = [];
   errorMessage: string = '';
   successMessage: string = '';
   loading: boolean = false;
@@ -51,7 +42,7 @@ export class VolunteerMatchingComponent implements OnInit {
       selectedEvent: new FormControl('', Validators.required),
     });
   }
-  
+
   ngOnInit(): void {
     this.volunteerMatchingService.getUsers().subscribe((users) => {
       this.users = users;
@@ -60,15 +51,27 @@ export class VolunteerMatchingComponent implements OnInit {
     this.volunteerMatchingService.getEvents().subscribe((events) => {
       this.events = events;
     });
-  }
 
+    this.matchingForm.get('selectedUser')?.valueChanges.subscribe((selectedUser) => {
+      if (selectedUser) {
+        this.volunteerMatchingService.getEventsForUser(selectedUser).subscribe((events) => {
+          this.matchedEvents = events;
+        });
+      }
+    });
+
+    this.matchingForm.get('selectedEvent')?.valueChanges.subscribe((selectedEvent) => {
+      if (selectedEvent) {
+        this.volunteerMatchingService.getUsersForEvent(selectedEvent).subscribe((users) => {
+          this.matchedUsers = users;
+        });
+      }
+    });
+  }
 
   onMatchSubmit(): void {
     const selectedUser = this.matchingForm.get('selectedUser')?.value;
     const selectedEvent = this.matchingForm.get('selectedEvent')?.value;
-
-
-    console.log("SUBMIT")
 
     if (selectedUser && selectedEvent) {
       this.loading = true;
