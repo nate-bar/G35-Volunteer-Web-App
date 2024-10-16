@@ -621,7 +621,7 @@ def get_users():
 
 # get events for user
 @app.route('/api/events/getEventsForUser', methods=['POST'])
-def get_events_by_skills():
+def get_events_for_user():
     data = request.get_json()
     email = data.get('email')
 
@@ -634,6 +634,7 @@ def get_events_by_skills():
         return jsonify({'error': 'User profile not found'}), 404
 
     user_skills = user_profile.get('skills', [])
+    user_city = user_profile.get('city')
 
     if not user_skills:
         return jsonify({'error': 'User has not specified any skills'}), 400
@@ -641,17 +642,18 @@ def get_events_by_skills():
     matching_events = [
         event for event in events_db
         if any(skill in user_skills for skill in event.get('requiredSkills', []))
+        and event.get('location') == user_city
     ]
 
     if not matching_events:
-        return jsonify({'message': 'No events found that match user skills'}), 200
+        return jsonify({'message': 'No events found that match user skills and location'}), 200
 
     return jsonify(matching_events), 200
 
 
 # get users based on selected event
 @app.route('/api/users/getUsersForEvent', methods=['POST'])
-def get_users_by_event_skills():
+def get_users_for_event():
     data = request.get_json()
     event_id = data.get('event_id')
 
@@ -664,6 +666,7 @@ def get_users_by_event_skills():
         return jsonify({'error': 'Event not found'}), 404
 
     required_skills = event.get('requiredSkills', [])
+    event_location = event.get('location')
 
     if not required_skills:
         return jsonify({'message': 'No skills required for this event'}), 200
@@ -671,10 +674,11 @@ def get_users_by_event_skills():
     matching_users = [
         user_profile for user_profile in user_profiles_db
         if any(skill in required_skills for skill in user_profile.get('skills', []))
+        and user_profile.get('city') == event_location
     ]
 
     if not matching_users:
-        return jsonify({'message': 'No users found with matching skills'}), 200
+        return jsonify({'message': 'No users found with matching skills and location'}), 200
 
     return jsonify(matching_users), 200
 
