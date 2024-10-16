@@ -647,6 +647,36 @@ def get_events_by_skills():
 
     return jsonify(matching_events), 200
 
+
+# get users based on selected event
+@app.route('/api/users/getUsersForEvent', methods=['POST'])
+def get_users_by_event_skills():
+    data = request.get_json()
+    event_id = data.get('event_id')
+
+    if not event_id:
+        return jsonify({'error': 'Event ID is required'}), 400
+
+    event = next((event for event in events_db if event['id'] == event_id), None)
+
+    if not event:
+        return jsonify({'error': 'Event not found'}), 404
+
+    required_skills = event.get('requiredSkills', [])
+
+    if not required_skills:
+        return jsonify({'message': 'No skills required for this event'}), 200
+
+    matching_users = [
+        user_profile for user_profile in user_profiles_db
+        if any(skill in required_skills for skill in user_profile.get('skills', []))
+    ]
+
+    if not matching_users:
+        return jsonify({'message': 'No users found with matching skills'}), 200
+
+    return jsonify(matching_users), 200
+
 # match volunteers
 @app.route('/api/admin/matchVolunteers', methods=['POST'])
 def match_volunteer_with_event():
