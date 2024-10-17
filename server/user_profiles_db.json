@@ -15,5 +15,40 @@
             "Leadership",
             "Teamwork"
         ]
+    },
+    {
+        "email": "user@gmail.com",
+        "full_name": "user 1",
+        "address1": "2800 S Dairy Ashford Rd Apt 1708",
+        "address2": ",ksjdjdujiit",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77082",
+        "preferences": "nothing to say here",
+        "availability": [
+            "11/30/2024"
+        ],
+        "skills": [
+            "Problem-Solving",
+            "Time Management"
+        ]
+    },
+    {
+        "email": "admin@gmail.com",
+        "full_name": "admin",
+        "address1": "1 street",
+        "address2": null,
+        "city": "houston",
+        "state": "TX",
+        "zip_code": "77040",
+        "preferences": "non profit",
+        "availability": [
+            "10/16/2024"
+        ],
+        "skills": [
+            "Communication",
+            "Leadership",
+            "Teamwork"
+        ]
     }
 ]

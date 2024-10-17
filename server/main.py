@@ -629,11 +629,11 @@ def get_events_for_user():
     matching_events = [
         event for event in events_db
         if any(skill in user_skills for skill in event.get('requiredSkills', []))
-        and event.get('location') == user_city
+        and event.get('location').lower() == user_city.lower()
     ]
 
     if not matching_events:
-        return jsonify({'message': 'No events found that match user skills and location'}), 200
+        return jsonify([]), 200
 
     return jsonify(matching_events), 200
 
@@ -642,15 +642,15 @@ def get_events_for_user():
 @app.route('/api/users/getUsersForEvent', methods=['POST'])
 def get_users_for_event():
     data = request.get_json()
-    event_id = data.get('event_id')
+    event_id = int(data.get('event_id'))
 
     if not event_id:
         return jsonify({'error': 'Event ID is required'}), 400
 
-    event = next((event for event in events_db if event['id'] == event_id), None)
+    event = next((event for event in events_db if event.get('id') == int(event_id)), None)
 
     if not event:
-        return jsonify({'error': 'Event not found'}), 404
+        return jsonify({'error': 'EVENT NOT FOUND'}), 404
 
     required_skills = event.get('requiredSkills', [])
     event_location = event.get('location')
@@ -661,7 +661,7 @@ def get_users_for_event():
     matching_users = [
         user_profile for user_profile in user_profiles_db
         if any(skill in required_skills for skill in user_profile.get('skills', []))
-        and user_profile.get('city') == event_location
+        and user_profile.get('city').lower() == event_location.lower()
     ]
 
     if not matching_users:
@@ -674,7 +674,7 @@ def get_users_for_event():
 def match_volunteer_with_event():
     data = request.json
     email = data.get('email')
-    event_id = data.get('event_id')
+    event_id = int(data.get('event_id'))
 
     if not email or not event_id:
         return jsonify({'error': 'Please select a user and an event'}), 400
@@ -684,7 +684,7 @@ def match_volunteer_with_event():
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
-        event = next((event for event in events_db if event.get('id') == event_id), None)
+        event = next((event for event in events_db if event.get('id') == int(event_id)), None)
         if not event:
             return jsonify({'error': 'Event not found'}), 404
 

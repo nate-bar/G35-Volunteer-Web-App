@@ -1,26 +1,8 @@
 [
     {
-        "email": "admin@gmail.com",
-        "password": "$2b$12$v1w0RENkOlGIr4eqm2Vv.uGgtAgGwlGisLMZ54q/Bq/lrJRH.zCGK",
-        "role": "admin",
-        "full_name": "dssafsdfg",
-        "address1": "2800 S Dairy Ashford Rd",
-        "address2": "Apt 1708",
-        "city": "Houston",
-        "state": "TX",
-        "zip_code": "77082",
-        "profile_completed": true
-    },
-    {
-        "email": "user@gmail.com",
-        "password": "$2b$12$yGlvcJDGEJhkaDowySS8r.GpErD8JvPqXqcp0w1HchQAGbMdGcAaq",
-        "role": "user",
-        "profile_completed": true
-    },
-    {
         "email": "konateallamanhamed@gmail.com",
-        "password": "$2b$12$IaHkMjj9YRF5lzmEiStrk.oFPPP0x2NP5gyAPvzh7z0DCQun4G.a2",
-        "role": "admin",
+        "password": "$2b$12$fP4552xXZm2KmjX.okGPyO3w5Ti4gb2NSxb0uO0LcqDvXxGK3mm8q",
+        "role": "user",
         "profile_completed": true
     }
 ]

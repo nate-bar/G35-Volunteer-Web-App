@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { volunteerMatchingService } from './volunteer-matching.service';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 interface Event {
@@ -36,7 +37,7 @@ export class VolunteerMatchingComponent implements OnInit {
   successMessage: string = '';
   loading: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private volunteerMatchingService: volunteerMatchingService) {
+  constructor(private fb: FormBuilder, private router: Router, private volunteerMatchingService: volunteerMatchingService, private cd: ChangeDetectorRef) {
     this.matchingForm = this.fb.group({
       selectedUser: new FormControl('', Validators.required),
       selectedEvent: new FormControl('', Validators.required),
@@ -46,24 +47,38 @@ export class VolunteerMatchingComponent implements OnInit {
   ngOnInit(): void {
     this.volunteerMatchingService.getUsers().subscribe((users) => {
       this.users = users;
+      this.cd.detectChanges();
     });
-
+  
     this.volunteerMatchingService.getEvents().subscribe((events) => {
       this.events = events;
+      this.cd.detectChanges();
     });
-
+  
     this.matchingForm.get('selectedUser')?.valueChanges.subscribe((selectedUser) => {
       if (selectedUser) {
+        const currentEvent = this.matchingForm.get('selectedEvent')?.value;
         this.volunteerMatchingService.getEventsForUser(selectedUser).subscribe((events) => {
           this.matchedEvents = events;
+          this.cd.detectChanges();
+
+          if (events.some((event: Event) => event?.id === currentEvent)) {
+            this.matchingForm.get('selectedEvent')?.setValue(currentEvent, { emitEvent: false });
+          }
         });
       }
     });
-
+  
     this.matchingForm.get('selectedEvent')?.valueChanges.subscribe((selectedEvent) => {
       if (selectedEvent) {
+        const currentUser = this.matchingForm.get('selectedUser')?.value;
         this.volunteerMatchingService.getUsersForEvent(selectedEvent).subscribe((users) => {
           this.matchedUsers = users;
+          this.cd.detectChanges();  
+          
+          if (users.some((user: User) => user?.email === currentUser)) {
+            this.matchingForm.get('selectedUser')?.setValue(currentUser, { emitEvent: false });
+          }
         });
       }
     });
