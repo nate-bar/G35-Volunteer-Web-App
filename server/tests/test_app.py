@@ -13,13 +13,13 @@ def client():
     with app.test_client() as client:
         yield client
 
-@pytest.fixture(autouse=True)
-def clear_db():
-    users_db.clear()
-    events_db.clear()
-    user_event_matching_db.clear()
-    user_profiles_db.clear()
-    notifications_db.clear()
+# @pytest.fixture(autouse=True)
+# def clear_db():
+#     users_db.clear()
+#     events_db.clear()
+#     user_event_matching_db.clear()
+#     user_profiles_db.clear()
+#     notifications_db.clear()
 
 def test_home(client):
     response = client.get('/')
