@@ -330,11 +330,12 @@
     {
         "eventName": "dngfdgf",
         "eventDescription": "lkdskdsgkjrd",
-        "location": "rstrtr",
+        "location": "houston",
         "requiredSkills": [
             "Teamwork",
             "Environmental Awareness",
-            "Running"
+            "Running",
+            "Teamwork"
         ],
         "urgency": "Medium",
         "eventDate": "2024-10-31T05:00:00.000Z",
@@ -347,7 +348,8 @@
         "location": "houston",
         "requiredSkills": [
             "Teaching",
-            "Animal Care"
+            "Animal Care",
+            "Teamwork"
         ],
         "urgency": "Medium",
         "eventDate": "2024-10-30T05:00:00.000Z",
@@ -359,7 +361,8 @@
         "eventDescription": "chelsea",
         "location": "houston",
         "requiredSkills": [
-            "Organizing"
+            "Organizing",
+            "Teamwork"
         ],
         "urgency": "High",
         "eventDate": "2024-10-31T05:00:00.000Z",
