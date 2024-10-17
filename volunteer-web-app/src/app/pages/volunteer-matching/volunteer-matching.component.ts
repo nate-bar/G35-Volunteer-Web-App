@@ -10,6 +10,7 @@ import { ChangeDetectorRef } from '@angular/core';
 interface Event {
   id: number; 
   eventName: string;
+  eventDate: string;
   requiredSkills: string[];
 }
 
