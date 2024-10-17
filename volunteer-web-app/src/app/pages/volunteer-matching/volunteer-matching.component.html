@@ -34,7 +34,7 @@
             required
           >
             <option *ngFor="let event of (matchedEvents.length ? matchedEvents : events)" [value]="event.id">
-              {{ event.eventName }}
+              {{ event.eventName }} - {{ event.eventDate | date: 'shortDate' }}
             </option>
           </select>
         </div>
