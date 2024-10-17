@@ -295,6 +295,8 @@ def complete_profile():
     user = next((user for user in users_db if user['email'] == email), None)
     if not user:
         return jsonify({'error': 'User not found.'}), 404
+    
+    role = user.get('role', 'user')
 
     # Validate profile fields
     if not full_name or len(full_name) > 50:
@@ -323,6 +325,7 @@ def complete_profile():
         'city': city,
         'state': state,
         'zip_code': zip_code,
+        'role': role,
         'preferences': preferences,
         'availability': availability,
         'skills': skills
@@ -597,7 +600,7 @@ def delete_event(event_id):
 # get users with complete profile
 @app.route('/api/users/getUsersWithCompleteProfile', methods=['GET'])
 def get_users_with_complete_profile():
-    required_fields = ['full_name', 'address1', 'city', 'state', 'zip_code', 'availability', 'skills']
+    required_fields = ['full_name', 'address1', 'city', 'state', 'zip_code','preferences','availability', 'skills']
 
     complete_profiles = [
         user_profile for user_profile in user_profiles_db
