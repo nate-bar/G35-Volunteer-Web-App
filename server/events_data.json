@@ -403,18 +403,5 @@
         "urgency": "Low",
         "eventDate": "2024-10-26T05:00:00.000Z",
         "eventImage": "http://127.0.0.1:5000/static/uploads/lim.png"
-    },
-    {
-        "id": 34,
-        "eventName": "Cleanup Event",
-        "eventDescription": "Join us to clean up the park.",
-        "location": "Central Park",
-        "requiredSkills": [
-            "Teamwork",
-            "Environmental Awareness"
-        ],
-        "urgency": "High",
-        "eventDate": "2025-10-01",
-        "eventImage": null
     }
 ]
