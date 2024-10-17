@@ -25,3 +25,82 @@ div{
     background-image: none !important;
   }
   
+  .container{
+    height: 600px;
+  }
+
+  /* user-management.component.scss */
+
+/* Section Header */
+.section-header {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 20px;
+    border-bottom: 2px solid white;
+    padding-bottom: 10px;
+  }
+  
+  /* Progress Bar */
+  .custom-progress-bar {
+    margin-top: 20px;
+    height: 10px;
+    background-color: #f0f0f0;
+    .mat-progress-bar-fill {
+      background-color: #3f51b5;
+    }
+  }
+  
+  /* Accordion Styles */
+  .custom-accordion {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Expansion Panel Styles */
+  .custom-expansion-panel {
+    background-color: #ffffff;
+    border: 1px solid #dedede;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  /* User Header */
+  .user-header {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    background: black;
+  
+    mat-icon {
+      margin-right: 10px;
+    }
+  
+    .user-email {
+      color: red;
+      font-size: 0.9rem;
+      margin-left: 5px;
+    }
+  }
+  
+  /* Panel Content */
+  .panel-content {
+    padding: 10px 20px;
+    background-color: #fafafa;
+    border-top: 1px solid #dedede;
+    font-size: 0.95rem;
+  
+    p {
+      margin: 5px 0;
+    }
+  }
+  
+  /* Alerts */
+  .alert {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  

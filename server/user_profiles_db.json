@@ -7,6 +7,7 @@
         "city": "Houston",
         "state": "TX",
         "zip_code": "34567",
+        "role": "admin",
         "preferences": "bggghytrd",
         "availability": [
             "12/27/2024"
@@ -14,6 +15,23 @@
         "skills": [
             "Leadership",
             "Teamwork"
+        ]
+    },
+    {
+        "email": "user@gmail.com",
+        "full_name": "user 1",
+        "address1": "2800 S Dairy Ashford Rd Apt 1708",
+        "address2": ",ksjdjdujiit",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77082",
+        "role": "user",
+        "preferences": "oirytyeuwiwowl",
+        "availability": [
+            "11/30/2024"
+        ],
+        "skills": [
+            "Time Management"
         ]
     }
 ]
