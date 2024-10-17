@@ -601,3 +601,36 @@ def test_validate_event_form():
     invalid_data_no_skills['required_skills'] = []
     validation_error = validate_event_form(**invalid_data_no_skills)
     assert validation_error == 'Required Skills must be selected.'
+def test_get_users_with_complete_profile(client):
+    
+    user_profiles_db.append({
+        'email': 'completeuser1@gmail.com',
+        'full_name': 'Complete User',
+        'address1': '123 Main St',
+        'address2': 'Apt 4B',
+        'city': 'New York',
+        'state': 'NY',
+        'zip_code': '10001',
+        'availability': ['2025-01-01'],
+        'skills': ['Leadership', 'Teamwork']
+    })
+
+    
+    user_profiles_db.append({
+        'email': 'incompleteuser2@gmail.com',
+        'full_name': '',
+        'address1': '456 Oak St',
+        'city': 'Los Angeles',
+        'state': 'CA',
+        'zip_code': '90001',
+        'availability': [],
+        'skills': []
+    })
+
+    
+    response = client.get('/api/users/getUsersWithCompleteProfile')
+
+    assert response.status_code == 200
+    assert len(response.json) == 1  
+    assert response.json[0]['email'] == 'completeuser1@gmail.com'
+    assert response.json[0]['full_name'] == 'Complete User'
