@@ -1,0 +1,15 @@
+<h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="delete-icon">delete</mat-icon> Confirm Deletion
+</h2>
+  <mat-divider></mat-divider>
+  <div mat-dialog-content class="dialog-content">
+    <p class="confirmation-text">
+      Are you sure you want to delete the event <strong>"{{ data.eventName }}"</strong>?
+    </p>
+  </div>
+  
+  <div mat-dialog-actions align="end">
+    <button mat-button class="cancel-button" (click)="onNoClick()">No</button>
+    <button mat-raised-button color="warn" (click)="onYesClick()" cdkFocusInitial>Yes, Delete</button>
+  </div>
+  

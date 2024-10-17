@@ -83,7 +83,12 @@
           <td>
             <button class="btn btn-warning me-1 icon-button" (click)="openModal(eventModal, true, event)"><span><mat-icon >edit</mat-icon></span></button>
           </td>
-          <td><button class="btn btn-danger ms-1 icon-button" (click)="deleteEvent(event.id)"><span><mat-icon>delete_forever</mat-icon></span></button></td>
+          <td>
+            <button class="btn btn-danger ms-1 icon-button" (click)="openDeleteDialog(event.id, event.eventName)">
+              <span><mat-icon>delete_forever</mat-icon></span>
+            </button>
+          </td>
+          
         </tr>
       </tbody>
     </table>
