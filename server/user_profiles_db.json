@@ -5,32 +5,15 @@
         "address1": "ieiurutytru",
         "address2": ",ksjdjdujiit",
         "city": "Houston",
-        "state": "NY",
+        "state": "TX",
         "zip_code": "34567",
-        "preferences": "oirytyeuwiwowl",
+        "preferences": "bggghytrd",
         "availability": [
-            "11/30/2024"
+            "12/27/2024"
         ],
         "skills": [
             "Leadership",
             "Teamwork"
-        ]
-    },
-    {
-        "email": "user@gmail.com",
-        "full_name": "user 1",
-        "address1": "2800 S Dairy Ashford Rd Apt 1708",
-        "address2": ",ksjdjdujiit",
-        "city": "Houston",
-        "state": "TX",
-        "zip_code": "77082",
-        "preferences": "nothing to say here",
-        "availability": [
-            "11/30/2024"
-        ],
-        "skills": [
-            "Problem-Solving",
-            "Time Management"
         ]
     }
 ]

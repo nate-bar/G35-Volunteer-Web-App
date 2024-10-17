@@ -16,8 +16,8 @@ import { NotificationService } from '../../notification.service';
 import { EventService } from './event.service';
 import { Event } from './event.interface';
 import { MatIconModule } from '@angular/material/icon';
-import { error } from 'console';
-import { response } from 'express';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDeleteDialogComponent } from '../../confirm-delete-dialog/confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-events',
@@ -34,7 +34,7 @@ import { response } from 'express';
     MatFormFieldModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,MatDialogModule
   ],
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
@@ -65,7 +65,7 @@ export class EventsComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private notificationService: NotificationService,
-    private eventService: EventService,
+    private eventService: EventService,private dialog: MatDialog
   ) {
     this.eventForm = this.fb.group({
       eventName: ['', [Validators.required, Validators.maxLength(100)]],
@@ -249,6 +249,21 @@ export class EventsComponent implements OnInit {
     this.eventForm.reset();
     this.isEditMode = false;
     this.editIndex = null;
+  }
+
+
+  openDeleteDialog(eventId: number, eventName: string): void {
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '300px',
+      data: { eventName },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // User confirmed deletion
+        this.deleteEvent(eventId);
+      }
+    });
   }
 
   deleteEvent(eventId: number) {

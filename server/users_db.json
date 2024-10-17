@@ -22,5 +22,23 @@
         "password": "$2b$12$IaHkMjj9YRF5lzmEiStrk.oFPPP0x2NP5gyAPvzh7z0DCQun4G.a2",
         "role": "admin",
         "profile_completed": true
+    },
+    {
+        "email": "testuser@example.com",
+        "password": "$2b$12$LivC4k0/U2sjl.fMaVE09egx9fBPfIZCkyOO.Ci5qRfIqc2L74bmi",
+        "role": "user",
+        "profile_completed": false
+    },
+    {
+        "email": "validuser@example.com",
+        "password": "$2b$12$7tUN/cjZbTMdBKR1FzNVvunGH5.hVYurZe5rbCm4NeBuAy50fThAi",
+        "role": "user",
+        "profile_completed": true
+    },
+    {
+        "email": "completeprofile@example.com",
+        "password": "$2b$12$DZ7SkZnwYaKh0mAQdbcJ9ea/EvYLFHpe1Sqo7twnE/H/5TMBoNcrK",
+        "role": "user",
+        "profile_completed": true
     }
 ]
