@@ -15,5 +15,39 @@
             "Leadership",
             "Teamwork"
         ]
+    },
+    {
+        "email": "testuser2@gmail.com",
+        "full_name": "Test User 2",
+        "address1": "123 Main St",
+        "address2": "",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77002",
+        "preferences": "No preferences",
+        "availability": [
+            "2024-10-01"
+        ],
+        "skills": [
+            "Leadership",
+            "Teamwork"
+        ]
+    },
+    {
+        "email": "testuser4@gmail.com",
+        "full_name": "Test User 4",
+        "address1": "123 Main St",
+        "address2": "",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77002",
+        "preferences": "No preferences",
+        "availability": [
+            "2024-10-01"
+        ],
+        "skills": [
+            "Leadership",
+            "Teamwork"
+        ]
     }
 ]
