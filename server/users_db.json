@@ -22,5 +22,59 @@
         "password": "$2b$12$IaHkMjj9YRF5lzmEiStrk.oFPPP0x2NP5gyAPvzh7z0DCQun4G.a2",
         "role": "admin",
         "profile_completed": true
+    },
+    {
+        "email": "testuser@example.com",
+        "password": "$2b$12$LivC4k0/U2sjl.fMaVE09egx9fBPfIZCkyOO.Ci5qRfIqc2L74bmi",
+        "role": "user",
+        "profile_completed": false
+    },
+    {
+        "email": "validuser@example.com",
+        "password": "$2b$12$7tUN/cjZbTMdBKR1FzNVvunGH5.hVYurZe5rbCm4NeBuAy50fThAi",
+        "role": "user",
+        "profile_completed": true
+    },
+    {
+        "email": "completeprofile@example.com",
+        "password": "$2b$12$DZ7SkZnwYaKh0mAQdbcJ9ea/EvYLFHpe1Sqo7twnE/H/5TMBoNcrK",
+        "role": "user",
+        "profile_completed": true
+    },
+    {
+        "email": "testuser1@gmail.com",
+        "password": "$2b$12$vLFPgNlOSXDTUHgw7VvRhev2owmjzTpM1DLsRJcCb8yCbN.mpgf8W",
+        "role": "user",
+        "profile_completed": false
+    },
+    {
+        "email": "testuser2@gmail.com",
+        "password": "$2b$12$O.cvDyIV6m7NYRVCdONkx.7AMBTLU07ry.j1f24165PbNc.GP4Tui",
+        "role": "user",
+        "profile_completed": true
+    },
+    {
+        "email": "testuser3@gmail.com",
+        "password": "$2b$12$ixFo.hTuGJPJwYlWXirWhe5IxtG1d82fNDGlU65rPygCRTSoBnod6",
+        "role": "user",
+        "profile_completed": false
+    },
+    {
+        "email": "testuser4@gmail.com",
+        "password": "$2b$12$4PmKTnJVdPb3GtSZIk19wOTZSia07B4Ef.qgxgvSLXshXAoUJj6g6",
+        "role": "user",
+        "profile_completed": true
+    },
+    {
+        "email": "testuser5@gmail.com",
+        "password": "$2b$12$nb4Ejy4V7Qa/IAvHaIHzHuUpHLAcEYW9gCkHvu3kDZg4Z4zsw72dC",
+        "role": "user",
+        "profile_completed": false
+    },
+    {
+        "email": "testuser2@gmail.com",
+        "password": "$2b$12$DVPb3VR0CV08pVGMyAO1Ee5rfFGSFu96dWym6ZiOLJDjABZRrJlsC",
+        "role": "user",
+        "profile_completed": false
     }
 ]

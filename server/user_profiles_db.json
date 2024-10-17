@@ -5,11 +5,11 @@
         "address1": "ieiurutytru",
         "address2": ",ksjdjdujiit",
         "city": "Houston",
-        "state": "NY",
+        "state": "TX",
         "zip_code": "34567",
-        "preferences": "oirytyeuwiwowl",
+        "preferences": "bggghytrd",
         "availability": [
-            "11/30/2024"
+            "12/27/2024"
         ],
         "skills": [
             "Leadership",
@@ -17,20 +17,37 @@
         ]
     },
     {
-        "email": "user@gmail.com",
-        "full_name": "user 1",
-        "address1": "2800 S Dairy Ashford Rd Apt 1708",
-        "address2": ",ksjdjdujiit",
+        "email": "testuser2@gmail.com",
+        "full_name": "Test User 2",
+        "address1": "123 Main St",
+        "address2": "",
         "city": "Houston",
         "state": "TX",
-        "zip_code": "77082",
-        "preferences": "nothing to say here",
+        "zip_code": "77002",
+        "preferences": "No preferences",
         "availability": [
-            "11/30/2024"
+            "2024-10-01"
         ],
         "skills": [
-            "Problem-Solving",
-            "Time Management"
+            "Leadership",
+            "Teamwork"
+        ]
+    },
+    {
+        "email": "testuser4@gmail.com",
+        "full_name": "Test User 4",
+        "address1": "123 Main St",
+        "address2": "",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77002",
+        "preferences": "No preferences",
+        "availability": [
+            "2024-10-01"
+        ],
+        "skills": [
+            "Leadership",
+            "Teamwork"
         ]
     }
 ]

@@ -60,7 +60,7 @@
             "Teamwork"
         ],
         "urgency": "High",
-        "eventDate": "2024-12-20"
+        "eventDate": "2024-12-20T00:00:00.000Z"
     },
     {
         "eventName": "allaman",
@@ -394,105 +394,27 @@
     },
     {
         "id": 34,
-        "eventName": "charity run",
-        "eventDescription": "retrytrutwdsfdgfuy",
-        "location": "ortriritri",
+        "eventName": "daniel 6",
+        "eventDescription": "tueryr dhfdkwoe",
+        "location": "qowiesmrr",
         "requiredSkills": [
-            "Environmental Awareness",
-            "Running",
             "Fundraising"
         ],
-        "urgency": "Medium",
-        "eventDate": "2024-11-04T06:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_20221201_105936.png"
+        "urgency": "Low",
+        "eventDate": "2024-10-26T05:00:00.000Z",
+        "eventImage": "http://127.0.0.1:5000/static/uploads/lim.png"
     },
     {
         "id": 34,
-        "eventName": "Daniel",
-        "eventDescription": "welwrr rretirerete irtriy",
-        "location": "houston",
+        "eventName": "Cleanup Event",
+        "eventDescription": "Join us to clean up the park.",
+        "location": "Central Park",
         "requiredSkills": [
-            "Environmental Awareness",
-            "Running",
-            "Fundraising"
-        ],
-        "urgency": "Low",
-        "eventDate": "2024-10-31T05:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_20230106_120544.png"
-    },
-    {
-        "id": 35,
-        "eventName": "daniel",
-        "eventDescription": "dtreytuyuoiu",
-        "location": "drtytuyti",
-        "requiredSkills": [
-            "Running",
-            "Fundraising"
-        ],
-        "urgency": "Medium",
-        "eventDate": "2024-11-30T06:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/register.png"
-    },
-    {
-        "id": 36,
-        "eventName": "dfdfd",
-        "eventDescription": "poiyrdss",
-        "location": "eoeriyuiyu",
-        "requiredSkills": [
+            "Teamwork",
             "Environmental Awareness"
         ],
-        "urgency": "Medium",
-        "eventDate": "2024-10-25T05:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/Screenshot_2023-03-02_112246.png"
-    },
-    {
-        "id": 37,
-        "eventName": "testing image",
-        "eventDescription": "treytiilk dsaew",
-        "location": "houston",
-        "requiredSkills": [
-            "Running"
-        ],
-        "urgency": "Medium",
-        "eventDate": "2024-10-31T05:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/ptitRRR.jpg"
-    },
-    {
-        "id": 38,
-        "eventName": "ewrttrr",
-        "eventDescription": "rtrytuyti",
-        "location": "dsfdsfds",
-        "requiredSkills": [
-            "Environmental Awareness"
-        ],
-        "urgency": "Low",
-        "eventDate": "2024-10-31T05:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/ptitRRR.jpg"
-    },
-    {
-        "id": 39,
-        "eventName": "haamed ",
-        "eventDescription": "etreyotuyt  fdgh",
-        "location": "rewtry",
-        "requiredSkills": [
-            "Environmental Awareness",
-            "Running"
-        ],
-        "urgency": "Low",
-        "eventDate": "2024-12-31T06:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/ptitRRR.jpg"
-    },
-    {
-        "id": 40,
-        "eventName": "haamed ",
-        "eventDescription": "yotiytiur",
-        "location": "rewtry",
-        "requiredSkills": [
-            "Environmental Awareness",
-            "Running"
-        ],
-        "urgency": "Medium",
-        "eventDate": "2025-01-31T06:00:00.000Z",
-        "eventImage": "http://127.0.0.1:5000/static/uploads/ptitRRR.jpg"
+        "urgency": "High",
+        "eventDate": "2025-10-01",
+        "eventImage": null
     }
 ]
