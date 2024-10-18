@@ -1,51 +1,77 @@
-<div class="container mt-2" >
-    
+<div class="container mt-2">
   <h2 class="mb-4 text-center" style="color: white;"><strong>Volunteer Matching Form</strong></h2>
- <br>
-  <div *ngIf="alertMessage" class="alert alert-success text-center" role="alert" style="all: initial; display: flex; justify-content: center;background-color: white;">
-      <span style="color: green;">{{ alertMessage }}</span>
-    </div>
-    <br>
-    <form [formGroup]="matchingForm" (ngSubmit)="onMatchSubmit()">
-  
-      <div class="row mb-3" style="all: initial; display: flex; justify-content: center;">
-        <label for="selectedUser" class="col-sm-1 col-form-label">Select Volunteer:</label>
-        <div class="col-sm-5" style="all: initial; justify-content: center;">
-          <select
-            id="selectedUser"
-            class="form-select"
-            formControlName="selectedUser"
-            required
-          >
-            <option *ngFor="let user of (matchedUsers.length ? matchedUsers : users)" [value]="user.email">
-              {{ user.full_name }}
-            </option>
-          </select>
-        </div>
-      </div>
-    
-      <div class="row mb-4" style="all: initial; display: flex; justify-content: center;">
-        <label for="selectedEvent" class="col-sm-1 col-form-label">Matched Event:</label>
-        <div class="col-sm-5" style="all: initial;justify-content: center;width: 300px;">
-          <select
-            id="selectedEvent"
-            class="form-select"
-            formControlName="selectedEvent"
-            required
-          >
-            <option *ngFor="let event of (matchedEvents.length ? matchedEvents : events)" [value]="event.id">
-              {{ event.eventName }}
-            </option>
-          </select>
-        </div>
-      </div>
-    
-      <div class="d-flex justify-content-center" style="all: initial; display: flex; justify-content: center;">
-        <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
-        <button type="submit" class="btn btn-primary mx-2">Match Volunteer</button>
-        
-      </div>
-    </form>
 
+  <!-- Alert Message -->
+  <section *ngIf="alertMessage" class="alert alert-success text-center" >
+    <span style="color: green;">{{ alertMessage }}</span>
+  </section>
+  <section *ngIf="errorMessage" class="alert alert-danger text-center" >
+    <span style="color: red;">{{ errorMessage }}</span>
+  </section>
+
+  <!-- Form -->
+  <form [formGroup]="matchingForm" (ngSubmit)="onMatchSubmit()">
+    <!-- Select Volunteer -->
+    <div class="row mb-3" style="display: flex; justify-content: center;background-image: initial;">
+      <label for="selectedUser" class="col-sm-1 col-form-label">Select Volunteer:</label>
+      <div class="col-sm-5" style="justify-content: center;background-image: initial">
+        <select id="selectedUser" class="form-select" formControlName="selectedUser" required>
+          <option value="" disabled selected>Select a volunteer</option>
+          <option *ngFor="let user of users" [value]="user.email">
+            {{ user.full_name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Matched Event -->
+<div class="row mb-4" style="display: flex; justify-content: center;background-image: initial">
+  <label for="selectedEvent" class="col-sm-1 col-form-label">Match user with Event:</label>
+  <div class="col-sm-5" style="justify-content: center;background-image: initial">
+    <select id="selectedEvent" class="form-select" formControlName="selectedEvent" required>
+      <option value="" disabled selected>Select an event</option>
+      <option *ngFor="let event of matchedEvents" [value]="event.id">
+        {{ event.eventName }}
+      </option>
+    </select>
+  </div>
+</div>
+
+
+    <!-- Participation Hours -->
+    <div class="row mb-3" style="display: flex; justify-content: center;background-image: initial">
+      <label for="participationHours" class="col-sm-1 col-form-label">Participation Hours:</label>
+      <div class="col-sm-5" style="background-image: initial">
+        <input type="number" class="form-control" id="participationHours" formControlName="participationHours" required />
+      </div>
+    </div>
+
+    <!-- Participation Status -->
+    <div class="row mb-4" style="display: flex; justify-content: center;background-image: initial">
+      <label for="participationStatus" class="col-sm-1 col-form-label">Participation Status:</label>
+      <div class="col-sm-5" style="background-image: initial">
+        <select id="participationStatus" class="form-select" formControlName="participationStatus" required>
+          <option value="" disabled selected>Select a status</option>
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-center" style="background-image: initial">
+      <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+      <button type="submit"  class="btn btn-primary mx-2">Match Volunteer</button>
+      <button class="btn btn-warning " (click)="sendReminder()">Send Reminder to Assigned User</button>
+    
+    </div>
+  </form>
+
+  <!-- Reminder Buttons
+  <div class="row mt-4 d-flex justify-content-center" style="background-image: initial">
+    
+  </div> -->
+  <br>
   <br>
 </div>

@@ -297,7 +297,6 @@ def test_match_volunteer_with_event(client):
     assert len(user_event_matching_db[0]['events']) == 1
     assert user_event_matching_db[0]['events'][0]['eventName'] == 'Charity Run'
 
-# Additional tests
 
 def test_get_events_for_user_no_skills(client):
     user_profiles_db.append({
@@ -634,3 +633,71 @@ def test_get_users_with_complete_profile(client):
     assert len(response.json) == 1  
     assert response.json[0]['email'] == 'completeuser1@gmail.com'
     assert response.json[0]['full_name'] == 'Complete User'
+import pytest
+from flask import json
+
+# Test case for matching volunteers to events
+def test_match_volunteer_with_event(client):
+    # Test with valid data
+    response = client.post('/api/events/matchVolunteers', json={
+        'email': 'user@gmail.com',
+        'event_id': 1,
+        'participation_hours': 5,
+        'participation_status': 'Confirmed'
+    })
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    assert 'Successfully matched' in data['message']
+
+    # Test missing email or event_id
+    response = client.post('/api/events/matchVolunteers', json={
+        'email': '',
+        'event_id': 1,
+    })
+    assert response.status_code == 400
+    data = json.loads(response.data)
+    assert 'Please select a user and an event' in data['error']
+
+    # Test already matched user
+    response = client.post('/api/events/matchVolunteers', json={
+        'email': 'user@gmail.com',
+        'event_id': 1,
+    })
+    assert response.status_code == 400
+    data = json.loads(response.data)
+    assert 'is already matched' in data['error']
+
+# Test case for sending event reminders
+def test_send_reminder(client):
+    # Test with valid event ID
+    response = client.post('/api/admin/sendReminder', json={
+        'event_id': 1
+    })
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    assert 'Reminders sent successfully' in data['message']
+
+    # Test invalid event ID
+    response = client.post('/api/admin/sendReminder', json={
+        'event_id': 'invalid_id'
+    })
+    assert response.status_code == 400
+    data = json.loads(response.data)
+    assert 'Invalid event ID format' in data['error']
+
+    # Test no users assigned to event
+    response = client.post('/api/admin/sendReminder', json={
+        'event_id': 999
+    })
+    assert response.status_code == 404
+    data = json.loads(response.data)
+    assert 'No users assigned to this event' in data['error']
+# Test case for getting volunteers with the 'user' role
+def test_get_volunteers(client):
+    response = client.get('/api/volunteers')
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    
+    # Check that all returned profiles have the role 'user'
+    for user in data:
+        assert user['role'] == 'user'
