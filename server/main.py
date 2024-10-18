@@ -612,7 +612,8 @@ def delete_event(event_id):
 # get users with complete profile
 @app.route('/api/users/getUsersWithCompleteProfile', methods=['GET'])
 def get_users_with_complete_profile():
-    return jsonify(user_profiles_db), 200
+    completed_profiles = [user for user in users_db if user.get('profile_completed') == True]
+    return jsonify(completed_profiles), 200
 
 
 @app.route('/api/events/matchVolunteers', methods=['POST'])
