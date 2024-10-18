@@ -12,12 +12,12 @@
     <div class="mb-3 row" style="background: initial; ">
       <label for="table-filtering-search" class="col-sm-auto col-form-label">Search Volunteer:</label>
       <div class="col-sm-auto" style="all: initial; ">
-        <input id="table-filtering-search" class="form-control"  placeholder="Volunteer name or event" type="text" [formControl]="searchControl" />
+        <input id="table-filtering-search" class="form-control"  placeholder="Volunteer name" type="text" [formControl]="searchControl" />
       </div>
     </div>
   </form>
 
-  <div *ngIf="filteredHistory.length > 0; else noHistory" style="background: initial;">
+  <div *ngIf="volunteerHistory.length > 0; else noHistory" style="background: initial;">
     <table class="table table-striped table-hover styled-table">
       <thead class="thead-dark">
         <tr>
@@ -26,24 +26,28 @@
           <th>Event Name</th>
           <th>Event Description</th>
           <th>Location</th>
+          <th>Required Skills</th>
           <th>Urgency</th>
           <th>Date</th>
-          <th>Role</th>
           <th>Hours</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let history of filteredHistory | slice: (page - 1) * pageSize : page * pageSize; let i = index">
+        <ng-container *ngFor="let history of filteredHistory | slice: (page - 1) * pageSize : page * pageSize; let i = index">
           <td>{{ (page - 1) * pageSize + i + 1 }}</td>
-          <td>{{ history.volunteerName }}</td>
-          <td>{{ history.eventName }}</td>
-          <td>{{ history.eventDescription }}</td>
-          <td>{{ history.location }}</td>
-          <td>{{ history.urgency }}</td>
-          <td>{{ history.date | date}}</td>
-          <td>{{ history.role }}</td>
-          <td>{{ history.hours }}</td>
-        </tr>
+          <td>{{ history.user_email }}</td>
+          <tr *ngFor="let Event of history.events">
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td colspan="0" style="text-align: center;"> {{ Event.event.eventName }} </td>
+            <td colspan="0" style="text-align: center;"> {{ Event.event.eventDescription }} </td>
+            <td colspan="0" style="text-align: center;"> {{ Event.event.location }} </td>
+            <td colspan="0" style="text-align: center;"> {{ Event.event.requiredSkills.join(', ') }} </td> 
+            <td colspan="0" style="text-align: center;"> {{ Event.event.urgency }} </td>
+            <td colspan="0" style="text-align: center;"> {{ Event.event.eventDate }} </td>
+            <td colspan="0" style="text-align: center;"> {{ Event.participation_hours }} </td> 
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   
