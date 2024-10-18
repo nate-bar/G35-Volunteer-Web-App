@@ -24,7 +24,7 @@ This Volunteer Management Web App aims to streamline the management of volunteer
 - **User Registration and Authentication**: Volunteers and administrators can register, log in, and manage their profiles.
 - **Event Management**: Administrators can create, edit, and delete volunteer events.
 - **Volunteer Matching**: Volunteers are matched to events based on their skills and availability.
-- **Notifications**: Users receive notifications about new or updated events.
+- **Notifications**: Users receive notifications aboutevents assigments, reminder or updated events.
 - **Admin Dashboard**: Provides insights into volunteer activity and event participation.
 
 ## Getting Started
@@ -50,6 +50,8 @@ cd G35-volunteer-web-app
 2. Frontend Setup (Angular)
     Navigate to the volunteer-web-app directory:  cd volunteer-web-app
     Install the dependencies: npm install
+    install angual material : ng add @angular/material
+
 
 3. Backend Setup (Flask)
     Navigate to the server directory: cd ../server
@@ -71,7 +73,7 @@ Running the Application
 The Angular app will be available at http://localhost:4200/.
 
 2. Run the Backend (Flask)
-    Navigate to the server folder: cd ../server and run : flask run
+    Navigate to the server folder: cd ../server and run : "flask run"  or  "python main.py"
 
 The Flask server will be running at http://localhost:5000/.
 
@@ -89,15 +91,7 @@ DELETE /api/events/<id>: Delete an event by ID (Admin only).
 POST /api/register: Register a new user.
 POST /api/login: Authenticate a user and get an access token.
 
-- Contributing:
-Contributions are welcome! If you'd like to contribute, please follow these steps:
 
-Fork the repository.
-Create a branch for your feature (git checkout -b feature/AmazingFeature).
-Commit your changes (git commit -m 'Add some AmazingFeature').
-Push to the branch (git push origin feature/AmazingFeature).
-Open a Pull Request.
-License
 
 
 
