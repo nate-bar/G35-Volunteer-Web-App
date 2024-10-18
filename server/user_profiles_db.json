@@ -22,7 +22,7 @@
         "full_name": "user 1",
         "address1": "2800 S Dairy Ashford Rd Apt 1708",
         "address2": ",ksjdjdujiit",
-        "city": "Houston",
+        "city": "houston",
         "state": "TX",
         "zip_code": "77082",
         "role": "user",
@@ -31,7 +31,50 @@
             "11/30/2024"
         ],
         "skills": [
-            "Time Management"
+            "Time Management",
+            "Leadership",
+            "Teamwork"
+        ]
+    },
+    {
+        "email": "user2@gmail.com",
+        "full_name": "user 2",
+        "address1": "2800 S Dairy Ashford Rd Apt 1708",
+        "address2": ",ksjdjdujiit",
+        "city": "yiyu",
+        "state": "TX",
+        "zip_code": "77082",
+        "role": "user",
+        "preferences": "oirytyeuwiwowl",
+        "availability": [
+            "11/30/2024"
+        ],
+        "skills": [
+            "Environmental Awareness"
+        ]
+    },
+    {
+        "email": "user3@gmail.com",
+        "full_name": "user 3",
+        "address1": "roriyrr wriririr wkireir",
+        "address2": ",ksjdjdujiit",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77082",
+        "role": "user",
+        "preferences": "irtrytr skdoere ndirtr",
+        "availability": [
+            "11/30/2024",
+            "12/28/2024"
+        ],
+        "skills": [
+            "Communication",
+            "Leadership",
+            "Teamwork",
+            "Problem-Solving",
+            "Time Management",
+            "Critical Thinking",
+            "Adaptability"
         ]
     }
 ]
