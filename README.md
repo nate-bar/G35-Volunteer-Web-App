@@ -1,56 +1,11 @@
-# Volunteer Management Web App
-
-A web application for managing volunteer opportunities, built with Angular (frontend) and Flask (backend). This app helps organizations create, manage, and track volunteer events, while volunteers can easily sign up and get notifications about available opportunities.
-
-## Table of Contents
-
-- [About the Project](#about-the-project)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
-## About the Project
-
-This Volunteer Management Web App aims to streamline the management of volunteer events for non-profit organizations and provide volunteers with an easy way to find and register for events. The project is split into a frontend built with Angular and a backend developed using Flask.
-
-## Features
-
-- **User Registration and Authentication**: Volunteers and administrators can register, log in, and manage their profiles.
-- **Event Management**: Administrators can create, edit, and delete volunteer events.
-- **Volunteer Matching**: Volunteers are matched to events based on their skills and availability.
-- **Notifications**: Users receive notifications aboutevents assigments, reminder or updated events.
-- **Admin Dashboard**: Provides insights into volunteer activity and event participation.
-
-## Getting Started
-
-To get a local copy of the project up and running, follow these steps.
-
-### Prerequisites
-
-- **Node.js and npm**: Required to run the Angular frontend.
-  - [Node.js Download](https://nodejs.org/)
-- **Python 3.x**: Required to run the Flask backend.
-  - [Python Download](https://www.python.org/downloads/)
-- **Virtual Environment**: Recommended for isolating backend dependencies.
-
-### Installation
-
-#### 1. Clone the Repository
-
-```bash
 git clone https://github.com/nate-bar/G35-Volunteer-Web-App.git
 cd G35-volunteer-web-app
 
 2. Frontend Setup (Angular)
     Navigate to the volunteer-web-app directory:  cd volunteer-web-app
-    Install the dependencies: npm install
+    Install the dependencies: npm install --legacy-peer-deps or npm install --force
     install angual material : ng add @angular/material
+
 
 
 3. Backend Setup (Flask)
@@ -90,7 +45,6 @@ PUT /api/events/<id>: Update an event by ID (Admin only).
 DELETE /api/events/<id>: Delete an event by ID (Admin only).
 POST /api/register: Register a new user.
 POST /api/login: Authenticate a user and get an access token.
-
 
 
 

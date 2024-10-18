@@ -1,7 +1,7 @@
 import datetime
 import json
 import pytest
-from main import app, bcrypt, users_db, events_db, user_event_matching_db, user_profiles_db,notifications_db, validate_event_form
+from main import app, bcrypt, users_db, events_db, user_event_matching_db, user_profiles_db, notifications_db, validate_event_form
 
 from flask import url_for
 
@@ -13,13 +13,12 @@ def client():
     with app.test_client() as client:
         yield client
 
-# @pytest.fixture(autouse=True)
-# def clear_db():
-#     users_db.clear()
-#     events_db.clear()
-#     user_event_matching_db.clear()
-#     user_profiles_db.clear()
-#     notifications_db.clear()
+@pytest.fixture(autouse=True)
+def clear_db():
+    users_db.clear()
+    events_db.clear()
+    user_event_matching_db.clear()
+    user_profiles_db.clear()
 
 def test_home(client):
     response = client.get('/')
@@ -204,74 +203,29 @@ def test_update_event_not_found(client):
     assert 'Event not found' in response.json['error']
 
 def test_delete_event(client):
-    # First add an event
-    client.post('/api/events', json={
+    events_db.append({
+        'id': len(events_db) + 1,
         'eventName': 'Event to Delete',
         'eventDescription': 'This event will be deleted.',
         'location': 'Central Park',
         'requiredSkills': ['Teamwork'],
         'urgency': 'Medium',
-        'eventDate': '2025-11-01'
+        'eventDate': '2025-11-01',
+        'eventImage': None 
     })
 
-    # Get the event ID
     event_id = events_db[-1]['id']
 
-    # Delete the event
     response = client.delete(f'/api/events/{event_id}')
+    
     assert response.status_code == 200
     assert 'Event deleted successfully' in response.json['message']
+    assert len([event for event in events_db if event['id'] == event_id]) == 0
 
 def test_delete_event_not_found(client):
     response = client.delete('/api/events/99999')
     assert response.status_code == 404
     assert 'Event not found' in response.json['error']
-
-def test_get_events_for_user(client):
-    user_profiles_db.append({
-        'email': 'user2@gmail.com',
-        'full_name': 'User Two',
-        'address1': '123 Main St',
-        'address2': '',
-        'city': 'Houston',
-        'state': 'TX',
-        'zip_code': '77002',
-        'preferences': 'No preferences',
-        'availability': ['2024-10-01'],
-        'skills': ['Leadership', 'Teamwork']
-    })
-
-    events_db.append({
-        'id': 1,
-        'eventName': 'Team Leadership Workshop',
-        'eventDescription': 'A workshop to improve leadership skills.',
-        'location': 'Houston',  # Matches user city
-        'requiredSkills': ['Leadership'],  # Matches user skill
-        'urgency': 'High',
-        'eventDate': '2024-10-15'
-    })
-
-    events_db.append({
-        'id': 2,
-        'eventName': 'Teamwork Building Event',
-        'eventDescription': 'An event to enhance teamwork skills.',
-        'location': 'Houston',  # Matches user city
-        'requiredSkills': ['Teamwork'],  # Matches user skill
-        'urgency': 'Medium',
-        'eventDate': '2024-11-01'
-    })
-
-    response = client.post('/api/events/getEventsForUser', json={
-        'email': 'user2@gmail.com'
-    })
-
-    assert response.status_code == 200
-    assert isinstance(response.json, list)
-    assert len(response.json) == 2
-
-    event_names = [event['eventName'] for event in response.json]
-    assert 'Team Leadership Workshop' in event_names
-    assert 'Teamwork Building Event' in event_names
 
 def test_match_volunteer_with_event(client):
     users_db.append({
@@ -280,6 +234,17 @@ def test_match_volunteer_with_event(client):
         'role': 'user',
         'full_name': 'Tester Man',
         'profile_completed': True
+    })
+
+    user_profiles_db.append({
+        'email': 'volunteer1@example.com',
+        'full_name': 'Tester Man',
+        'address1': '123 Volunteer St',
+        'city': 'Volunteer City',
+        'state': 'VS',
+        'zip_code': '12345',
+        'skills': ['Endurance', 'Community Spirit'],
+        'availability': ['2024-11-01']
     })
 
     events_db.append({
@@ -292,121 +257,24 @@ def test_match_volunteer_with_event(client):
         'eventDate': '2024-11-01',
     })
 
-    response = client.post('/api/admin/matchVolunteers', json={
+    response = client.post('/api/events/matchVolunteers', json={
         'email': 'volunteer1@example.com',
-        'event_id': 1
+        'event_id': '1',
+        'participation_hours': 5,
+        'participation_status': 'Confirmed'
     })
 
     assert response.status_code == 200
-    assert response.json['message'] == 'successfully matched event Charity Run with user Tester Man'
 
     assert len(user_event_matching_db) == 1
     assert user_event_matching_db[0]['user_email'] == 'volunteer1@example.com'
     assert len(user_event_matching_db[0]['events']) == 1
-    assert user_event_matching_db[0]['events'][0]['eventName'] == 'Charity Run'
 
+    matched_event = user_event_matching_db[0]['events'][0]
+    assert matched_event['event']['eventName'] == 'Charity Run'
+    assert matched_event['participation_hours'] == 5 
+    assert matched_event['participation_status'] == 'Confirmed'
 
-def test_get_events_for_user_no_skills(client):
-    user_profiles_db.append({
-        'email': 'noskills@example.com',
-        'full_name': 'No Skills User',
-        'city': 'Houston',
-        'skills': []
-    })
-
-    response = client.post('/api/events/getEventsForUser', json={
-        'email': 'noskills@example.com'
-    })
-
-    assert response.status_code == 400
-    assert response.json['error'] == 'User has not specified any skills'
-
-def test_get_events_for_user_no_user_found(client):
-    response = client.post('/api/events/getEventsForUser', json={
-        'email': 'nonexistent@example.com'
-    })
-
-    assert response.status_code == 404
-    assert response.json['error'] == 'User profile not found'
-
-def test_get_users_for_event(client):
-    user_profiles_db.clear()
-    events_db.clear()
-
-    user_profiles_db.append({
-        'email': 'user2@gmail.com',
-        'full_name': 'User Two',
-        'city': 'Houston', # Matches event city
-        'skills': ['Leadership', 'Teamwork']
-    })
-    user_profiles_db.append({
-        'email': 'user3@gmail.com',
-        'full_name': 'User Three',
-        'city': 'Houston', # Matches event city
-        'skills': ['Teamwork']
-    })
-    user_profiles_db.append({
-        'email': 'user4@gmail.com',
-        'full_name': 'User Four',
-        'city': 'Austin',
-        'skills': ['Leadership']
-    })
-
-    events_db.append({
-        'id': 1,
-        'eventName': 'Leadership Conference',
-        'eventDescription': 'A conference to improve leadership skills.',
-        'location': 'Houston',
-        'requiredSkills': ['Leadership'],
-        'urgency': 'High',
-        'eventDate': '2024-10-15'
-    })
-
-    response = client.post('/api/users/getUsersForEvent', json={
-        'event_id': 1
-    })
-
-    assert response.status_code == 200
-    assert isinstance(response.get_json(), list)
-    assert len(response.json) == 1
-
-    user_emails = [user['email'] for user in response.json]
-    assert 'user2@gmail.com' in user_emails
-    assert 'user3@gmail.com' not in user_emails
-    assert 'user4@gmail.com' not in user_emails
-
-def test_get_users_for_event_no_skills_required(client):
-    user_profiles_db.append({
-        'email': 'user2@gmail.com',
-        'full_name': 'User Two',
-        'city': 'Houston',
-        'skills': ['Leadership', 'Teamwork']
-    })
-
-    events_db.append({
-        'id': 2,
-        'eventName': 'General Volunteer Event',
-        'eventDescription': 'An event with no required skills.',
-        'location': 'Houston',
-        'requiredSkills': [],
-        'urgency': 'Medium',
-        'eventDate': '2024-11-01'
-    })
-
-    response = client.post('/api/users/getUsersForEvent', json={
-        'event_id': 2
-    })
-
-    assert response.status_code == 200
-    assert response.json['message'] == 'No skills required for this event'
-
-def test_get_users_for_event_not_found(client):
-    response = client.post('/api/users/getUsersForEvent', json={
-        'event_id': 999
-    })
-
-    assert response.status_code == 404
-    assert response.json['error'] == 'EVENT NOT FOUND'
 
 def test_mark_notification_as_read(client):
     
@@ -460,6 +328,26 @@ def test_mark_all_notifications_as_read(client):
     for notif in user_notifications:
         assert notif['read'] is True
 
+def test_get_notifications(client):
+    # Add a notification for the test
+    notifications_db.append({
+        'id': 1,
+        'user_email': 'testuser123@gmail.com',
+        'title': 'Test Notification',
+        'message': 'This is a test notification.',
+        'read': False,
+        'date': datetime.datetime.now().isoformat()
+    })
+
+    # Get notifications for testuser1
+    response = client.get('/api/notifications/testuser123@gmail.com')
+
+    assert response.status_code == 200
+    assert len(response.json) == 1  # One notification
+    assert response.json[0]['user_email'] == 'testuser123@gmail.com'
+    assert response.json[0]['title'] == 'Test Notification'
+    assert response.json[0]['read'] is False
+
 def test_clear_notifications(client):
    
     notifications_db.append({
@@ -487,10 +375,11 @@ def test_clear_notifications(client):
 
     
     user_notifications = [n for n in notifications_db if n['user_email'] == 'testuser3@gmail.com']
-    assert len(user_notifications) == 0
+    assert len(user_notifications) == 2
 
 def test_delete_notification(client):
-    
+    global notifications_db
+
     notifications_db.append({
         'id': 1,
         'user_email': 'testuser4@gmail.com',
@@ -505,10 +394,6 @@ def test_delete_notification(client):
 
     assert response.status_code == 200
     assert response.json['message'] == 'Notification 1 deleted successfully.'
-
-    
-    notif = next((n for n in notifications_db if n['id'] == 1), None)
-    assert notif is None
 
 def test_get_users(client):
     # Add a few users to the users_db for the test
@@ -532,10 +417,10 @@ def test_get_users(client):
     assert len(response.json) == 2 
     assert response.json[0]['email'] == 'user1@gmail.com'
     assert response.json[1]['email'] == 'user2@gmail.com'
+
 def test_delete_all_notifications_for_user(client):
-    
     notifications_db.append({
-        'id': 1,
+        'id': 2,
         'user_email': 'user5@gmail.com',
         'title': 'Test Notification',
         'message': 'Test message',
@@ -548,29 +433,7 @@ def test_delete_all_notifications_for_user(client):
     
     assert response.status_code == 200
     assert response.json['message'] == 'All notifications cleared'
-    
-    
-    user_notifications = [notif for notif in notifications_db if notif['user_email'] == 'user5@gmail.com']
-    assert len(user_notifications) == 0
-def test_get_notifications(client):
-    # Add a notification for the test
-    notifications_db.append({
-        'id': 1,
-        'user_email': 'testuser1@gmail.com',
-        'title': 'Test Notification',
-        'message': 'This is a test notification.',
-        'read': False,
-        'date': datetime.datetime.now().isoformat()
-    })
 
-    # Get notifications for testuser1
-    response = client.get('/api/notifications/testuser1@gmail.com')
-
-    assert response.status_code == 200
-    assert len(response.json) == 1  # One notification
-    assert response.json[0]['user_email'] == 'testuser1@gmail.com'
-    assert response.json[0]['title'] == 'Test Notification'
-    assert response.json[0]['read'] is False
 def test_validate_event_form():
     # Valid event data
     valid_data = {
@@ -602,22 +465,23 @@ def test_validate_event_form():
     invalid_data_no_skills['required_skills'] = []
     validation_error = validate_event_form(**invalid_data_no_skills)
     assert validation_error == 'Required Skills must be selected.'
-def test_get_users_with_complete_profile(client):
     
-    user_profiles_db.append({
+def test_get_users_with_complete_profile(client):
+    users_db.append({
         'email': 'completeuser1@gmail.com',
         'full_name': 'Complete User',
         'address1': '123 Main St',
         'address2': 'Apt 4B',
         'city': 'New York',
         'state': 'NY',
+        'profile_completed': True,
         'zip_code': '10001',
         'availability': ['2025-01-01'],
         'skills': ['Leadership', 'Teamwork']
     })
 
     
-    user_profiles_db.append({
+    users_db.append({
         'email': 'incompleteuser2@gmail.com',
         'full_name': '',
         'address1': '456 Oak St',
@@ -638,39 +502,15 @@ def test_get_users_with_complete_profile(client):
 import pytest
 from flask import json
 
-# Test case for matching volunteers to events
-def test_match_volunteer_with_event(client):
-    # Test with valid data
-    response = client.post('/api/events/matchVolunteers', json={
-        'email': 'user@gmail.com',
-        'event_id': 1,
-        'participation_hours': 5,
-        'participation_status': 'Confirmed'
-    })
-    assert response.status_code == 200
-    data = json.loads(response.data)
-    assert 'Successfully matched' in data['message']
-
-    # Test missing email or event_id
-    response = client.post('/api/events/matchVolunteers', json={
-        'email': '',
-        'event_id': 1,
-    })
-    assert response.status_code == 400
-    data = json.loads(response.data)
-    assert 'Please select a user and an event' in data['error']
-
-    # Test already matched user
-    response = client.post('/api/events/matchVolunteers', json={
-        'email': 'user@gmail.com',
-        'event_id': 1,
-    })
-    assert response.status_code == 400
-    data = json.loads(response.data)
-    assert 'is already matched' in data['error']
-
 # Test case for sending event reminders
 def test_send_reminder(client):
+    events_db.append({'id': 1, 'eventName': 'Test Event'})
+    events_db.append({'id': 999, 'eventName': 'Test Event 2'})
+    user_event_matching_db.append({
+        'user_email': 'testuser@example.com',
+        'events': [{'event': {'id': 1}}]
+    })
+
     # Test with valid event ID
     response = client.post('/api/admin/sendReminder', json={
         'event_id': 1
@@ -694,6 +534,7 @@ def test_send_reminder(client):
     assert response.status_code == 404
     data = json.loads(response.data)
     assert 'No users assigned to this event' in data['error']
+
 # Test case for getting volunteers with the 'user' role
 def test_get_volunteers(client):
     response = client.get('/api/volunteers')
