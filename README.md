@@ -49,8 +49,9 @@ cd G35-volunteer-web-app
 
 2. Frontend Setup (Angular)
     Navigate to the volunteer-web-app directory:  cd volunteer-web-app
-    Install the dependencies: npm install
+    Install the dependencies: npm install --legacy-peer-deps or npm install --force
     install angual material : ng add @angular/material
+
 
 
 3. Backend Setup (Flask)

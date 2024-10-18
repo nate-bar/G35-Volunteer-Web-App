@@ -369,6 +369,20 @@ def get_users():
 def get_user_event_matchings():
     return jsonify(user_event_matching_db)
 
+# Return user_event_matching but with full_name instead of user_email
+@app.route('/api/admin/eventUserMatchingsWithName', methods=['GET'])
+def get_user_event_matching_with_name():
+    results = []
+
+    for person in user_event_matching_db:
+        temp = person.copy()
+        for user in user_profiles_db:
+            if temp['user_email'] == user['email']:
+                temp['user_email'] = user.get('full_name')
+        results.append(temp)
+
+    return jsonify(results)
+
 # Function to check if the file extension is allowed
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -612,7 +626,8 @@ def delete_event(event_id):
 # get users with complete profile
 @app.route('/api/users/getUsersWithCompleteProfile', methods=['GET'])
 def get_users_with_complete_profile():
-    return jsonify(user_profiles_db), 200
+    completed_profiles = [user for user in users_db if user.get('profile_completed') == True]
+    return jsonify(completed_profiles), 200
 
 
 @app.route('/api/events/matchVolunteers', methods=['POST'])
