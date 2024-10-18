@@ -61,9 +61,9 @@
 
     <!-- Buttons -->
     <div class="d-flex justify-content-center" style="background-image: initial">
-      <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
-      <button type="submit"  class="btn btn-primary mx-2">Match Volunteer</button>
-      <button class="btn btn-warning " (click)="sendReminder()">Send Reminder to Assigned User</button>
+      <button mat-raised-button  color="warn" (click)="onCancel()">Cancel</button>
+      <button  mat-raised-button color="primary">Match Volunteer</button>
+      <button mat-raised-button color="accent" (click)="sendReminder()">Send Reminder to Assigned User</button>
     
     </div>
   </form>
