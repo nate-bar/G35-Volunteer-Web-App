@@ -16,5 +16,17 @@
         "password": "$2b$12$IaHkMjj9YRF5lzmEiStrk.oFPPP0x2NP5gyAPvzh7z0DCQun4G.a2",
         "role": "admin",
         "profile_completed": true
+    },
+    {
+        "email": "user3@gmail.com",
+        "password": "$2b$12$yGlvcJDGEJhkaDowySS8r.GpErD8JvPqXqcp0w1HchQAGbMdGcAaq",
+        "role": "user",
+        "profile_completed": true
+    },
+    {
+        "email": "user2@gmail.com",
+        "password": "$2b$12$yGlvcJDGEJhkaDowySS8r.GpErD8JvPqXqcp0w1HchQAGbMdGcAaq",
+        "role": "user",
+        "profile_completed": true
     }
 ]

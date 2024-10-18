@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { volunteerMatchingService } from './volunteer-matching.service';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
-import { Router } from '@angular/router';
-import { ChangeDetectorRef } from '@angular/core';
-
+import { ReactiveFormsModule } from '@angular/forms'; 
+import { MatButtonModule } from '@angular/material/button';
 
 interface Event {
-  id: number; 
+  id: number;
   eventName: string;
-  eventDate: string;
   requiredSkills: string[];
 }
 
 interface User {
-  email: string; 
+  email: string;
   full_name: string;
   skills: string[];
 }
@@ -23,7 +22,7 @@ interface User {
 @Component({
   selector: 'app-volunteer-matching',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, ReactiveFormsModule], 
+  imports: [CommonModule, MatSelectModule, ReactiveFormsModule, MatButtonModule ], 
   templateUrl: './volunteer-matching.component.html',
   styleUrls: ['./volunteer-matching.component.scss']
 })
@@ -33,85 +32,113 @@ export class VolunteerMatchingComponent implements OnInit {
   users: User[] = [];
   matchedEvents: Event[] = [];
   alertMessage: string = '';
-  matchedUsers: User[] = [];
   errorMessage: string = '';
   successMessage: string = '';
   loading: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private volunteerMatchingService: volunteerMatchingService, private cd: ChangeDetectorRef) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private volunteerMatchingService: volunteerMatchingService
+  ) {
     this.matchingForm = this.fb.group({
-      selectedUser: new FormControl('', Validators.required),
-      selectedEvent: new FormControl('', Validators.required),
+      selectedUser: ['', Validators.required],
+      selectedEvent: ['', Validators.required],
+      participationHours: ['', Validators.required],
+      participationStatus: ['Pending', Validators.required]
     });
   }
 
   ngOnInit(): void {
-    this.volunteerMatchingService.getUsers().subscribe((users) => {
-      this.users = users;
-      this.cd.detectChanges();
+    
+    this.volunteerMatchingService.getVolunteers().subscribe((response) => {
+      if (Array.isArray(response)) {
+        this.users = response;
+      } else if (response && response.users) {
+        this.users = response.users; 
+      }
     });
   
-    this.volunteerMatchingService.getEvents().subscribe((events) => {
-      this.events = events;
-      this.cd.detectChanges();
+    
+    this.volunteerMatchingService.getEvents().subscribe((response) => {
+      if (Array.isArray(response)) {
+        this.events = response;
+      } else if (response && response.events) {
+        this.events = response.events; 
+      }
     });
   
     this.matchingForm.get('selectedUser')?.valueChanges.subscribe((selectedUser) => {
       if (selectedUser) {
-        const currentEvent = this.matchingForm.get('selectedEvent')?.value;
-        this.volunteerMatchingService.getEventsForUser(selectedUser).subscribe((events) => {
-          this.matchedEvents = events;
-          this.cd.detectChanges();
-
-          if (events.some((event: Event) => event?.id === currentEvent)) {
-            this.matchingForm.get('selectedEvent')?.setValue(currentEvent, { emitEvent: false });
+        this.volunteerMatchingService.getMatchedEvents(selectedUser).subscribe((response: any) => {
+          if (response && Array.isArray(response.events)) {
+            this.matchedEvents = response.events;  
+          } else {
+            this.matchedEvents = [];
           }
         });
       }
     });
+  }
   
-    this.matchingForm.get('selectedEvent')?.valueChanges.subscribe((selectedEvent) => {
-      if (selectedEvent) {
-        const currentUser = this.matchingForm.get('selectedUser')?.value;
-        this.volunteerMatchingService.getUsersForEvent(selectedEvent).subscribe((users) => {
-          this.matchedUsers = users;
-          this.cd.detectChanges();  
-          
-          if (users.some((user: User) => user?.email === currentUser)) {
-            this.matchingForm.get('selectedUser')?.setValue(currentUser, { emitEvent: false });
-          }
-        });
-      }
-    });
-  }
-
   onMatchSubmit(): void {
-    const selectedUser = this.matchingForm.get('selectedUser')?.value;
-    const selectedEvent = this.matchingForm.get('selectedEvent')?.value;
-
-    if (selectedUser && selectedEvent) {
-      this.loading = true;
-      const matchData = { email: selectedUser, event_id: selectedEvent };
-
-      this.volunteerMatchingService.match(matchData).subscribe(
-        (response: any) => {
-          this.successMessage = `Volunteer ${selectedUser} successfully matched to: ${selectedEvent}`;
-          this.errorMessage = '';
-          this.loading = false;
-          this.matchingForm.reset();
-        },
-        (error) => {
-          this.successMessage = '';
-          this.errorMessage = error.error?.error || 'An unexpected error occurred. Please try again.';
-          this.loading = false;
-        }
-      );
-    } else {
-      this.errorMessage = 'Please select both a user and an event.';
-    }
+    // if (this.matchingForm.invalid) {
+    //   this.successMessage = ''; 
+    //   this.errorMessage = 'Please fill out the form correctly.';
+      
+    //   return;
+    // }
+  
+    const matchData = {
+      selectedUser: this.matchingForm.get('selectedUser')?.value,  
+      selectedEvent: this.matchingForm.get('selectedEvent')?.value,  
+      participation_hours: this.matchingForm.get('participationHours')?.value,
+      participation_status: this.matchingForm.get('participationStatus')?.value
+    };
+  
+    this.volunteerMatchingService.match(matchData).subscribe(
+      (response: any) => {
+        this.alertMessage= response.message;
+        
+        // this.successMessage = `Volunteer ${matchData.selectedUser} successfully matched to event ${matchData.selectedEvent}`;
+        this.errorMessage = '';
+        
+        this.loading = false;
+        this.matchingForm.reset();
+      },
+      (error) => {
+        this.alertMessage = '';
+        this.errorMessage = error.error?.error || 'An unexpected error occurred. Please try again.';
+        this.loading = false;
+      }
+    );
   }
+  
+  
+
+  sendReminder(): void {
+    const selectedEvent = this.matchingForm.get('selectedEvent')?.value; 
+    
+    if (!selectedEvent) {
+      this.errorMessage = 'Please select an event before sending a reminder.';
+      return; 
+    }
+  
+    this.volunteerMatchingService.sendReminder(selectedEvent).subscribe(
+      (response: any) => {
+        this.alertMessage = response.message ||'Reminder sent to assigned users!';
+        this.errorMessage = ''; 
+      },
+      (error) => {
+        this.errorMessage = error.error?.error || 'An error occurred while sending the reminder.';
+      }
+    );
+  }
+  
+
+  
 
   onCancel(): void {
-    this.router.navigate(['/admin']); 
+    this.router.navigate(['/admin']);
   }
 }
