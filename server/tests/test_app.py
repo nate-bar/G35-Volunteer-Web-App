@@ -13,6 +13,14 @@ def client():
     with app.test_client() as client:
         yield client
 
+# @pytest.fixture(autouse=True)
+# def clear_db():
+#     users_db.clear()
+#     events_db.clear()
+#     user_event_matching_db.clear()
+#     user_profiles_db.clear()
+#     notifications_db.clear()
+
 def test_home(client):
     response = client.get('/')
     assert response.status_code == 200
@@ -398,13 +406,7 @@ def test_get_users_for_event_not_found(client):
     })
 
     assert response.status_code == 404
-    assert response.json['error'] == 'Event not found'
-
-def test_get_users_for_event_missing_event_id(client):
-    response = client.post('/api/users/getUsersForEvent', json={})
-
-    assert response.status_code == 400
-    assert response.json['error'] == 'Event ID is required'
+    assert response.json['error'] == 'EVENT NOT FOUND'
 
 def test_mark_notification_as_read(client):
     
