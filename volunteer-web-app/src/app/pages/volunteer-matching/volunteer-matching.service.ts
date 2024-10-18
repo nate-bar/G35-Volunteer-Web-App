@@ -1,36 +1,45 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class volunteerMatchingService {
-  private matchVolunteersUrl = 'http://127.0.0.1:5000/api/admin/matchVolunteers'; // URL to Flask volunteer matching API
-  private usersUrl = 'http://127.0.0.1:5000/api/users/getUsersWithCompleteProfile';
-  private eventsUrl = 'http://127.0.0.1:5000/api/events';
-  private eventsForUserUrl = 'http://127.0.0.1:5000/api/events/getEventsForUser';
-  private usersForEventUrl = 'http://127.0.0.1:5000/api/users/getUsersForEvent';
+  private apiUrl = 'http://127.0.0.1:5000/api';
 
   constructor(private http: HttpClient) {}
 
-  match(data: { email: string; event_id: string }): Observable<any> {
-    return this.http.post(this.matchVolunteersUrl, data);
+  match(data: { selectedUser: string; selectedEvent: string; participation_hours: number; participation_status: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/events/matchVolunteers`, {
+      email: data.selectedUser,
+      event_id: data.selectedEvent,
+      participation_hours: data.participation_hours,
+      participation_status: data.participation_status
+    });
+  }
+  
+  
+
+  // Fetch users with the 'user' role (volunteers)
+  getVolunteers(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/volunteers`);
   }
 
-  getUsers(): Observable<any> {
-    return this.http.get(this.usersUrl);
-  }
-
+  // Fetch all events
   getEvents(): Observable<any> {
-    return this.http.get(this.eventsUrl);
+    return this.http.get(`${this.apiUrl}/events`);
   }
 
-  getEventsForUser(email: string): Observable<any> {
-    return this.http.post(this.eventsForUserUrl, { email });
+  // Fetch events that match a user's skills and location
+  getMatchedEvents(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/events/matched`, { email });
   }
 
-  getUsersForEvent(event_id: string): Observable<any> {
-    return this.http.post(this.usersForEventUrl, { event_id });
-  }
+  // Send reminder to assigned users or all users
+sendReminder(event_id: string | null): Observable<any> {
+  // Convert event_id to a number
+  return this.http.post(`${this.apiUrl}/admin/sendReminder`, { event_id: Number(event_id) });
+}
+
 }

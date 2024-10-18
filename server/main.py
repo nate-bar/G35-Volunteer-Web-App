@@ -23,8 +23,6 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 
-
-# Apply the configuration from config.py
 app.config.from_object(Config)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -34,7 +32,6 @@ mail = Mail(app)
 # Temporary storage for pending registrations
 pending_users = {}
 
-# Token expiration time in minutes
 TOKEN_EXPIRATION_TIME = 60  # 60 minutes
 
 
@@ -52,7 +49,6 @@ def home():
 def get_notifications(email):
     user_notifications = [notif for notif in notifications_db if notif['user_email'] == email]
     return jsonify(user_notifications), 200
-
 
 
 # Mark a notification as read
@@ -85,21 +81,35 @@ def clear_notifications(email):
     return jsonify({'message': 'All notifications cleared'}), 200
 
 
-# Helper function to create notifications
-def create_notification_for_users(title, message):
-    """Create notifications for users with 'user' role only."""
+# Helper function to create notifications for specific users
+def create_notification_for_users(title, message, user_emails=None):
+    """Create notifications for specific users or all users with 'user' role if no emails are provided."""
     for user in users_db:
-        if user['role'] == 'user':  # Filter users with 'user' role
-            new_notification = {
-                'id': len(notifications_db) + 1,
-                'user_email': user['email'],
-                'title': title,
-                'message': message,
-                'read': False,
-                'date': datetime.datetime.now().isoformat()
-            }
-            notifications_db.append(new_notification)
+        if user_emails:  # If specific users are provided, notify only them
+            if user['email'] in user_emails:
+                new_notification = {
+                    'id': len(notifications_db) + 1,
+                    'user_email': user['email'],
+                    'title': title,
+                    'message': message,
+                    'read': False,
+                    'date': datetime.datetime.now().isoformat()
+                }
+                notifications_db.append(new_notification)
+        else:
+            if user['role'] == 'user':  # If no specific emails are provided, notify all users with 'user' role
+                new_notification = {
+                    'id': len(notifications_db) + 1,
+                    'user_email': user['email'],
+                    'title': title,
+                    'message': message,
+                    'read': False,
+                    'date': datetime.datetime.now().isoformat()
+                }
+                notifications_db.append(new_notification)
+    
     save_notifications(notifications_db)
+
 
 @app.route('/api/notifications/<int:notif_id>', methods=['DELETE'])
 def delete_notification(notif_id):
@@ -423,10 +433,6 @@ def validate_event_form(event_name, event_description, location, required_skills
 
     return None  # No errors
 
-# Get all events
-@app.route('/api/events', methods=['GET'])
-def get_events():
-    return jsonify(events_db)
 
 # Add a new event
 @app.route('/api/events', methods=['POST'])
@@ -492,18 +498,15 @@ def add_event():
         save_events(events_db)
 
         # Create notifications for all users
-        create_notification_for_users(
-            'New Event Created',
-            f'A new event "{event_name}" has been created.'
-        )
+        # create_notification_for_users(
+        #     'New Event Created',
+        #     f'A new event "{event_name}" has been created.'
+        # )
 
         return jsonify({'message': 'Event added successfully', 'event': new_event}), 201
 
     except Exception as e:
         return jsonify({'error': 'Failed to add event', 'details': str(e)}), 500
-
-
-
 
 @app.route('/api/events/<int:event_id>', methods=['PUT'])
 def update_event(event_id):
@@ -559,16 +562,26 @@ def update_event(event_id):
         save_events(events_db)
 
         # Notify users of the update
-        create_notification_for_users(
-            'Event Updated',
-            f'The event "{event_name}" has been updated.'
-        )
+        # create_notification_for_users(
+        #     'Event Updated',
+        #     f'The event "{event_name}" has been updated.'
+        # )
+
+        # Notify only users who are matched to the event
+        matched_users = [match['user_email'] for match in user_event_matching_db 
+                         if any(evt['event']['id'] == event_id for evt in match['events'])]
+        
+        if matched_users:
+            create_notification_for_users(
+                'Event Updated',
+                f'The event "{event_name}" has been updated.',
+                matched_users
+            )
 
         return jsonify({'message': 'Event updated successfully', 'event': event}), 200
 
     except Exception as e:
         return jsonify({'error': 'Failed to update event', 'details': str(e)}), 500
-
 
 # Delete an event
 @app.route('/api/events/<int:event_id>', methods=['DELETE'])
@@ -596,124 +609,170 @@ def delete_event(event_id):
     except Exception as e:
         return jsonify({'error': 'Failed to delete event', 'details': str(e)}), 500
 
-
 # get users with complete profile
 @app.route('/api/users/getUsersWithCompleteProfile', methods=['GET'])
 def get_users_with_complete_profile():
-    required_fields = ['full_name', 'address1', 'city', 'state', 'zip_code','preferences','availability', 'skills']
+    return jsonify(user_profiles_db), 200
 
-    complete_profiles = [
-        user_profile for user_profile in user_profiles_db
-        if all(user_profile.get(field) for field in required_fields)
-    ]
 
-    return jsonify(complete_profiles), 200
+@app.route('/api/events/matchVolunteers', methods=['POST'])
+def match_volunteer_with_event():
+    data = request.json
+    # print("Received data: ", data)  
 
-# get events for user
-@app.route('/api/events/getEventsForUser', methods=['POST'])
-def get_events_for_user():
+    email = data.get('email')
+    event_id = data.get('event_id')
+    participation_hours = data.get('participation_hours', 0)
+    participation_status = data.get('participation_status', 'Pending')
+
+    if not email or not event_id:
+        return jsonify({'error': 'Please select a user and an event'}), 400
+
+    try:
+        user = next((user for user in user_profiles_db if user.get('email') == email), None)
+        if not user:
+            print("User not found")
+            return jsonify({'error': 'User not found'}), 404
+        
+        # print(f"Received event_id: {event_id}, type: {type(event_id)}")
+
+        # Convert event_id to an integer 
+        event = next((event for event in events_db if event.get('id') == int(event_id)), None)
+        if not event:
+            print("Event not found")
+            return jsonify({'error': 'Event not found'}), 404
+
+        user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
+
+        # throw error if the event and the user are already matched
+        if user_match and any(evt['event']['id'] == int(event_id) for evt in user_match['events']): 
+            return jsonify({'error': f'User {user["full_name"]} is already matched with event {event["eventName"]}'}), 400
+
+        event_data = {
+            'event': event,
+            'participation_hours': participation_hours,
+            'participation_status': participation_status
+        }
+
+        if user_match:
+            user_match['events'].append(event_data)
+        else:
+            new_entry = {
+                'user_email': email,
+                'events': [event_data]
+            }
+            user_event_matching_db.append(new_entry)
+
+        save_user_event_matchings(user_event_matching_db)
+
+        # Send notification to the user
+        new_notification = {
+            'id': len(notifications_db) + 1,
+            'user_email': email,
+            'title': 'Volunteer Assignment',
+            'message': f'You have been assigned to the event {event["eventName"]}.',
+            'read': False,
+            'date': datetime.datetime.now().isoformat()
+        }
+        notifications_db.append(new_notification)
+        save_notifications(notifications_db)
+
+        return jsonify({'message': f'Successfully matched event {event["eventName"]} with user {user["full_name"]}'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/admin/sendReminder', methods=['POST'])
+def send_reminder():
+    data = request.json
+    event_id = data.get('event_id')
+    
+    # Convert event_id to integer
+    try:
+        event_id = int(event_id)
+    except (TypeError, ValueError):
+        return jsonify({'error': 'Invalid event ID format'}), 400
+
+    print(event_id)
+
+    if not event_id:
+        return jsonify({'error': 'Event ID is required'}), 400
+
+    try:
+        # Fetch the event by ID to get the event name
+        event = next((evt for evt in events_db if evt['id'] == event_id), None)
+        if not event:
+            return jsonify({'error': 'Event not found.'}), 404
+
+        event_name = event.get('eventName', 'Unknown Event')
+
+        # Send reminder only to users assigned to the event
+        matched_users = [match['user_email'] for match in user_event_matching_db 
+                         if any(evt['event']['id'] == event_id for evt in match['events'])]
+
+        if not matched_users:
+            return jsonify({'error': 'No users assigned to this event.'}), 404
+        
+        # Create notifications for the matched users
+        for user_email in matched_users:
+            new_notification = {
+                'id': len(notifications_db) + 1,
+                'user_email': user_email,
+                'title': 'Event Reminder',
+                'message': f'Reminder: You are assigned to the event "{event_name}".',
+                'read': False,
+                'date': datetime.datetime.now().isoformat()
+            }
+            notifications_db.append(new_notification)
+
+        save_notifications(notifications_db)
+
+        return jsonify({'message': 'Reminders sent successfully'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Get all volunteers with 'user' role
+@app.route('/api/volunteers', methods=['GET'])
+def get_volunteers():
+    
+    volunteers = [user for user in user_profiles_db if user.get('role') == 'user']  
+    return jsonify(volunteers), 200
+
+@app.route('/api/events/matched', methods=['POST'])
+def get_matched_events():
     data = request.get_json()
     email = data.get('email')
 
     if not email:
         return jsonify({'error': 'Email is required'}), 400
 
+    # Get the user profile
     user_profile = next((profile for profile in user_profiles_db if profile['email'] == email), None)
 
     if not user_profile:
-        return jsonify({'error': 'User profile not found'}), 404
+        return jsonify({'error': 'User not found'}), 404
 
-    user_skills = user_profile.get('skills', [])
     user_city = user_profile.get('city')
+    user_skills = user_profile.get('skills', [])
 
-    if not user_skills:
-        return jsonify({'error': 'User has not specified any skills'}), 400
-
-    matching_events = [
+    # Filter events by location and skills
+    matched_events = [
         event for event in events_db
-        if any(skill in user_skills for skill in event.get('requiredSkills', []))
-        and event.get('location').lower() == user_city.lower()
+        if event.get('location') == user_city and any(skill in user_skills for skill in event.get('requiredSkills', []))
     ]
 
-    if not matching_events:
-        return jsonify([]), 200
+    if not matched_events:
+        return jsonify({'message': 'No matching events found', 'events': []}), 200  # Return empty list if no matches
 
-    return jsonify(matching_events), 200
+    return jsonify({'events': matched_events}), 200  # Ensure response is structured properly
 
-
-# get users based on selected event
-@app.route('/api/users/getUsersForEvent', methods=['POST'])
-def get_users_for_event():
-    data = request.get_json()
-    event_id = int(data.get('event_id'))
-
-    if not event_id:
-        return jsonify({'error': 'Event ID is required'}), 400
-
-    event = next((event for event in events_db if event.get('id') == int(event_id)), None)
-
-    if not event:
-        return jsonify({'error': 'EVENT NOT FOUND'}), 404
-
-    required_skills = event.get('requiredSkills', [])
-    event_location = event.get('location')
-
-    if not required_skills:
-        return jsonify({'message': 'No skills required for this event'}), 200
-
-    matching_users = [
-        user_profile for user_profile in user_profiles_db
-        if any(skill in required_skills for skill in user_profile.get('skills', []))
-        and user_profile.get('city').lower() == event_location.lower()
-    ]
-
-    if not matching_users:
-        return jsonify({'message': 'No users found with matching skills and location'}), 200
-
-    return jsonify(matching_users), 200
-
-# match volunteers
-@app.route('/api/admin/matchVolunteers', methods=['POST'])
-def match_volunteer_with_event():
-    data = request.json
-    email = data.get('email')
-    event_id = int(data.get('event_id'))
-
-    if not email or not event_id:
-        return jsonify({'error': 'Please select a user and an event'}), 400
-
-    try:
-        user = next((user for user in users_db if user.get('email') == email), None)
-        if not user:
-            return jsonify({'error': 'User not found'}), 404
-
-        event = next((event for event in events_db if event.get('id') == int(event_id)), None)
-        if not event:
-            return jsonify({'error': 'Event not found'}), 404
-
-        user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
+# Get all events
+@app.route('/api/events', methods=['GET'])
+def get_events():
+    return jsonify(events_db)
 
 
-        # throw error if the event and the user is already matched
-        if user_match and any(evt['id'] == event_id for evt in user_match['events']):
-            return jsonify({'error': f'User {user["full_name"]} is already matched with event {event["eventName"]}'}), 400
-
-
-        if user_match:
-            user_match['events'].append(event)
-        else:
-            new_entry = {
-                'user_email': email,
-                'events': [event]
-            }
-            user_event_matching_db.append(new_entry)
-
-        save_user_event_matchings(user_event_matching_db)
-
-        return jsonify({'message': f'successfully matched event {event["eventName"]} with user {user["full_name"]}'}), 200
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
