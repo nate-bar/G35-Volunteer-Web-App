@@ -371,18 +371,17 @@ def get_user_event_matchings():
 
 # Return user_event_matching but with full_name instead of user_email
 @app.route('/api/admin/eventUserMatchingsWithName', methods=['GET'])
-def get_user_event_matchings_with_name():
+def get_user_event_matching_with_name():
     results = []
 
     for person in user_event_matching_db:
-        temp = person
+        temp = person.copy()
         for user in user_profiles_db:
-            if person['user_email'] == user['email']:
+            if temp['user_email'] == user['email']:
                 temp['user_email'] = user.get('full_name')
         results.append(temp)
 
     return jsonify(results)
-
 
 # Function to check if the file extension is allowed
 def allowed_file(filename):
