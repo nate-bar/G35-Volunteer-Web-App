@@ -14,8 +14,8 @@ export class volunteerMatchingService {
     return this.http.post(`${this.apiUrl}/events/matchVolunteers`, {
       email: data.selectedUser,
       event_id: data.selectedEvent,
-      participation_hours: data.participation_hours,
-      participation_status: data.participation_status
+      // participation_hours: data.participation_hours,
+      // participation_status: data.participation_status
     });
   }
   

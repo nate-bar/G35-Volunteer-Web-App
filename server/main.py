@@ -4,17 +4,16 @@ from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 import datetime
 import re
-import secrets
+
 import datetime
-from users_db import users_db, save_users
-from user_profiles_db import user_profiles_db,save_profile
-from notifications_db import notifications_db, save_notifications
-from events_data import events_db, save_events
-from user_event_matching_db import user_event_matching_db, save_user_event_matchings
-from config import Config  
+
+from config import Config
 from threading import Thread
 from werkzeug.utils import secure_filename
 import os,json
+from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
+from flask_pymongo import PyMongo
+from bson import ObjectId
 
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
@@ -28,11 +27,22 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 bcrypt = Bcrypt(app)
 mail = Mail(app)
+mongo = PyMongo(app)
+
+
+users_collection = mongo.db.users
+profiles_collection = mongo.db.user_profiles
+notifications_collection = mongo.db.notifications
+events_collection = mongo.db.events
+event_matching_collection = mongo.db.user_event_matchings
+states_collection = mongo.db.states
 
 # Temporary storage for pending registrations
 pending_users = {}
 
 TOKEN_EXPIRATION_TIME = 60  # 60 minutes
+
+serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
 def send_async_email(app, msg):
@@ -633,67 +643,61 @@ def get_users_with_complete_profile():
 @app.route('/api/events/matchVolunteers', methods=['POST'])
 def match_volunteer_with_event():
     data = request.json
-    # print("Received data: ", data)  
-
     email = data.get('email')
     event_id = data.get('event_id')
-    participation_hours = data.get('participation_hours', 0)
-    participation_status = data.get('participation_status', 'Pending')
-
     if not email or not event_id:
         return jsonify({'error': 'Please select a user and an event'}), 400
-
     try:
-        user = next((user for user in user_profiles_db if user.get('email') == email), None)
+        # Find the user profile in MongoDB
+        user = profiles_collection.find_one({'email': email})
         if not user:
             print("User not found")
             return jsonify({'error': 'User not found'}), 404
-        
-        # print(f"Received event_id: {event_id}, type: {type(event_id)}")
-
-        # Convert event_id to an integer 
-        event = next((event for event in events_db if event.get('id') == int(event_id)), None)
+        # If event_id is an ObjectId string, use it to find the event by _id
+        if ObjectId.is_valid(event_id):
+            event = events_collection.find_one({'_id': ObjectId(event_id)})
+        else:
+            # If event_id is a number or a non-ObjectId string, query by 'id' field
+            event = events_collection.find_one({'id': int(event_id)})
         if not event:
             print("Event not found")
             return jsonify({'error': 'Event not found'}), 404
 
-        user_match = next((entry for entry in user_event_matching_db if entry['user_email'] == email), None)
-
-        # throw error if the event and the user are already matched
-        if user_match and any(evt['event']['id'] == int(event_id) for evt in user_match['events']): 
+        # Check if the user is already matched with the event
+        user_match = event_matching_collection.find_one({'user_email': email})
+        if user_match and any(evt['event']['id'] == int(event_id) for evt in user_match['events']):
             return jsonify({'error': f'User {user["full_name"]} is already matched with event {event["eventName"]}'}), 400
 
+        # Prepare the event data to be added
         event_data = {
             'event': event,
-            'participation_hours': participation_hours,
-            'participation_status': participation_status
         }
 
+
+        # If the user is already matched with some events, update the document
         if user_match:
-            user_match['events'].append(event_data)
+            event_matching_collection.update_one(
+                {'user_email': email},
+                {'$push': {'events': event_data}}
+            )
         else:
+            # If the user is not matched with any event, create a new entry
             new_entry = {
                 'user_email': email,
                 'events': [event_data]
             }
-            user_event_matching_db.append(new_entry)
+            event_matching_collection.insert_one(new_entry)
 
-        save_user_event_matchings(user_event_matching_db)
-
-        # Send notification to the user
+        # Create a new notification for the user
         new_notification = {
-            'id': len(notifications_db) + 1,
             'user_email': email,
             'title': 'Volunteer Assignment',
             'message': f'You have been assigned to the event {event["eventName"]}.',
             'read': False,
             'date': datetime.datetime.now().isoformat()
         }
-        notifications_db.append(new_notification)
-        save_notifications(notifications_db)
-
+        notifications_collection.insert_one(new_notification)
         return jsonify({'message': f'Successfully matched event {event["eventName"]} with user {user["full_name"]}'}), 200
-
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -750,10 +754,10 @@ def send_reminder():
 # Get all volunteers with 'user' role
 @app.route('/api/volunteers', methods=['GET'])
 def get_volunteers():
-    
-    volunteers = [user for user in user_profiles_db if user.get('role') == 'user']  
+    volunteers = list(profiles_collection.find({'role': 'user'}, {'_id': 0}))
     return jsonify(volunteers), 200
 
+#matched users to events
 @app.route('/api/events/matched', methods=['POST'])
 def get_matched_events():
     data = request.get_json()
@@ -763,8 +767,7 @@ def get_matched_events():
         return jsonify({'error': 'Email is required'}), 400
 
     # Get the user profile
-    user_profile = next((profile for profile in user_profiles_db if profile['email'] == email), None)
-
+    user_profile = profiles_collection.find_one({'email': email}, {'_id': 0})
     if not user_profile:
         return jsonify({'error': 'User not found'}), 404
 
@@ -772,15 +775,15 @@ def get_matched_events():
     user_skills = user_profile.get('skills', [])
 
     # Filter events by location and skills
-    matched_events = [
-        event for event in events_db
-        if event.get('location') == user_city and any(skill in user_skills for skill in event.get('requiredSkills', []))
-    ]
+    matched_events = list(events_collection.find({
+        'location': user_city,
+        'requiredSkills': {'$in': user_skills}
+    }, {'_id': 0}))
 
     if not matched_events:
         return jsonify({'message': 'No matching events found', 'events': []}), 200  # Return empty list if no matches
 
-    return jsonify({'events': matched_events}), 200  # Ensure response is structured properly
+    return jsonify({'events': matched_events}), 200
 
 # Get all events
 @app.route('/api/events', methods=['GET'])
