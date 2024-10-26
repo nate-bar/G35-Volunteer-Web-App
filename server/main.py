@@ -29,7 +29,6 @@ bcrypt = Bcrypt(app)
 mail = Mail(app)
 mongo = PyMongo(app)
 
-
 users_collection = mongo.db.users
 profiles_collection = mongo.db.user_profiles
 notifications_collection = mongo.db.notifications
@@ -37,7 +36,7 @@ events_collection = mongo.db.events
 event_matching_collection = mongo.db.user_event_matchings
 states_collection = mongo.db.states
 
-# Temporary storage for pending registrations
+#Temporary storage for pending registrations
 pending_users = {}
 
 TOKEN_EXPIRATION_TIME = 60  # 60 minutes
@@ -49,7 +48,7 @@ def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
-# Home route
+#Home route
 @app.route('/')
 def home():
     return "<h1>Welcome to the Volunteer Management API</h1>"
@@ -397,33 +396,11 @@ def get_user_event_matching_with_name():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Validate the event form fields
-def validate_event_form(event_name, event_description, location, required_skills, urgency, event_date):
-    # Event Name: required, max 100 characters
-    if not event_name or len(event_name) > 100:
-        return 'Event Name is required and must be at most 100 characters.'
-
-    # Event Description: required
-    if not event_description:
-        return 'Event Description is required.'
-
-    # Location: required
-    if not location:
-        return 'Location is required.'
-
-    # Required Skills: must be a non-empty list
-    if not required_skills or not isinstance(required_skills, list) or len(required_skills) == 0:
-        return 'Required Skills must be selected.'
-
-    # Urgency: must be one of 'High', 'Medium', 'Low'
-    if urgency not in ['High', 'Medium', 'Low']:
-        return 'Urgency must be one of "High", "Medium", or "Low".'
-
-    # Event Date: required (could add further validation, e.g., proper date format)
-    if not event_date:
-        return 'Event Date is required.'
-
-    return None  # No errors
+# Get all events
+@app.route('/api/events', methods=['GET'])
+def get_events():
+    events = list(events_collection.find({}, {'_id': 0}))
+    return jsonify(events), 200
 
 # Function to check if the file extension is allowed
 def allowed_file(filename):
@@ -457,7 +434,6 @@ def validate_event_form(event_name, event_description, location, required_skills
 
     return None  # No errors
 
-
 # Add a new event
 @app.route('/api/events', methods=['POST'])
 def add_event():
@@ -473,6 +449,7 @@ def add_event():
                     filename = secure_filename(file.filename)
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
+                    # Create the upload folder if it doesn't exist
                     if not os.path.exists(app.config['UPLOAD_FOLDER']):
                         os.makedirs(app.config['UPLOAD_FOLDER'])
 
@@ -483,14 +460,14 @@ def add_event():
                 else:
                     return jsonify({'error': 'File type not allowed'}), 400
 
-        # Parse other form data
+        # Parse form data
         event_name = request.form.get('eventName')
         event_description = request.form.get('eventDescription')
         location = request.form.get('location')
         urgency = request.form.get('urgency')
         event_date = request.form.get('eventDate')
 
-        # Parse the requiredSkills field (sent as a JSON string)
+        # Parse requiredSkills field (sent as a JSON string)
         required_skills_raw = request.form.get('requiredSkills')
         required_skills = json.loads(required_skills_raw) if required_skills_raw else []
 
@@ -502,13 +479,18 @@ def add_event():
         if not event_name or not event_description or not location or not urgency or not event_date:
             return jsonify({'error': 'Missing required event details'}), 400
 
-        # Check if the event with the same name and date already exists
-        for event in events_db:
-            if event['eventName'].lower() == event_name.lower() and event['eventDate'] == event_date:
-                return jsonify({'error': 'An event with the same name and date already exists.'}), 400
+        # Check if an event with the same name and date already exists
+        existing_event = events_collection.find_one({'eventName': event_name, 'eventDate': event_date})
+        if existing_event:
+            return jsonify({'error': 'An event with the same name and date already exists.'}), 400
 
+        # Get the highest existing id in the MongoDB collection and increment it by 1
+        max_event = events_collection.find_one(sort=[("id", -1)])  # Get the highest 'id' field
+        new_id = max_event['id'] + 1 if max_event else 1  # Start from 1 if no events exist
+
+        # Prepare the new event document with the manually assigned 'id'
         new_event = {
-            'id': len(events_db) + 1,
+            'id': new_id,  # Manually assigned id
             'eventName': event_name,
             'eventDescription': event_description,
             'location': location,
@@ -518,91 +500,66 @@ def add_event():
             'eventImage': file_url  # Store the file URL, or None if no image is uploaded
         }
 
-        events_db.append(new_event)
-        save_events(events_db)
+        # Insert the new event into MongoDB
+        result = events_collection.insert_one(new_event)
 
-        # Create notifications for all users
-        # create_notification_for_users(
-        #     'New Event Created',
-        #     f'A new event "{event_name}" has been created.'
-        # )
+        # Convert the ObjectId to a string for returning in the response
+        new_event['_id'] = str(result.inserted_id)
 
+        # Return success message along with the inserted event
         return jsonify({'message': 'Event added successfully', 'event': new_event}), 201
 
     except Exception as e:
         return jsonify({'error': 'Failed to add event', 'details': str(e)}), 500
 
+
+
+
 @app.route('/api/events/<int:event_id>', methods=['PUT'])
 def update_event(event_id):
     try:
-        # Find the existing event by event_id
-        event = next((e for e in events_db if e['id'] == event_id), None)
+        event = events_collection.find_one({'id': event_id})
         if not event:
             return jsonify({'error': 'Event not found'}), 404
-        
-        # Check if the request has a file part for the image
-        file = request.files.get('eventImage')
 
-        # Get form data for other event fields
+        file = request.files.get('eventImage')
         event_name = request.form.get('eventName')
         event_description = request.form.get('eventDescription')
         location = request.form.get('location')
         urgency = request.form.get('urgency')
         event_date = request.form.get('eventDate')
+        required_skills = json.loads(request.form.get('requiredSkills', '[]'))
 
-        # Parse the requiredSkills field (sent as a JSON string)
-        required_skills_raw = request.form.get('requiredSkills')
-        required_skills = json.loads(required_skills_raw) if required_skills_raw else []
-
-        # Validate form data
         validation_error = validate_event_form(event_name, event_description, location, required_skills, urgency, event_date)
         if validation_error:
             return jsonify({'error': validation_error}), 400
 
-        # Update the event fields
-        event['eventName'] = event_name
-        event['eventDescription'] = event_description
-        event['location'] = location
-        event['requiredSkills'] = required_skills
-        event['urgency'] = urgency
-        event['eventDate'] = event_date
+        # Update event fields
+        update_data = {
+            'eventName': event_name,
+            'eventDescription': event_description,
+            'location': location,
+            'requiredSkills': required_skills,
+            'urgency': urgency,
+            'eventDate': event_date
+        }
 
-        # Handle image upload if a new image is provided
-        if file and file.filename != '' and allowed_file(file.filename):
+        if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
-            # Save the uploaded file
             file.save(file_path)
-
-            # Convert file path to a URL for frontend
             file_url = url_for('static', filename=f'uploads/{filename}', _external=True)
-            event['eventImage'] = file_url
-        elif 'eventImage' not in event or not event['eventImage']:
-            
-            event['eventImage'] = None  
+            update_data['eventImage'] = file_url
 
-        # Save the updated events database
-        save_events(events_db)
+        events_collection.update_one({'id': event_id}, {'$set': update_data})
 
-        # Notify users of the update
-        # create_notification_for_users(
-        #     'Event Updated',
-        #     f'The event "{event_name}" has been updated.'
-        # )
-
-        # Notify only users who are matched to the event
-        matched_users = [match['user_email'] for match in user_event_matching_db 
-                         if any(evt['event']['id'] == event_id for evt in match['events'])]
-        
+        # Notify matched users
+        matched_users = event_matching_collection.find({'events.event.id': event_id})
         if matched_users:
-            create_notification_for_users(
-                'Event Updated',
-                f'The event "{event_name}" has been updated.',
-                matched_users
-            )
+            matched_user_emails = [match['user_email'] for match in matched_users]
+            create_notification_for_users('Event Updated', f'The event "{event_name}" has been updated.', matched_user_emails)
 
-        return jsonify({'message': 'Event updated successfully', 'event': event}), 200
+        return jsonify({'message': 'Event updated successfully', 'event': update_data}), 200
 
     except Exception as e:
         return jsonify({'error': 'Failed to update event', 'details': str(e)}), 500
@@ -611,25 +568,18 @@ def update_event(event_id):
 @app.route('/api/events/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):
     try:
-        for event in events_db:
-            if event['id'] == event_id:
-                # If the event has an associated image, delete the image file
-                if 'eventImage' in event and event['eventImage']:
-                    # Extract the image file path from the event's image URL
-                    image_path = os.path.join(app.config['UPLOAD_FOLDER'], os.path.basename(event['eventImage']))
-                    
-                    # Check if the image file exists and delete it
-                    if os.path.exists(image_path):
-                        os.remove(image_path)
-                
-                # Remove the event from the database
-                events_db.remove(event)
-                save_events(events_db)
-                
-                return jsonify({'message': 'Event deleted successfully'}), 200
-        
-        return jsonify({'error': 'Event not found'}), 404
-    
+        event = events_collection.find_one({'id': event_id})
+        if not event:
+            return jsonify({'error': 'Event not found'}), 404
+
+        if event.get('eventImage'):
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], os.path.basename(event['eventImage']))
+            if os.path.exists(image_path):
+                os.remove(image_path)
+
+        events_collection.delete_one({'id': event_id})
+        return jsonify({'message': 'Event deleted successfully'}), 200
+
     except Exception as e:
         return jsonify({'error': 'Failed to delete event', 'details': str(e)}), 500
 
@@ -784,12 +734,6 @@ def get_matched_events():
         return jsonify({'message': 'No matching events found', 'events': []}), 200  # Return empty list if no matches
 
     return jsonify({'events': matched_events}), 200
-
-# Get all events
-@app.route('/api/events', methods=['GET'])
-def get_events():
-    return jsonify(events_db)
-
 
 
 if __name__ == '__main__':
