@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 interface Event {
   id: number;
@@ -22,7 +23,7 @@ interface User {
 @Component({
   selector: 'app-volunteer-matching',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, ReactiveFormsModule, MatButtonModule ], 
+  imports: [CommonModule, MatSelectModule, ReactiveFormsModule, MatButtonModule ,MatIcon], 
   templateUrl: './volunteer-matching.component.html',
   styleUrls: ['./volunteer-matching.component.scss']
 })
@@ -117,23 +118,28 @@ export class VolunteerMatchingComponent implements OnInit {
   
 
   sendReminder(): void {
-    const selectedEvent = this.matchingForm.get('selectedEvent')?.value; 
-    
-    if (!selectedEvent) {
-      this.errorMessage = 'Please select an event before sending a reminder.';
-      return; 
+    const selectedEvent = this.matchingForm.get('selectedEvent')?.value;
+    const selectedUser = this.matchingForm.get('selectedUser')?.value;
+    if (!selectedEvent || !selectedUser) {
+      this.errorMessage = 'Please select a user and an event before sending a reminder.';
+      return;
     }
   
-    this.volunteerMatchingService.sendReminder(selectedEvent).subscribe(
+    this.volunteerMatchingService.sendReminder(selectedEvent, selectedUser).subscribe(
       (response: any) => {
-        this.alertMessage = response.message ||'Reminder sent to assigned users!';
+        
+        this.alertMessage = response.message || 'Reminder sent to the assigned user!';
         this.errorMessage = ''; 
       },
       (error) => {
+        
         this.errorMessage = error.error?.error || 'An error occurred while sending the reminder.';
       }
     );
+    
   }
+  
+  
   
 
   
