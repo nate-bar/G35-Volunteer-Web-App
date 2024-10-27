@@ -120,11 +120,12 @@ export class EventsComponent implements OnInit {
   onAddOrUpdateEvent(modal: any): void {
     if (this.eventForm.valid) {
       const formData = new FormData();
+      
   
       // Append form fields to FormData
       formData.append('eventName', this.eventForm.get('eventName')?.value);
       formData.append('eventDescription', this.eventForm.get('eventDescription')?.value);
-      formData.append('location', this.eventForm.get('location')?.value);
+      formData.append('location', this.eventForm.get('location')?.value.toLowerCase());
       formData.append('urgency', this.eventForm.get('urgency')?.value);
       formData.append('eventDate', new Date(this.eventForm.get('eventDate')?.value).toISOString());
   

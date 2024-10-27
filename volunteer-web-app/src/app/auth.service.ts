@@ -50,6 +50,7 @@ export class AuthService {
       if (profile && profile.full_name) {
         // Store full_name in localStorage
         localStorage.setItem('fullName', profile.full_name);
+        this.userProfileSubject.next(profile);
       }
     });
   }
@@ -132,6 +133,7 @@ export class AuthService {
           if (isPlatformBrowser(this.platformId)) {
             try {
               localStorage.setItem('userProfile', JSON.stringify(profile));
+              
               
             } catch (error) {
               console.error('Error storing profile in localStorage', error);

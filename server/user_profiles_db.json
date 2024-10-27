@@ -1,23 +1,5 @@
 [
     {
-        "email": "konateallamanhamed@gmail.com",
-        "full_name": "Allaman",
-        "address1": "ieiurutytru",
-        "address2": ",ksjdjdujiit",
-        "city": "Houston",
-        "state": "TX",
-        "zip_code": "34567",
-        "role": "admin",
-        "preferences": "bggghytrd",
-        "availability": [
-            "12/27/2024"
-        ],
-        "skills": [
-            "Leadership",
-            "Teamwork"
-        ]
-    },
-    {
         "email": "user@gmail.com",
         "full_name": "user 1",
         "address1": "2800 S Dairy Ashford Rd Apt 1708",
@@ -58,7 +40,7 @@
         "full_name": "user 3",
         "address1": "roriyrr wriririr wkireir",
         "address2": ",ksjdjdujiit",
-        "city": "Houston",
+        "city": "houston",
         "state": "TX",
         "zip_code": "77082",
         "role": "user",
@@ -74,7 +56,26 @@
             "Problem-Solving",
             "Time Management",
             "Critical Thinking",
-            "Adaptability"
+            "Adaptability",
+            "Environmental Awareness"
+        ]
+    },
+    {
+        "email": "konateallamanhamed@gmail.com",
+        "full_name": "allaman Hamed konate",
+        "address1": "2800 S Dairy Ashford Rd",
+        "address2": "Apt 1708",
+        "city": "Houston",
+        "state": "TX",
+        "zip_code": "77082",
+        "role": "admin",
+        "preferences": "irtrytr skdoere ndirtr",
+        "availability": [
+            "01/16/2025",
+            "10/31/2024"
+        ],
+        "skills": [
+            "Time Management"
         ]
     }
 ]

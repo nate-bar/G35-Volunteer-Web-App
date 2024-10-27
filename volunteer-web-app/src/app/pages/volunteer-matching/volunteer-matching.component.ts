@@ -43,9 +43,9 @@ export class VolunteerMatchingComponent implements OnInit {
   ) {
     this.matchingForm = this.fb.group({
       selectedUser: ['', Validators.required],
-      selectedEvent: ['', Validators.required],
-      participationHours: ['', Validators.required],
-      participationStatus: ['Pending', Validators.required]
+      selectedEvent: ['', Validators.required]
+      // participationHours: ['', Validators.required],
+      // participationStatus: ['Pending', Validators.required]
     });
   }
 
@@ -91,9 +91,9 @@ export class VolunteerMatchingComponent implements OnInit {
   
     const matchData = {
       selectedUser: this.matchingForm.get('selectedUser')?.value,  
-      selectedEvent: this.matchingForm.get('selectedEvent')?.value,  
-      participation_hours: this.matchingForm.get('participationHours')?.value,
-      participation_status: this.matchingForm.get('participationStatus')?.value
+      selectedEvent: this.matchingForm.get('selectedEvent')?.value  
+      // participation_hours: this.matchingForm.get('participationHours')?.value,
+      // participation_status: this.matchingForm.get('participationStatus')?.value
     };
   
     this.volunteerMatchingService.match(matchData).subscribe(

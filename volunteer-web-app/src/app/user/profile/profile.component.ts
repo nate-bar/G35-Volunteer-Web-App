@@ -41,7 +41,8 @@ export class ProfileComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
   warmingMessage: string = '';
-  states = ['CA', 'NY', 'TX', 'FL', 'PA']; // state codes
+  states: any[] = [];
+  // states = ['CA', 'NY', 'TX', 'FL', 'PA']; // state codes
   skillOptions = [
     { value: 'Communication', label: 'Communication' },
     { value: 'Leadership', label: 'Leadership' },
@@ -51,12 +52,12 @@ export class ProfileComponent implements OnInit {
     { value: 'Critical Thinking', label: 'Critical Thinking' },
     { value: 'Adaptability', label: 'Adaptability' }
   ];
-  availableDates: string[] = [
-    '2024-09-20',
-    '2024-09-22',
-    '2024-09-25',
-    '2024-09-27'
-  ];
+  // availableDates: string[] = [
+  //   '2024-09-20',
+  //   '2024-09-22',
+  //   '2024-09-25',
+  //   '2024-09-27'
+  // ];
 
   constructor(
     private fb: FormBuilder,
@@ -79,18 +80,27 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     let email = this.route.snapshot.queryParamMap.get('email') || this.authService.getUserEmail();
-  
+    
+    this.profileService.getStateCodes().subscribe(
+      (response) => {
+        this.states = response; 
+      },
+      (error) => {
+        console.error('Error fetching states:', error);
+      }
+    );
+
     if (email) {
       this.authService.fetchUserProfile(email).subscribe(
         (response) => {
-          console.log('Profile fetched:', response);
+          // console.log('Profile fetched:', response);
           if (response && response.email) {
             this.profileForm.patchValue({
               email: response.email,
               fullName: response.full_name,
               address1: response.address1,
               address2: response.address2,
-              city: response.city,
+              city: response.city.toLowerCase(),
               state: response.state,
               zipCode: response.zip_code,
               skills: response.skills,
@@ -115,13 +125,22 @@ export class ProfileComponent implements OnInit {
     if (this.profileForm.valid) {
       const profileData = {
         ...this.profileForm.getRawValue(),
-        email: this.profileForm.controls['email'].value, // Ensure email is included
-        availability: this.profileForm.controls['availability'].value // Already in mm-dd-yyyy format
+        email: this.profileForm.controls['email'].value, 
+        availability: this.profileForm.controls['availability'].value 
       };
   
       this.profileService.completeUserProfile(profileData).subscribe(
         (response) => {
           console.log('Profile completed successfully:', response);
+          localStorage.setItem('fullName', profileData.fullName);  // Store fullName directly
+          
+          // Optionally, update userProfile in local storage as well
+          const updatedProfile = {
+            ...profileData,
+            full_name: profileData.fullName,
+          };
+          localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+  
           this.successMessage = response.message || 'completed successfully!';
           this.errorMessage = '';
           this.warmingMessage = '';
@@ -182,9 +201,9 @@ removeDate(date: string): void {
 }
   
   
-  availableDateValidator(control: AbstractControl): ValidationErrors | null {
-    const selectedDate = control.value;
-    const isValid = this.availableDates.includes(selectedDate);
-    return isValid ? null : { unavailableDate: true };
-  }
+  // availableDateValidator(control: AbstractControl): ValidationErrors | null {
+  //   const selectedDate = control.value;
+  //   const isValid = this.availableDates.includes(selectedDate);
+  //   return isValid ? null : { unavailableDate: true };
+  // }
 }

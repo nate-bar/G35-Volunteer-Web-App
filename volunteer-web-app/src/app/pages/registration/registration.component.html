@@ -32,7 +32,7 @@
           [formControl]="email"
           maxlength="100"
         />
-        <mat-error *ngIf="isFieldInvalid(email) && email.touched">
+        <mat-error *ngIf="isFieldInvalid(email) && email.touched" style="margin-top: 1px;margin-bottom: 2px;  color: red;">
           <span *ngIf="email.errors?.['required']">Email is required.</span>
           <span *ngIf="email.errors?.['email']">Enter a valid email address.</span>
           <span *ngIf="email.errors?.['maxlength']">Email must be under 100 characters.</span>
@@ -49,7 +49,7 @@
           [formControl]="password"
           minlength="8"
         />
-        <mat-error *ngIf="isFieldInvalid(password) && password.touched">
+        <mat-error *ngIf="isFieldInvalid(password) && password.touched" style="margin-top: 1px;margin-bottom: 2px;  color: red;">
           <span *ngIf="password.errors?.['required']">Password is required.</span>
           <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long.</span>
         </mat-error>
@@ -59,11 +59,11 @@
       <div class="d-flex flex-column">
         <label class="form-label me-3" for="role">Role:</label>
         <select id="role" class="form-select" [formControl]="role">
-          <option value="">Select role</option>
+          <option value="" disabled>Select role</option>
           <option value="admin">Admin</option>
           <option value="user">User</option>
         </select>
-        <mat-error *ngIf="isFieldInvalid(role) && role.touched">
+        <mat-error *ngIf="isFieldInvalid(role) && role.touched" style="margin-top: 1px;  color: red;">
           <span *ngIf="role.errors?.['required']">Role is required.</span>
         </mat-error>
       </div>
@@ -73,11 +73,11 @@
         <input class="form-check-input me-2" type="checkbox" id="Remember" [checked]="true" />
         <label class="form-check-label" for="Remember">Remember me</label>
       </div>
-
+<br><br>
       <!-- Sign Up Button -->
       <div class="button-container">
-        <button type="button" class="cancel-button" (click)="onCancel()"><span><i class="bi bi-x-lg icon-cancel"></i></span>Cancel</button>
-        <button type="submit">Submit <span class="icon">➔</span></button>
+        <button  color="warn" type="button" class="cancel-button" (click)="onCancel()"><span><i class="bi bi-x-lg icon-cancel"></i></span> Cancel</button>
+        <button  color="accent"type="submit">Submit <span class="icon">➔</span></button>
       </div>
 
       <p class="white" style="margin-bottom: 20px;">

@@ -1,6 +1,11 @@
-<div class="container mt-2">
-  <h2 class="mb-4 text-center" style="color: white;"><strong>Volunteer Matching Form</strong></h2>
+<br>
+<br>
 
+<div class="container mt-2">
+  <br>
+  <h2 class="mb-4 text-center section-header" ><strong>Volunteer Matching Form</strong></h2>
+<br>
+<br>
   <!-- Alert Message -->
   <section *ngIf="alertMessage" class="alert alert-success text-center" >
     <span style="color: green;">{{ alertMessage }}</span>
@@ -58,10 +63,10 @@
         </select>
       </div>
     </div> -->
-    <br><br>
-
+<br>
+<br>
     <!-- Buttons -->
-    <div class="d-flex justify-content-center justify-content: space-around;" style="gap: 20px;background-image: initial">
+    <div class="d-flex justify-content-center justify-content: space-around; gap-4  " style="gap: 20px;background-image: initial">
       <button mat-raised-button  color="warn" (click)="onCancel()">Cancel</button>
       <button  mat-raised-button type="submit" color="primary">Match Volunteer</button>
       <button mat-raised-button color="accent" (click)="sendReminder()">Send Reminder to Assigned User</button>

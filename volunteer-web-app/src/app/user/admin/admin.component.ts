@@ -33,21 +33,20 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.getIsLoggedIn()) {
-      // First, check if the profile is in local storage
-      const storedProfile = localStorage.getItem('userProfile');
-      const fullName = localStorage.getItem('fullName');// to get fullname
-      
-      if (storedProfile) {
-        const profile = JSON.parse(storedProfile);
-        this.userName = profile.full_name;
-        console.log('Profile data loaded from localStorage:', profile);
-      }
+      // First, check if the fullName is in local storage
+      const fullName = localStorage.getItem('fullName');
       
       if (fullName) {
-       
         this.userName = fullName; // Assign the username from localStorage
-
         console.log('Username loaded from localStorage:', this.userName);
+      } else {
+        // If fullName is not available, check for profile data in localStorage
+        const storedProfile = localStorage.getItem('userProfile');
+        if (storedProfile) {
+          const profile = JSON.parse(storedProfile);
+          this.userName = profile.full_name;
+          console.log('Profile data loaded from localStorage:', profile);
+        }
       }
   
       // Subscribe to userProfile$ to react to any updates
@@ -65,7 +64,7 @@ export class AdminComponent implements OnInit {
       this.loading = false;
     }
   }
-
+  
   viewProfile(): void {
     const retrieveProfile = localStorage.getItem('userProfile');
     if(retrieveProfile){
