@@ -1,5 +1,5 @@
-<header>
-    <ul>
+<header >
+    <ul style="gap: 10px;">
         <!-- Always visible links -->
         <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><span><i class="bi bi-house-fill"></i></span> Home</a></li>
         <!-- <li><a routerLink="/volunteer-opportunities"><span><i class="bi bi-bag"></i></span> </a></li> -->
@@ -16,8 +16,14 @@
 
         </li> -->
         
-        <li *ngIf="authService.getIsLoggedIn() && userFullName && authService.getUserRole() === 'user'" class="whitecolor">
-             Hi, {{ userFullName }} 
+        <li *ngIf="authService.getIsLoggedIn() && userFullName && authService.getUserRole() === 'user'" class="yellowcolor" style="padding-left: 200px;">
+            <div class="user-info" >
+                
+                <span class="welcome-text">
+                   <i>Hi, {{ userFullName }}</i> 
+                </span>
+                
+            </div>
 
         </li>
         <!-- <span><i class="bi bi-person-circle"></i></span> -->

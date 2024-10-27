@@ -10,12 +10,12 @@ export class volunteerMatchingService {
 
   constructor(private http: HttpClient) {}
 
-  match(data: { selectedUser: string; selectedEvent: string; participation_hours: number; participation_status: string }): Observable<any> {
+  match(data: { selectedUser: string; selectedEvent: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/events/matchVolunteers`, {
       email: data.selectedUser,
-      event_id: data.selectedEvent,
-      participation_hours: data.participation_hours,
-      participation_status: data.participation_status
+      event_id: data.selectedEvent
+      // participation_hours: data.participation_hours,
+      // participation_status: data.participation_status
     });
   }
   

@@ -1,14 +1,18 @@
 /* Main content container to hold both image and form side by side */
+.form-control {
+  margin-bottom: 2px;
+}
+
 
 .content-container {
     display: flex;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
     border-radius: 10px; 
-    margin: 8rem; /* Margin around the container */
-    margin-top: 3rem; /* Adjust top margin */
-    padding: 0; /* Remove default padding */
-    overflow: hidden; /* Prevent overflow issues */
-    box-shadow: 0px 10px 0px rgba(0, 0, 0, 0.3); /* Increased shadow for more visibility */
+    margin: 8rem;
+    margin-top: 3rem; 
+    padding: 0;
+    overflow: hidden; 
+    box-shadow: 0px 10px 0px rgba(0, 0, 0, 0.3); 
 }
 
 
@@ -76,7 +80,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #000; /* Change to black for better visibility */
+    color: #000; 
   }
   
   .form-check input {
@@ -123,6 +127,10 @@
   .icon {
     display: inline-block;
     margin-left: 0.5rem;
+    transition: transform 0.2s ease-in-out;
+  }
+  .icon-cancel{
+    margin-right: 0.5rem;
     transition: transform 0.2s ease-in-out;
   }
   
