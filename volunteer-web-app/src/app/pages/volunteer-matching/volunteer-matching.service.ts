@@ -36,10 +36,11 @@ export class volunteerMatchingService {
     return this.http.post(`${this.apiUrl}/events/matched`, { email });
   }
 
-  // Send reminder to assigned users or all users
-sendReminder(event_id: string | null): Observable<any> {
-  // Convert event_id to a number
-  return this.http.post(`${this.apiUrl}/admin/sendReminder`, { event_id: Number(event_id) });
-}
+  sendReminder(event_id: string | null, user_email: string): Observable<any> {
+    const payload = { event_id: Number(event_id), user_email: user_email };
+    return this.http.post(`${this.apiUrl}/admin/sendReminder`, payload);
+  }
+  
+  
 
 }

@@ -622,49 +622,49 @@ def get_matched_events():
 
     return jsonify({'events': matched_events}), 200
 
-#send reminder notification
 @app.route('/api/admin/sendReminder', methods=['POST'])
 def send_reminder():
     data = request.json
     event_id = data.get('event_id')
-
+    user_email = data.get('user_email')
+    
     try:
         event_id = int(event_id)
     except (TypeError, ValueError):
         return jsonify({'error': 'Invalid event ID format'}), 400
 
-    if not event_id:
-        return jsonify({'error': 'Event ID is required'}), 400
+    if not event_id or not user_email:
+        return jsonify({'error': 'Event ID and User Email are required'}), 400
 
     try:
-        # Fetch the event by ID to get the event name
         event = events_collection.find_one({'id': event_id})
         if not event:
             return jsonify({'error': 'Event not found.'}), 404
 
         event_name = event.get('eventName', 'Unknown Event')
+        match = event_matching_collection.find_one({
+            'user_email': user_email,
+            'events.event.id': event_id
+        })
+        if not match:
+            return jsonify({'error': '{user_name} is not assigned to this event.'}), 404
 
-        # Send reminder only to users assigned to the event
-        matched_users = event_matching_collection.find({'events.event.id': event_id})
-        if not matched_users:
-            return jsonify({'error': 'No users assigned to this event.'}), 404
+        new_notification = {
+            'user_email': user_email,
+            'title': 'Event Reminder',
+            'message': f'Reminder: You are assigned to the event "{event_name}".',
+            'read': False,
+            'date': datetime.datetime.now().isoformat()
+        }
+        notifications_collection.insert_one(new_notification)
 
-        # Create notifications for the matched users
-        for match in matched_users:
-            user_email = match['user_email']
-            new_notification = {
-                'user_email': user_email,
-                'title': 'Event Reminder',
-                'message': f'Reminder: You are assigned to the event "{event_name}".',
-                'read': False,
-                'date': datetime.datetime.now().isoformat()
-            }
-            notifications_collection.insert_one(new_notification)
-
-        return jsonify({'message': 'Reminders sent successfully'}), 200
+        # Success response for the frontend to confirm successful reminder
+        return jsonify({'message': 'Reminder sent successfully to the selected user --> {user_name}'}), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
 
 # Get all volunteers with 'user' role
 @app.route('/api/volunteers', methods=['GET'])
