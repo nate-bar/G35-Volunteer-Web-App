@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef,ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -10,7 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [CommonModule, RouterModule,MatIconModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
   userEmail: string = '';
@@ -32,7 +33,8 @@ export class HeaderComponent implements OnInit {
         if (profile) {
           this.userEmail = profile.email;
           this.userFullName = profile.full_name;
-          console.log('User email in HeaderComponent:', this.userEmail);
+          this.cdRef.markForCheck();
+          // console.log('User email in HeaderComponent:', this.userEmail);
           console.log('User full name in HeaderComponent:', this.userFullName);
         } else {
           // If profile is not available, fetch it using the stored email
@@ -42,6 +44,7 @@ export class HeaderComponent implements OnInit {
               if (userProfile) {
                 this.userEmail = userProfile.email;
                 this.userFullName = userProfile.full_name;
+                this.cdRef.markForCheck();
               }
             });
           }

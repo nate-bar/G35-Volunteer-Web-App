@@ -101,19 +101,15 @@
       <div class="row mb-2 d-flex align-items-center">
         <div class="col">
           <label class="form-label me-2" for="state" style="min-width: 100px">State:</label>
-          <select
-            class="form-control input-sm"
-            id="state"
-            formControlName="state"
-            required
-          >
-            <option *ngFor="let state of states" [value]="state">
-              {{ state }}
+          <select class="form-control input-sm" id="state" formControlName="state" required>
+            <option *ngFor="let state of states" [value]="state.code">
+              {{ state.name }}
             </option>
           </select>
           <mat-error *ngIf="profileForm.controls['state'].invalid && profileForm.controls['state'].touched">
             State selection is required.
           </mat-error>
+          
         </div>
       </div>
   

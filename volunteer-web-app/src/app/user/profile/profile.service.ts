@@ -17,5 +17,10 @@ export class ProfileService {
   // Method to update user profile
   completeUserProfile(profileData: any): Observable<any> {
     return this.http.post(`${this.profileUrl}`, profileData);
+    
   }
+  getStateCodes(): Observable<any> {
+    return this.http.get('http://127.0.0.1:5000/api/states');  
+  }
+  
 }

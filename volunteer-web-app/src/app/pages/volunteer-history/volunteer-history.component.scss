@@ -6,54 +6,120 @@ div{
     
 }
 
+.section-header {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 20px;
+  border-bottom: 2px solid white;
+  padding-bottom: 10px;
+}
+mat-expansion-panel {
+  background: rgba(255, 255, 255, 0.1); 
+  border: 1px solid #1abc9c; 
+  border-radius: 8px;
+  margin-bottom: 15px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+}
+
+mat-panel-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+}
+
+mat-panel-description {
+  font-size: 0.9rem;
+  color: #ddd; 
+}
+
+mat-expansion-panel-header {
+  background: #212529;
+  color: white;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+  .user-email {
+    color: red;
+    font-size: 0.9rem;
+    margin-left: 5px;
+  }
+}
+
+
+mat-expansion-panel-header:hover {
+  background-color: #343a40;
+  cursor: pointer;
+}
+
+
+.blackb {
+  background-color: whitesmoke;
+  color:rgb(68, 67, 67) ;
+  
+}
+
+.blackb:hover {
+  border-color:black;
+  
+}
+.blackb:focus {
+  border-color: blue; 
+  background-color: lightgray; 
+}
+
 .styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 1rem;
-    text-align: left;
-  }
-  
-  .styled-table thead tr {
-    background-color: #343a40;
-    color: #ffffff;
-    text-align: center;
-  }
-  
-  .styled-table th, 
-  .styled-table td {
-    padding: 12px 15px;
-  }
-  
-  .styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-  }
-  
-  .styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-  }
-  
-  .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #1abc9c;
-  }
-  
-  .styled-table tbody tr:hover {
-    background-color: #f1f1f1;
-    cursor: pointer;
-  }
-  
-  .styled-table th {
-    font-weight: bold;
-    background: #212529;
-    color: white !important;
-  }
-  
-  .ngb-pagination {
-    margin-top: 20px;
-  }
-  
-  .d-flex {
-    display: flex;
-    justify-content: center;
-  }
-  
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 1rem;
+  text-align: left;
+  background-color: white;
+}
+
+
+.styled-table thead tr {
+  background-color: #343a40;
+  color: #ffffff;
+  text-align: center;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
+
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #1abc9c;
+}
+
+
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+
+.styled-table th {
+  font-weight: bold;
+  background: #212529;
+  color: white !important;
+}
+
+
+.ngb-pagination {
+  margin-top: 20px;
+}
+
+
+.d-flex {
+  display: flex;
+  justify-content: center;
+}

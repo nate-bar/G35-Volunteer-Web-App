@@ -155,8 +155,30 @@ section.alert-danger {
 }
 
 / Apply hover directly to the icon */
+.blackb {
+  background-color: whitesmoke;
+  color:rgb(68, 67, 67) ;
+  
+}
+
+.blackb:hover {
+  border-color:black;
+  
+}
+.blackb:focus {
+  border-color: blue; 
+  background-color: lightgray; 
+}
+
 .hover-effect:hover {
   transform: scale(1.2);
   color: gray; 
   transition: transform 0.3s ease, color 0.3s ease; 
+}
+.section-header {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 20px;
+  border-bottom: 2px solid white;
+  padding-bottom: 10px;
 }
