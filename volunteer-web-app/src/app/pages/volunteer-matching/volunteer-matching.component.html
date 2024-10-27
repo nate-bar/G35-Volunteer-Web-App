@@ -73,9 +73,15 @@
   </form>
   <br>
 <br>
-  <div class="d-flex justify-content-center justify-content: space-around; gap-4  " style="gap: 20px;background-image: initial">
-  <button mat-raised-button color="accent" (click)="sendReminder()">Send Reminder to Assigned User</button>
-  </div>
+<div class="d-flex justify-content-center"  style="gap: 20px;background-image: initial">
+  <button mat-raised-button color="accent" (click)="sendReminder()" style="display: flex; align-items: center;gap: 10px;background-image: initial">
+    <span>Send Reminder to Assigned User</span>
+    <span style="gap: 5px;margin-left: 3px;">   <mat-icon style="vertical-align: middle;">   send</mat-icon></span>
+  </button>
+</div>
+
+
+
   <!-- Reminder Buttons
   <div class="row mt-4 d-flex justify-content-center" style="background-image: initial">
     

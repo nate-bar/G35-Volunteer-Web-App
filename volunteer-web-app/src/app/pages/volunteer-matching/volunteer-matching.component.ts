@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 interface Event {
   id: number;
@@ -22,7 +23,7 @@ interface User {
 @Component({
   selector: 'app-volunteer-matching',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, ReactiveFormsModule, MatButtonModule ], 
+  imports: [CommonModule, MatSelectModule, ReactiveFormsModule, MatButtonModule ,MatIcon], 
   templateUrl: './volunteer-matching.component.html',
   styleUrls: ['./volunteer-matching.component.scss']
 })
