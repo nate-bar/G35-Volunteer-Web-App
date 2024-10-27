@@ -373,10 +373,31 @@ def complete_profile():
 def get_users():
     return jsonify(users_db)
 
-# Get all user event matchings
+def convert_objectid_to_str(data):
+    if isinstance(data, dict):
+        return {key: convert_objectid_to_str(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [convert_objectid_to_str(item) for item in data]
+    elif isinstance(data, ObjectId):
+        return str(data)
+    else:
+        return data
+
 @app.route('/api/admin/eventUserMatchings', methods=['GET'])
 def get_user_event_matchings():
-    return jsonify(user_event_matching_db)
+    matchings = []
+    user_event_matchings = event_matching_collection.find()
+
+    for matching in user_event_matchings:
+        user_profile = profiles_collection.find_one({'email': matching.get('user_email')}, {'_id': 0})
+        if user_profile:
+            matching['full_name'] = user_profile.get('full_name', 'Unknown User')
+        matchings.append(matching)
+
+    # Convert any ObjectId in the matchings to strings
+    matchings = convert_objectid_to_str(matchings)
+
+    return jsonify(matchings), 200
 
 # Return user_event_matching but with full_name instead of user_email
 @app.route('/api/admin/eventUserMatchingsWithName', methods=['GET'])
