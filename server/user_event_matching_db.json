@@ -77,5 +77,39 @@
                 "participation_status": "Pending"
             }
         ]
+    },
+    {
+        "user_email": "user3@gmail.com",
+        "events": [
+            {
+                "event": {
+                    "eventName": "dngfdgf",
+                    "eventDescription": "lkdskdsgkjrd",
+                    "location": "houston",
+                    "requiredSkills": [
+                        "Teamwork",
+                        "Environmental Awareness",
+                        "Running"
+                    ],
+                    "urgency": "Medium",
+                    "eventDate": "2024-10-31T05:00:00.000Z",
+                    "id": 29
+                }
+            },
+            {
+                "event": {
+                    "id": 34,
+                    "eventName": "daniel 6",
+                    "eventDescription": "tueryr dhfdkwo testingoi",
+                    "location": "houston",
+                    "requiredSkills": [
+                        "Time Management"
+                    ],
+                    "urgency": "Low",
+                    "eventDate": "2024-10-26T05:00:00.000Z",
+                    "eventImage": "http://127.0.0.1:5000/static/uploads/kai3.png"
+                }
+            }
+        ]
     }
 ]

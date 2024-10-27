@@ -75,7 +75,8 @@ export const routes: Routes = [
     },
     {
         path: 'userEvent',
-        component: UsersEventsComponent
+        component: UsersEventsComponent,
+        canActivate: [authGuard]
     },
     {
         path: '**',

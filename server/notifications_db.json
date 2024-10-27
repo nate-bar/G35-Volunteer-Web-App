@@ -1,101 +1,5 @@
 [
     {
-        "id": 1,
-        "user_email": "user@gmail.com",
-        "title": "Volunteer Assignment",
-        "message": "You have been assigned to the event dngfdgf.",
-        "read": false,
-        "date": "2024-10-17T20:27:01.145645"
-    },
-    {
-        "id": 14,
-        "user_email": "user@gmail.com",
-        "title": "Volunteer Assignment",
-        "message": "You have been assigned to the event group 5.",
-        "read": false,
-        "date": "2024-10-17T20:44:50.712353"
-    },
-    {
-        "id": 15,
-        "user_email": "user@gmail.com",
-        "title": "Volunteer Assignment",
-        "message": "You have been assigned to the event daniel 6.",
-        "read": false,
-        "date": "2024-10-17T20:45:14.340371"
-    },
-    {
-        "id": 16,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"daniel 6\".",
-        "read": false,
-        "date": "2024-10-17T20:45:25.511160"
-    },
-    {
-        "id": 17,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"daniel 6\".",
-        "read": false,
-        "date": "2024-10-17T20:45:26.800143"
-    },
-    {
-        "id": 6,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"daniel 6\".",
-        "read": false,
-        "date": "2024-10-17T20:46:20.478241"
-    },
-    {
-        "id": 7,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"dngfdgf\".",
-        "read": false,
-        "date": "2024-10-17T20:49:27.236908"
-    },
-    {
-        "id": 8,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"dngfdgf\".",
-        "read": false,
-        "date": "2024-10-17T20:49:34.135587"
-    },
-    {
-        "id": 9,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"dngfdgf\".",
-        "read": false,
-        "date": "2024-10-17T20:49:35.881156"
-    },
-    {
-        "id": 10,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"dngfdgf\".",
-        "read": false,
-        "date": "2024-10-17T20:49:44.917030"
-    },
-    {
-        "id": 11,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"dngfdgf\".",
-        "read": false,
-        "date": "2024-10-17T20:49:52.055147"
-    },
-    {
-        "id": 12,
-        "user_email": "user@gmail.com",
-        "title": "Event Reminder",
-        "message": "Reminder: You are assigned to the event \"group 5\".",
-        "read": false,
-        "date": "2024-10-17T20:50:05.980199"
-    },
-    {
         "id": 13,
         "user_email": "user2@gmail.com",
         "title": "Event Reminder",
@@ -104,14 +8,6 @@
         "date": "2024-10-17T20:50:05.980199"
     },
     {
-        "id": 14,
-        "user_email": "user@gmail.com",
-        "title": "Event Updated",
-        "message": "The event \"group 5\" has been updated.",
-        "read": false,
-        "date": "2024-10-17T20:51:12.294572"
-    },
-    {
         "id": 15,
         "user_email": "user2@gmail.com",
         "title": "Event Updated",
@@ -120,11 +16,35 @@
         "date": "2024-10-17T20:51:12.294572"
     },
     {
-        "id": 16,
-        "user_email": "user@gmail.com",
+        "id": 18,
+        "user_email": "user3@gmail.com",
+        "title": "Volunteer Assignment",
+        "message": "You have been assigned to the event dngfdgf.",
+        "read": false,
+        "date": "2024-10-18T14:18:00.613483"
+    },
+    {
+        "id": 20,
+        "user_email": "user3@gmail.com",
         "title": "Event Reminder",
         "message": "Reminder: You are assigned to the event \"dngfdgf\".",
         "read": false,
-        "date": "2024-10-17T21:31:24.949457"
+        "date": "2024-10-18T14:18:23.197527"
+    },
+    {
+        "id": 21,
+        "user_email": "user3@gmail.com",
+        "title": "Volunteer Assignment",
+        "message": "You have been assigned to the event daniel 6.",
+        "read": false,
+        "date": "2024-10-18T14:20:10.425238"
+    },
+    {
+        "id": 23,
+        "user_email": "user3@gmail.com",
+        "title": "Event Reminder",
+        "message": "Reminder: You are assigned to the event \"daniel 6\".",
+        "read": false,
+        "date": "2024-10-18T14:20:24.194983"
     }
 ]

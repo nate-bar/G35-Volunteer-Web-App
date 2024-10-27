@@ -53,12 +53,12 @@
           <i class="fas fa-calendar-plus menu-icon"></i> Events
         </a>
         <ul class="submenu" [class.open]="isEventsMenuOpen">
-          <li [class.active]="selectedLink === 'newEvent'" matRipple [matRippleColor]="'rgba(255, 255, 255, 0.5)'"
+          <!-- <li [class.active]="selectedLink === 'newEvent'" matRipple [matRippleColor]="'rgba(255, 255, 255, 0.5)'"
           [matRippleCentered]="true">
             <a routerLink="newEvent" routerLinkActive="active-link" (click)="selectLink('newEvent', false)" >
               <i class="fas fa-calendar-plus menu-icon"></i> Create Event
             </a>
-          </li>
+          </li> -->
           <li [class.active]="selectedLink === 'allEvents'" matRipple [matRippleColor]="'rgba(255, 255, 255, 0.5)'"
           [matRippleCentered]="true">
             <a routerLink="events" routerLinkActive="active-link" (click)="selectLink('allEvents', false)" >
@@ -71,7 +71,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="admin-header">
+    <div class="admin-header ">
       <h2 class="dashboard-title">
         <span class="dashboard-text">DASHBOARD</span>
         <div class="user-menu">
