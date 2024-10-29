@@ -15,4 +15,3 @@ class Config:
     SECURITY_PASSWORD_SALT = 'some_random_salt'
 
     MONGO_URI = 'mongodb://localhost:27017/volunteer_management'
-    
