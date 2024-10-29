@@ -647,7 +647,7 @@ def send_reminder():
             'events.event.id': event_id
         })
         if not match:
-            return jsonify({'error': '{user_name} is not assigned to this event.'}), 404
+            return jsonify({'error': f'{user_email} is not assigned to this event.'}), 404
 
         new_notification = {
             'user_email': user_email,
@@ -659,10 +659,11 @@ def send_reminder():
         notifications_collection.insert_one(new_notification)
 
         # Success response for the frontend to confirm successful reminder
-        return jsonify({'message': 'Reminder sent successfully to the selected user --> {user_name}'}), 200
+        return jsonify({'message': f'Reminder sent successfully to {user_email}'}), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 
 
