@@ -100,7 +100,7 @@ export class ProfileComponent implements OnInit {
               fullName: response.full_name,
               address1: response.address1,
               address2: response.address2,
-              city: response.city.toLowerCase(),
+              city: response.city ? response.city.toLowerCase() : '',
               state: response.state,
               zipCode: response.zip_code,
               skills: response.skills,
