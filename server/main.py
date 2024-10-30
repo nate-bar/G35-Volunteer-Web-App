@@ -4,7 +4,6 @@ from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 import datetime
 import re
-
 import datetime
 
 from config import Config  
