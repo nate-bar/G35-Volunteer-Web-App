@@ -43,6 +43,7 @@ export class VolunteerHistoryComponent implements OnInit {
   searchControl = new FormControl(''); 
   page = 1;
   pageSize = 3;
+  selectedFormat: string = 'csv';
 
   constructor(private volHistService: volunteerHistoryService) { }
 
@@ -87,6 +88,13 @@ export class VolunteerHistoryComponent implements OnInit {
         });
         return fullNameMatch || emailMatch || eventMatch;
       });
+    }
+  }
+  downloadReport() {
+    if (this.selectedFormat) {
+      this.volHistService.downloadReport(this.selectedFormat);
+    } else {
+      alert("Please select a report format to download.");
     }
   }
 }
