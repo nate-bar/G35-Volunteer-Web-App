@@ -879,11 +879,11 @@ def test_get_notifications(client):
     assert notifications[0]['title'] == 'Notification 1'
     assert notifications[1]['title'] == 'Notification 2'
 
-# Test for the /api/volunteers endpoint
+
 def test_get_volunteers(client):
     profiles_collection = app.config['mongo'].db.user_profiles
 
-    # Insert sample volunteers with 'user' role
+    
     profiles_collection.insert_one({
         "email": "volunteer1@example.com",
         "role": "user",
@@ -895,13 +895,67 @@ def test_get_volunteers(client):
         "full_name": "Volunteer Two"
     })
 
-    # Send GET request to the endpoint
+   
     response = client.get('/api/volunteers')
     assert response.status_code == 200
 
-    # Verify response data
+    
     volunteers = response.json
-    assert len(volunteers) >= 2  # Check that volunteers were found
+    assert len(volunteers) >= 2  
     assert all("role" in volunteer and volunteer["role"] == "user" for volunteer in volunteers)
     assert any(volunteer["full_name"] == "Volunteer One" for volunteer in volunteers)
     assert any(volunteer["full_name"] == "Volunteer Two" for volunteer in volunteers)
+
+
+def test_generate_volunteer_history_csv(client, mock_mongo_collections):
+    event_matching_collection = app.config['mongo'].db.user_event_matchings
+    event_matching_collection.insert_one({
+        "user_email": "volunteer1@example.com",
+        "events": [
+            {
+                "event": {
+                    "eventName": "Community Service",
+                    "eventDescription": "Helping the community",
+                    "location": "Local Park",
+                    "requiredSkills": ["Communication", "Teamwork"],
+                    "urgency": "Medium",
+                    "eventDate": "2024-11-01T00:00:00"
+                }
+            }
+        ]
+    })
+
+  
+    response = client.get('/api/report/volunteer-history/csv')
+    assert response.status_code == 200
+    assert "text/csv" in response.headers["Content-Type"]  
+    assert b"Volunteer Email" in response.data
+    assert b"volunteer1@example.com" in response.data
+    assert b"Community Service" in response.data
+    assert b"Helping the community" in response.data
+
+def test_generate_volunteer_history_pdf(client, mock_mongo_collections):
+    event_matching_collection = app.config['mongo'].db.user_event_matchings
+    event_matching_collection.insert_one({
+        "user_email": "volunteer2@example.com",
+        "events": [
+            {
+                "event": {
+                    "eventName": "Environmental Cleanup",
+                    "eventDescription": "Beach cleaning",
+                    "location": "Local Beach",
+                    "requiredSkills": ["Cleaning", "Awareness"],
+                    "urgency": "High",
+                    "eventDate": "2024-12-10T00:00:00"
+                }
+            }
+        ]
+    })
+
+    # Call the PDF report endpoint
+    response = client.get('/api/report/volunteer-history/pdf')
+
+    # Check response
+    assert response.status_code == 200
+    assert "application/pdf" in response.headers["Content-Type"]  
+    assert response.data.startswith(b"%PDF")  

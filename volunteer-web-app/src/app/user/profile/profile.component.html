@@ -175,6 +175,8 @@
               <mat-form-field appearance="fill" class="full-width">
                 <input
                   matInput
+                  [min]="minDate"
+                  
                   [matDatepicker]="picker"
                   placeholder="Select a date"
                   (dateInput)="addDate($event.value)"

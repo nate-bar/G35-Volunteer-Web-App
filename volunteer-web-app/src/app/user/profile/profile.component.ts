@@ -42,6 +42,7 @@ export class ProfileComponent implements OnInit {
   errorMessage: string = '';
   warmingMessage: string = '';
   states: any[] = [];
+  minDate: Date | undefined;
   // states = ['CA', 'NY', 'TX', 'FL', 'PA']; // state codes
   skillOptions = [
     { value: 'Communication', label: 'Communication' },
@@ -79,6 +80,8 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let today=new Date();
+    this.minDate = today;
     let email = this.route.snapshot.queryParamMap.get('email') || this.authService.getUserEmail();
     
     this.profileService.getStateCodes().subscribe(
