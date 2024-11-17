@@ -1,18 +1,21 @@
-from flask import Flask, jsonify, request, url_for, render_template_string
+from flask import Flask, jsonify, request, url_for, render_template_string,send_file, make_response
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 import datetime
 import re
 import datetime
-
-from config import Config  
+from config import Config
 from threading import Thread
 from werkzeug.utils import secure_filename
 import os,json
+from io import BytesIO,StringIO
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from flask_pymongo import PyMongo
 from bson import ObjectId
+from fpdf import FPDF
+import pandas as pd
+from tempfile import NamedTemporaryFile
 
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
@@ -679,7 +682,37 @@ def get_states():
     return jsonify(states), 200
 
 
+@app.route('/api/report/volunteer-history/csv', methods=['GET'])
+def generate_volunteer_history_csv():
+    volunteer_history = list(event_matching_collection.find()) 
+    csv_rows = []
 
+    for history in volunteer_history:
+        user_email = history.get('user_email')
+        events = history.get('events', [])
+        csv_rows.append({'Field': 'Volunteer Email', 'Value': user_email})
+        csv_rows.append({})
+        for event_number, event_data in enumerate(events, start=1):
+            event = event_data.get("event", {})
+            csv_rows.append({'Field': f'Event #{event_number}', 'Value': ''})
+            csv_rows.append({'Field': '-----------------', 'Value': '-----------------'})
+            csv_rows.append({'Field': 'Event Name:', 'Value': event.get("eventName", "")})
+            csv_rows.append({'Field': 'Description:', 'Value': event.get("eventDescription", "")})
+            csv_rows.append({'Field': 'Location:', 'Value': event.get("location", "")})
+            csv_rows.append({'Field': 'Skills:', 'Value': ", ".join(event.get("requiredSkills", []))})
+            csv_rows.append({'Field': 'Urgency:', 'Value': event.get("urgency", "")})
+            csv_rows.append({'Field': 'Date:', 'Value': event.get("eventDate", "").split("T")[0]})
+            csv_rows.append({})
+
+        csv_rows.append({'Field': '====================', 'Value': '===================='})
+        csv_rows.append({}) 
+
+    df = pd.DataFrame(csv_rows)
+    csv_buffer = StringIO()
+    df.to_csv(csv_buffer, index=False)
+    csv_buffer.seek(0)
+    
+    return send_file(BytesIO(csv_buffer.getvalue().encode()), as_attachment=True, download_name="volunteer_history.csv", mimetype='text/csv')
 
 
 if __name__ == '__main__':
