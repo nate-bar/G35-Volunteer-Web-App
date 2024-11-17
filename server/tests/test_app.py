@@ -959,3 +959,95 @@ def test_generate_volunteer_history_pdf(client, mock_mongo_collections):
     assert response.status_code == 200
     assert "application/pdf" in response.headers["Content-Type"]  
     assert response.data.startswith(b"%PDF")  
+def test_generate_event_details_with_volunteers_csv(client, mock_mongo_collections):
+    events_collection = app.config['mongo'].db.events
+    event_matching_collection = app.config['mongo'].db.user_event_matchings
+
+    # Insert sample events
+    events_collection.insert_many([
+        {
+            "id": 1,
+            "eventName": "Community Cleanup",
+            "eventDescription": "Clean the park",
+            "location": "City Park",
+            "urgency": "High",
+            "eventDate": "2024-11-20"
+        },
+        {
+            "id": 2,
+            "eventName": "Beach Cleanup",
+            "eventDescription": "Clean the beach",
+            "location": "Beach",
+            "urgency": "Medium",
+            "eventDate": "2024-11-21"
+        }
+    ])
+
+   
+    event_matching_collection.insert_many([
+        {
+            "user_email": "user1@example.com",
+            "events": [{"event": {"id": 1}}]
+        },
+        {
+            "user_email": "user2@example.com",
+            "events": [{"event": {"id": 2}}]
+        }
+    ])
+
+    # Call the CSV report endpoint
+    response = client.get('/api/report/event-details/csv')
+
+    # Assertions
+    assert response.status_code == 200
+    assert "text/csv" in response.headers["Content-Type"]
+    csv_data = response.data.decode('utf-8')
+    assert "Community Cleanup" in csv_data
+    assert "user1@example.com" in csv_data
+    assert "Beach Cleanup" in csv_data
+    assert "user2@example.com" in csv_data
+
+
+def test_generate_event_details_with_volunteers_pdf(client, mock_mongo_collections):
+    events_collection = app.config['mongo'].db.events
+    event_matching_collection = app.config['mongo'].db.user_event_matchings
+
+
+    events_collection.insert_many([
+        {
+            "id": 1,
+            "eventName": "Community Cleanup",
+            "eventDescription": "Clean the park",
+            "location": "City Park",
+            "urgency": "High",
+            "eventDate": "2024-11-20"
+        },
+        {
+            "id": 2,
+            "eventName": "Beach Cleanup",
+            "eventDescription": "Clean the beach",
+            "location": "Beach",
+            "urgency": "Medium",
+            "eventDate": "2024-11-21"
+        }
+    ])
+
+   
+    event_matching_collection.insert_many([
+        {
+            "user_email": "user1@example.com",
+            "events": [{"event": {"id": 1}}]
+        },
+        {
+            "user_email": "user2@example.com",
+            "events": [{"event": {"id": 2}}]
+        }
+    ])
+
+    # Call the PDF report endpoint
+    response = client.get('/api/report/event-details/pdf')
+
+    # Assertions
+    assert response.status_code == 200
+    assert "application/pdf" in response.headers["Content-Type"]
+    assert response.data.startswith(b"%PDF")

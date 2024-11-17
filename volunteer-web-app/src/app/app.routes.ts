@@ -33,6 +33,11 @@ export const routes: Routes = [
         component: AdminComponent,
         canActivate: [authGuard],
         children: [
+           
+            {
+                path: 'home', 
+                component: AdminComponent 
+            },
             {
                 path: 'volunteerHistory', 
                 component: VolunteerHistoryComponent 

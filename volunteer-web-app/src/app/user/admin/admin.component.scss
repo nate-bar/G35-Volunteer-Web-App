@@ -243,4 +243,30 @@
   }
   
   
+  .report-section {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    margin-top: 20px; 
+  }
+  
+  .report-section h1 {
+    margin-bottom: 16px; 
+    text-align: center; 
+    font-size: 24px; 
+  }
+  
+  .report-buttons {
+    display: flex;
+    gap: 10px; 
+  }
+  
+  .graph-container {
+    width: 80%;
+    max-width: 600px;
+    height: 400px; 
+    margin: 20px auto;
+    background-color: white;
+}
+
   

@@ -754,5 +754,114 @@ def generate_volunteer_history_pdf():
         pdf.output(temp_pdf_file_path)
     return send_file(temp_pdf_file_path, as_attachment=True, download_name="volunteer_history.pdf", mimetype='application/pdf')
 
+@app.route('/api/report/event-details/csv', methods=['GET'])
+def generate_event_details_with_volunteers_csv():
+    events = list(events_collection.find({}, {'_id': 0}))
+    event_users_map = {}
+
+    # Map users assigned to each event
+    matchings = list(event_matching_collection.find())
+    for match in matchings:
+        for event_data in match.get('events', []):
+            event_id = event_data.get('event', {}).get('id')
+            if event_id:
+                user_email = match.get('user_email')
+                if event_id not in event_users_map:
+                    event_users_map[event_id] = []
+                event_users_map[event_id].append(user_email)
+
+    csv_rows = []
+    for event in events:
+        event_id = event.get('id')
+        assigned_users = event_users_map.get(event_id, [])
+        csv_rows.append({
+            'Event Name': event.get('eventName', ''),
+            'Description': event.get('eventDescription', ''),
+            'Location': event.get('location', ''),
+            'Urgency': event.get('urgency', ''),
+            'Date': event.get('eventDate', ''),
+            'Assigned Users': ', '.join(assigned_users) if assigned_users else 'None'
+        })
+
+    df = pd.DataFrame(csv_rows)
+    csv_buffer = StringIO()
+    df.to_csv(csv_buffer, index=False)
+    csv_buffer.seek(0)
+
+    return send_file(
+        BytesIO(csv_buffer.getvalue().encode()),
+        as_attachment=True,
+        download_name="event_details_with_volunteers.csv",
+        mimetype='text/csv'
+    )
+
+@app.route('/api/report/event-details/pdf', methods=['GET'])
+def generate_event_details_with_volunteers_pdf():
+    events = list(events_collection.find({}, {'_id': 0}))
+    event_users_map = {}
+
+    # Map users assigned to each event
+    matchings = list(event_matching_collection.find())
+    for match in matchings:
+        for event_data in match.get('events', []):
+            event_id = event_data.get('event', {}).get('id')
+            if event_id:
+                user_email = match.get('user_email')
+                if event_id not in event_users_map:
+                    event_users_map[event_id] = []
+                event_users_map[event_id].append(user_email)
+
+    pdf = FPDF()
+    pdf.add_page()
+    
+    # Title Section
+    pdf.set_font("Arial", style="B", size=16)
+    pdf.cell(0, 10, txt="Event Details with Volunteer Assignments", ln=True, align="C")
+    pdf.ln(10)
+
+    for event in events:
+        event_id = event.get('id')
+        assigned_users = event_users_map.get(event_id, [])
+
+        # Add event details
+        pdf.set_fill_color(200, 220, 255)  # Light blue background for labels
+        pdf.set_font("Arial", style="B", size=12)
+        pdf.cell(60, 10, txt="Field", border=1, fill=True, align="C")
+        pdf.cell(130, 10, txt="Details", border=1, fill=True, align="C")
+        pdf.ln(10)
+
+        # Add data rows
+        pdf.set_font("Arial", size=11)
+        pdf.set_fill_color(245, 245, 245)  # Alternate row color: light gray
+        rows = [
+            ("Event Name", event.get('eventName', '')),
+            ("Description", event.get('eventDescription', '')),
+            ("Location", event.get('location', '')),
+            ("Urgency", event.get('urgency', '')),
+            ("Date", event.get('eventDate', '')),
+            ("Assigned Users", ", ".join(assigned_users) if assigned_users else "None"),
+        ]
+        for i, (label, value) in enumerate(rows):
+            fill = i % 2 == 0  # Alternate row color
+            pdf.cell(60, 10, txt=label, border=1, fill=fill, align="L")
+            pdf.cell(130, 10, txt=value, border=1, fill=fill, align="L")
+            pdf.ln(10)
+
+        pdf.ln(5)  # Space between events
+
+    # Save and send the PDF
+    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf_file:
+        temp_pdf_file_path = temp_pdf_file.name
+        pdf.output(temp_pdf_file_path)
+
+    return send_file(
+        temp_pdf_file_path,
+        as_attachment=True,
+        download_name="event_details_with_volunteers.pdf",
+        mimetype='application/pdf'
+    )
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
