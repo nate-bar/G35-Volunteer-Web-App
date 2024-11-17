@@ -1,11 +1,11 @@
-from flask import Flask, jsonify, request, url_for, render_template_string,send_file, make_response
+from flask import Flask, jsonify, request, url_for, render_template_string,send_file,make_response
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 import datetime
 import re
 import datetime
-from config import Config
+from config import Config  
 from threading import Thread
 from werkzeug.utils import secure_filename
 import os,json
@@ -187,9 +187,6 @@ def confirm_email(token):
 
     Thread(target=send_async_email, args=(app, msg)).start()
     return jsonify({'message': 'Email confirmed. Registration successful.'}), 200
-
-
-
 
 # Get Profile Endpoint
 @app.route('/api/profile', methods=['GET'])
@@ -681,7 +678,6 @@ def get_states():
     states = list(states_collection.find({}, {'_id': 0})) 
     return jsonify(states), 200
 
-
 @app.route('/api/report/volunteer-history/csv', methods=['GET'])
 def generate_volunteer_history_csv():
     volunteer_history = list(event_matching_collection.find()) 
@@ -711,9 +707,52 @@ def generate_volunteer_history_csv():
     csv_buffer = StringIO()
     df.to_csv(csv_buffer, index=False)
     csv_buffer.seek(0)
-    
     return send_file(BytesIO(csv_buffer.getvalue().encode()), as_attachment=True, download_name="volunteer_history.csv", mimetype='text/csv')
 
+@app.route('/api/report/volunteer-history/pdf', methods=['GET'])
+def generate_volunteer_history_pdf():
+    volunteer_history = list(event_matching_collection.find())
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(0, 10, txt="Volunteer Participation History Report", ln=True, align="C")
+    pdf.ln(10)
+    for history in volunteer_history:
+        pdf.set_font("Arial", "B", size=12)
+        pdf.cell(0, 10, txt=f"Volunteer Email: {history.get('user_email')}", ln=True)
+        pdf.set_font("Arial", size=11)
+        pdf.ln(5)
+        pdf.set_fill_color(180, 200, 230)  
+        pdf.cell(50, 10, "Label", border=1, fill=True)
+        pdf.cell(140, 10, "Details", border=1, fill=True)
+        pdf.ln(10)
+        for index, event_data in enumerate(history.get("events", [])):
+            event = event_data.get("event", {})
+            row_fill = (245, 245, 245) if index % 2 == 0 else (255, 255, 255)
+            pdf.set_fill_color(*row_fill)
+            pdf.cell(50, 10, "Event Name:", border=1, fill=True)
+            pdf.cell(140, 10, txt=event.get("eventName", ""), border=1, fill=True, ln=True)
+            pdf.cell(50, 10, "Description:", border=1, fill=True)
+            pdf.cell(140, 10, txt=event.get("eventDescription", ""), border=1, fill=True, ln=True)
+            pdf.cell(50, 10, "Location:", border=1, fill=True)
+            pdf.cell(140, 10, txt=event.get("location", ""), border=1, fill=True, ln=True)
+            pdf.cell(50, 10, "Skills:", border=1, fill=True)
+            pdf.cell(140, 10, txt=", ".join(event.get("requiredSkills", [])), border=1, fill=True, ln=True)
+            pdf.cell(50, 10, "Urgency:", border=1, fill=True)
+            pdf.cell(140, 10, txt=event.get("urgency", ""), border=1, fill=True, ln=True)
+            pdf.cell(50, 10, "Date:", border=1, fill=True)
+            pdf.cell(140, 10, txt=event.get("eventDate", "").split("T")[0], border=1, fill=True, ln=True)
+            pdf.ln(5)
+
+        pdf.set_draw_color(0, 0, 0) 
+        pdf.line(10, pdf.get_y(), 200, pdf.get_y())  
+        pdf.ln(10)
+
+    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf_file:
+        temp_pdf_file_path = temp_pdf_file.name
+        pdf.output(temp_pdf_file_path)
+    return send_file(temp_pdf_file_path, as_attachment=True, download_name="volunteer_history.pdf", mimetype='application/pdf')
 
 if __name__ == '__main__':
     app.run(debug=True)

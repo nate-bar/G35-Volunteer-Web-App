@@ -7,7 +7,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 interface Event {
   eventDate: string;
   eventDescription: string;
@@ -33,7 +34,7 @@ interface VolunteerHistory {
 @Component({
   selector: 'app-volunteer-history',
   standalone: true,
-  imports: [NgbPaginationModule, ReactiveFormsModule, CommonModule, MatExpansionModule, MatTableModule, MatIcon,MatProgressBarModule], 
+  imports: [NgbPaginationModule, ReactiveFormsModule, CommonModule, MatExpansionModule, MatTableModule, MatIcon,MatProgressBarModule,FormsModule,MatButtonModule], 
   templateUrl: './volunteer-history.component.html',
   styleUrls: ['./volunteer-history.component.scss']
 })
@@ -90,6 +91,7 @@ export class VolunteerHistoryComponent implements OnInit {
       });
     }
   }
+
   downloadReport() {
     if (this.selectedFormat) {
       this.volHistService.downloadReport(this.selectedFormat);
