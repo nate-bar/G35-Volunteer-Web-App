@@ -1,21 +1,45 @@
 <div style="margin-left: 4px;"><app-notification></app-notification></div>
 <div class="container mt-4">
-    <h1 class="mb-4"  style="color: yellow;" >Upcoming Events</h1>
-    <div class="row">
-      <div class="col-md-4" *ngFor="let event of events">
-        <div class="card mb-4">
-          <img [src]="event.imageUrl" class="card-img-top" alt="{{ event.eventName }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ event.eventName }}</h5>
-            <p class="card-text">{{ event.eventDescription }}</p>
-            <p><strong>Location:</strong> {{ event.location }}</p>
-            <p><strong>Required Skills:</strong> {{ event.requiredSkills.join(', ') }}</p>
-            <p><strong>Urgency:</strong> {{ event.urgency }}</p>
-            <p><strong>Date:</strong> {{ event.eventDate | date: 'MMMM d, y' }}</p>
-            <button class="btn btn-primary" (click)="participateInEvent(event.eventName)">Participate</button>
+  <!-- Upcoming Events Section -->
+  <h1 class="mb-4" style="color: yellow;">---| Your Upcoming Events |---</h1>
+  <div class="row" *ngIf="upcomingEvents.length > 0; else noUpcomingEvents">
+      <div class="col-md-4" *ngFor="let event of upcomingEvents">
+          <div class="card mb-4">
+              <img [src]="event.imageUrl" class="card-img-top" alt="{{ event.eventName }}">
+              <div class="card-body">
+                  <h5 class="card-title"><strong>Name:</strong> {{ event.eventName }}</h5>
+                  <p class="card-text"><strong>Description:</strong> {{ event.eventDescription }}</p>
+                  <p><strong>Location:</strong> {{ event.location }}</p>
+                  <p><strong>Required Skills:</strong> {{ event.requiredSkills.join(', ') }}</p>
+                  <p><strong>Urgency:</strong> {{ event.urgency }}</p>
+                  <p><strong>Date:</strong> {{ event.eventDate | date: 'MMMM d, y' }}</p>
+              </div>
           </div>
-        </div>
       </div>
-    </div>
+  </div>
+  <ng-template #noUpcomingEvents>
+      <p style="color: yellow;">No upcoming events.</p>
+  </ng-template>
+
+  <!-- Past Events Section -->
+  <h1 class="mb-4" style="color: orange;">---| Your Past Events |---</h1>
+  <div class="row" *ngIf="pastEvents.length > 0; else noPastEvents">
+      <div class="col-md-4" *ngFor="let event of pastEvents">
+          <div class="card mb-4">
+              <img [src]="event.imageUrl" class="card-img-top" alt="{{ event.eventName }}">
+              <div class="card-body">
+                  <h5 class="card-title"><strong>Name:</strong> {{ event.eventName }}</h5>
+                  <p class="card-text"><strong>Description:</strong> {{ event.eventDescription }}</p>
+                  <p><strong>Location:</strong> {{ event.location }}</p>
+                  <p><strong>Required Skills:</strong> {{ event.requiredSkills.join(', ') }}</p>
+                  <p><strong>Urgency:</strong> {{ event.urgency }}</p>
+                  <p><strong>Date:</strong> {{ event.eventDate | date: 'MMMM d, y' }}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+  <ng-template #noPastEvents>
+      <p style="color: red;">No past events.</p>
+  </ng-template>
   </div>
   

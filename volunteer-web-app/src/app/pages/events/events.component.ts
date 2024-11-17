@@ -18,6 +18,9 @@ import { Event } from './event.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDeleteDialogComponent } from '../../confirm-delete-dialog/confirm-delete-dialog.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-events',
@@ -34,7 +37,7 @@ import { ConfirmDeleteDialogComponent } from '../../confirm-delete-dialog/confir
     MatFormFieldModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatIconModule,MatDialogModule
+    MatIconModule,MatDialogModule,MatAutocompleteModule
   ],
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
@@ -53,6 +56,7 @@ export class EventsComponent implements OnInit {
   ];
   filteredEvents: Event[] = [];
   filter = new FormControl('');
+  filteredEventOptions: Observable<Event[]> | undefined;
   isEditMode = false;
   editIndex: number | null = null;
   page = 1;
@@ -94,12 +98,18 @@ export class EventsComponent implements OnInit {
         console.error('Error fetching events', error);
       }
     );
+    this.filteredEventOptions = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterEvents(value || ''))
+    );
   
     // Subscribe to filter input changes
     this.filter.valueChanges.subscribe((searchTerm: string | null) => {
       this.filterEvents(searchTerm || '');
     });
   }
+
+ 
   
 
   filterEvents(searchTerm: string) {
@@ -347,5 +357,14 @@ previewImage(file: File) {
     this.imagePreview = reader.result as string;
   };
 }
+
+
+ private _filterEvents(value: string): Event[] {
+    const filterValue = value.toLowerCase();
+    return this.events.filter(event =>
+      event.eventName.toLowerCase().includes(filterValue) ||
+      event.eventDescription.toLowerCase().includes(filterValue) ||
+      event.location.toLowerCase().includes(filterValue)
+    );}
   
 }

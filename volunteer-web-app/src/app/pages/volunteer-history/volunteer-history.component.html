@@ -1,6 +1,24 @@
 <div class="container mt-4">
   <h2 class="mb-4 text-center section-header"><strong>Volunteer History</strong></h2>
+  <br>
 
+  <!-- Right-Aligned Report Selection -->
+  <div class="report-selection text-right" style="margin-right: 40px; text-align: right;background: initial;" >
+    <span style="color: azure;">Report :  </span>
+    <label>
+      <input type="radio" name="reportFormat" [(ngModel)]="selectedFormat" value="csv" /> CSV
+    </label>
+    <label style="margin-left: 10px;">
+      <input type="radio" name="reportFormat" [(ngModel)]="selectedFormat" value="pdf" /> PDF
+    </label>
+ 
+
+    <br>
+    <br>
+    <button style="color: black;" (click)="downloadReport()" mat-raised-button> <mat-icon>cloud_download</mat-icon>Download</button>
+  </div>
+  
+<br>
   <!-- Search Input -->
   <form>
     <div class="mb-3 row" style="background: initial;">

@@ -19,35 +19,35 @@
   
   /* Image Container */
   .image-container {
-    flex: 1; /* Take half the width */
-    height: 100%; /* Full viewport height */
+    flex: 1; 
+    height: 100%; 
   }
   
   .image-container img {
     width: 100%;
     height: 85%;
-    object-fit: cover; /* Ensure the image fills the container without stretching */
-    display: block; /* Prevent any extra space from inline images */
+    object-fit: cover; 
+    display: block;
   }
   
   /* Form Container */
   .form-container {
-    flex: 0.7; /* Take half the width */
+    flex: 0.7; 
     display: flex;
-    align-items: center; /* Center the form vertically */
-    justify-content: center; /* Center the form horizontally */
-    height: 85%; /* Full viewport height */
-    padding: 5rem; /* Add some padding for spacing */
-    background: rgba(255, 255, 255, 0.9); /* White background with slight transparency for form */
+    align-items: center; 
+    justify-content: center; 
+    height: 85%; 
+    padding: 5rem; 
+    background: rgba(255, 255, 255, 0.9); 
   }
   
   /* Form Styling */
   form {
     width: 100%;
-    max-width: 400px; /* Limit the maximum width */
+    max-width: 400px; 
     display: flex;
     flex-direction: column;
-    gap: 1.2rem; /* Gap between form elements */
+    gap: 1.2rem; 
   }
   
   h1 {
@@ -64,7 +64,7 @@
   label {
     margin-bottom: 0.5rem;
     font-weight: bold;
-    color: #000; /* Change to black for better visibility */
+    color: #000; 
   }
   
   input,
@@ -148,13 +148,13 @@
     background-color: black;
     padding: 2px;
     border-radius: 3px;
-    margin-top: 0.5rem; /* Space between the field and error message */
-    min-height: 1.5rem; /* Reserve space for the error message to avoid resizing */
+    margin-top: 0.5rem; 
+    min-height: 1.5rem; 
     display: block;
   }
   
   .white {
-    color: #000; /* Black color for better visibility on white background */
+    color: #000; 
   }
   
   .yellow {
@@ -179,16 +179,17 @@
   }
   .spinner-container {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    height: 100%; /* Make sure the container takes the full height of the form-container */
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 100%; 
 }
 
 .loading-text {
-    margin-bottom: 1rem; /* Add space between the text and the spinner */
-    font-size: 1.2rem; /* Adjust font size */
-    color: #333; /* Set text color */
-    font-weight: bold; /* Make text bold */
+    margin-bottom: 1rem; 
+    font-size: 1.2rem; 
+    color: #333; 
+    font-weight: bold; 
 }
+
 
