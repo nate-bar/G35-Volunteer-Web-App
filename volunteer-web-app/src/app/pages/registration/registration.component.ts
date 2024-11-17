@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HeaderComponent } from '../../header/header.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -25,7 +26,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule, 
+    MatProgressSpinnerModule,
+    MatIconModule,
   ],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
