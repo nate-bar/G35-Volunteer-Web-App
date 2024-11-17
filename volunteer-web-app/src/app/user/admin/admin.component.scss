@@ -269,4 +269,28 @@
     background-color: white;
 }
 
-  
+.report-format-selection {
+  display: flex;
+  align-items: center;
+  gap: 20px; 
+  margin-bottom: 20px; 
+}
+
+.report-format-selection label {
+  margin-right: 15px; 
+}
+
+.report-format-selection button {
+  margin-left: 20px; 
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.csv-selected {
+  background-color: #007bff; 
+  color: white;
+}
+
+.pdf-selected {
+  background-color: #dc3545; 
+  color: white;
+}
