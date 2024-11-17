@@ -94,21 +94,28 @@
     <div class="content-area">
 
       <div *ngIf="selectedLink === 'home'">
-        <div class="report-section">
+        <div class="report-section" style="background-color: white;border: 7px;border-color: green;border-style: double;">
           <br><br>
-          <h1 style="background-color: white;">Event details and volunteer assignments</h1>
+          <h1 >Event details and volunteer assignments</h1>
           <br><br>
           <div class="report-format-selection">
             <label>
               <input type="radio" name="reportFormat" [(ngModel)]="selectedFormat" value="csv" /> CSV
             </label>
-            <label style="margin-left: 10px;">
+            <label>
               <input type="radio" name="reportFormat" [(ngModel)]="selectedFormat" value="pdf" /> PDF
             </label>
-            <button mat-raised-button color="primary" (click)="downloadSelectedFormat()" [disabled]="!selectedFormat">
+            <button 
+              mat-raised-button 
+              [class.csv-selected]="selectedFormat === 'csv'" 
+              [class.pdf-selected]="selectedFormat === 'pdf'" 
+              (click)="downloadSelectedFormat()" 
+              [disabled]="!selectedFormat"
+            >
               Download
             </button>
           </div>
+          
           <br><br>
           <div class="graph-container">
             <canvas id="eventChart"></canvas>
