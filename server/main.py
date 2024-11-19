@@ -612,7 +612,7 @@ def get_matched_events():
 
     # Filter events by location and skills
     matched_events = list(events_collection.find({
-        'location': user_city,
+        'location': user_city.strip().lower() if user_city else None,
         'requiredSkills': {'$in': user_skills}
     }, {'_id': 0}))
 
