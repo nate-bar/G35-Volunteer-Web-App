@@ -3,21 +3,7 @@
   <h2 class="mb-4 text-center section-header"><strong>Users with Completed Profiles</strong></h2>
 
   <br><br>
-    <!-- Right-Aligned Report Selection -->
-    <div class="report-selection text-right" style="margin-right: 40px; text-align: right;background: initial;" >
-      <span style="color: azure;">Report :  </span>
-      <label>
-        <input type="radio" name="reportFormat"  value="csv" /> CSV
-      </label>
-      <label style="margin-left: 10px;">
-        <input type="radio" name="reportFormat"  value="pdf" /> PDF
-      </label>
-   
   
-      <br>
-      <br>
-      <button style="color: black;"  mat-raised-button>Download</button>
-    </div>
 
   <!-- Progress bar while loading -->
   <mat-progress-bar *ngIf="isLoading" mode="indeterminate" class="custom-progress-bar"></mat-progress-bar>

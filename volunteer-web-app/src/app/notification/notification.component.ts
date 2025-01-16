@@ -4,7 +4,7 @@ import { NotificationService } from '../notification.service';
 import { CommonModule } from '@angular/common';
 
 interface Notification {
-  id: number;
+  id: string;
   title: string;
   message: string;
   read: boolean;
@@ -38,7 +38,7 @@ export class NotificationComponent implements OnInit {
     });
   }
 
-  markAsRead(id: number) {
+  markAsRead(id: string) {
     this.notificationService.markAsRead(id);
   }
 
@@ -55,7 +55,7 @@ export class NotificationComponent implements OnInit {
     this.showDropdown = !this.showDropdown;
   }
 
-  deleteNotification(id: number) {
+  deleteNotification(id: string) {
     this.notificationService.deleteNotification(id);
   }
 
