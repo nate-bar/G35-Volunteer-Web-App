@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
 interface Notification {
-  id: number;
+  id: string;
   title: string;
   message: string;
   read: boolean;
@@ -31,12 +31,14 @@ export class NotificationService {
   // Fetch notifications from the backend
   fetchNotifications(): void {
     if (isPlatformBrowser(this.platformId)) {
-      // Only execute this code if running in the browser
-      const email = localStorage.getItem('userEmail'); // Assuming the email is stored here
+      const email = localStorage.getItem('userEmail');
       if (email) {
         this.http.get<Notification[]>(`${this.apiUrl}/${email}`).subscribe(
           (notifications) => {
-            this.notifications = notifications;
+            this.notifications = notifications.map(notif => ({
+              ...notif,
+              id: notif.id, // Ensure id is mapped correctly
+            }));
             this.updateNotifications();
           },
           (error) => {
@@ -46,10 +48,9 @@ export class NotificationService {
       } else {
         console.error('No user email found in localStorage.');
       }
-    } else {
-      console.warn('fetchNotifications was called in a non-browser environment.');
     }
   }
+  
   
 
   // Add a new notification (handled by backend)
@@ -66,11 +67,11 @@ export class NotificationService {
   }
 
   // Mark a notification as read
-  markAsRead(id: number): void {
+  markAsRead(id: string): void {
     this.http.put(`${this.apiUrl}/read/${id}`, {}).subscribe(
       () => {
         const notification = this.notifications.find((notif) => notif.id === id);
-        if (notification && !notification.read) {
+        if (notification) {
           notification.read = true;
           this.updateNotifications();
         }
@@ -80,6 +81,7 @@ export class NotificationService {
       }
     );
   }
+  
   
 
   // Mark all notifications as read
@@ -112,7 +114,7 @@ export class NotificationService {
     }
   }
   
-  deleteNotification(id: number): void {
+  deleteNotification(id: string): void {
     this.http.delete(`${this.apiUrl}/${id}`).subscribe(
       () => {
         this.notifications = this.notifications.filter((notif) => notif.id !== id);
@@ -123,6 +125,7 @@ export class NotificationService {
       }
     );
   }
+  
 
   // Helper methods to update and track notifications
   private updateNotifications(): void {

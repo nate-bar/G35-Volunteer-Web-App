@@ -298,7 +298,7 @@ export class EventsComponent implements OnInit {
   
         // Notify about the deletion
         this.notificationService.addNotification({
-          id: Date.now(),
+          id: Date.now().toString(),
           title: 'Event Deleted',
           message: `The event "${eventName}" has been deleted.`,
           read: false,
