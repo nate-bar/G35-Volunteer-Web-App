@@ -277,12 +277,14 @@
 }
 
 .report-format-selection label {
-  margin-right: 15px; 
+  margin-right: 15px;
+  color: black;
 }
 
 .report-format-selection button {
   margin-left: 20px; 
   transition: background-color 0.3s ease; /* Smooth color transition */
+  
 }
 
 .csv-selected {
@@ -293,4 +295,9 @@
 .pdf-selected {
   background-color: #dc3545; 
   color: white;
+}
+
+h1{
+  font-family: 'Brush Script MT',cursive;
+  
 }

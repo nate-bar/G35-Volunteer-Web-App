@@ -56,27 +56,34 @@ def send_async_email(app, msg):
 def home():
     return "<h1>Welcome to the Volunteer Management API</h1>"
 
-# Get notifications for a user
 @app.route('/api/notifications/<string:email>', methods=['GET'])
 def get_notifications(email):
-    user_notifications = list(notifications_collection.find({'user_email': email}, {'_id': 0}))
+    user_notifications = list(
+        notifications_collection.find({'user_email': email}, {'_id': 1, 'title': 1, 'message': 1, 'read': 1, 'date': 1})
+    )
+    # Convert ObjectId to string
+    for notif in user_notifications:
+        notif['id'] = str(notif.pop('_id'))
     return jsonify(user_notifications), 200
 
 
 
-# Mark a notification as read
-@app.route('/api/notifications/read/<int:notif_id>', methods=['PUT'])
-def mark_notification_as_read(notif_id):
-    notifications_collection.update_one({'id': notif_id}, {'$set': {'read': True}})
-    return jsonify({'message': 'Notification marked as read'}), 200
+
+
 
 
 
 # Mark all notifications as read for a user
-@app.route('/api/notifications/read-all/<string:email>', methods=['PUT'])
-def mark_all_notifications_as_read(email):
-    notifications_collection.update_many({'user_email': email}, {'$set': {'read': True}})
-    return jsonify({'message': 'All notifications marked as read'}), 200
+@app.route('/api/notifications/read/<string:notif_id>', methods=['PUT'])
+def mark_notification_as_read(notif_id):
+    try:
+        result = notifications_collection.update_one({'_id': ObjectId(notif_id)}, {'$set': {'read': True}})
+        if result.modified_count > 0:
+            return jsonify({'message': 'Notification marked as read'}), 200
+        return jsonify({'error': f'Notification with ID {notif_id} not found.'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 
 # Delete all notifications for a user
@@ -104,12 +111,16 @@ def create_notification_for_users(title, message, user_emails=None):
         notifications_collection.insert_one(new_notification)
 
 
-@app.route('/api/notifications/<int:notif_id>', methods=['DELETE'])
+@app.route('/api/notifications/<string:notif_id>', methods=['DELETE'])
 def delete_notification(notif_id):
-    result = notifications_collection.delete_one({'id': notif_id})
-    if result.deleted_count > 0:
-        return jsonify({'message': f'Notification {notif_id} deleted successfully.'}), 200
-    return jsonify({'error': f'Notification with ID {notif_id} not found.'}), 404
+    try:
+        result = notifications_collection.delete_one({'_id': ObjectId(notif_id)})
+        if result.deleted_count > 0:
+            return jsonify({'message': f'Notification {notif_id} deleted successfully.'}), 200
+        return jsonify({'error': f'Notification with ID {notif_id} not found.'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 # Registration Endpoint
 @app.route('/api/register', methods=['POST'])
@@ -612,7 +623,7 @@ def get_matched_events():
 
     # Filter events by location and skills
     matched_events = list(events_collection.find({
-        'location': user_city,
+        'location': user_city.strip().lower() if user_city else None,
         'requiredSkills': {'$in': user_skills}
     }, {'_id': 0}))
 
